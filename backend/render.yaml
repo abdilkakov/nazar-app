@@ -1,0 +1,31 @@
+services:
+  # Наш Node.js Бэкенд
+  - type: web
+    name: nazar-backend
+    env: node
+    region: frankfurt
+    plan: free
+    buildCommand: npm install && npx prisma generate
+    startCommand: npm start
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: nazar-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PORT
+        value: 10000
+      - key: FRONTEND_URL
+        # TODO: Заменить на реальный URL фронтенда на Vercel после его деплоя
+        value: "https://твое-имя-проекта.vercel.app"
+      - key: NODE_ENV
+        value: production
+
+# База данных PostgreSQL
+databases:
+  - name: nazar-db
+    databaseName: nazardb
+    user: nazar
+    region: frankfurt
+    plan: free

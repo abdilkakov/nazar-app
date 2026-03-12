@@ -1,0 +1,23 @@
+nohup: ignoring input
+
+> frontend@0.1.0 dev
+> vite --host
+
+
+  VITE v5.4.21  ready in 129 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://192.168.1.54:5173/
+  ➜  Network: http://172.17.0.1:5173/
+23:11:00 [vite] warning: The character ">" is not valid inside a JSX element
+65 |                      <p className="text-white/60 font-bold uppercase tracking-widest text-xs mb-2">Next Milestone</p>
+66 |                      <h2 className="text-3xl font-bold font-outfit mb-4">Focus Master</h2>
+67 |                      <p className="text-sm text-white/80 leading-relaxed mb-6">Complete 3 more sessions with score > 90% to level up.</p>
+   |                                                                                                                    ^
+68 |                      <div className="w-full h-8 bg-black/10 rounded-xl flex items-center justify-center font-bold text-xs uppercase">
+69 |                          8 / 10 SESSIONS
+
+  Plugin: vite:esbuild
+  File: /home/nura/mvp_nazar/frontend/src/pages/Analytics.jsx
+23:11:22 [vite] page reload src/pages/Analytics.jsx
+Killed

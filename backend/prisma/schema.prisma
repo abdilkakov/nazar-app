@@ -1,0 +1,112 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String          @id @default(uuid())
+  email          String          @unique
+  name           String
+  avatar         String?
+  role           String          @default("employee")
+  passwordHash   String?
+  googleId       String?         @unique
+  createdAt      DateTime        @default(now())
+  comments       Comment[]
+  ownedCompanies Company[]       @relation("CompanyAdmin")
+  companyMembers CompanyMember[]
+  sessions       FocusSession[]
+  posts          Post[]
+  reactions      Reaction[]
+}
+
+model Company {
+  id        String          @id @default(uuid())
+  name      String
+  adminId   String
+  createdAt DateTime        @default(now())
+  admin     User            @relation("CompanyAdmin", fields: [adminId], references: [id])
+  members   CompanyMember[]
+  rooms     FocusRoom[]
+  posts     Post[]
+}
+
+model CompanyMember {
+  id        String   @id @default(uuid())
+  userId    String
+  companyId String
+  joinedAt  DateTime @default(now())
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, companyId])
+}
+
+model FocusSession {
+  id               String             @id @default(uuid())
+  userId           String
+  plannedDuration  Int
+  startedAt        DateTime           @default(now())
+  endedAt          DateTime?
+  distractionCount Int                @default(0)
+  focusScore       Float?
+  cameraEnabled    Boolean            @default(true)
+  distractions     DistractionEvent[]
+  user             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model DistractionEvent {
+  id         String       @id @default(uuid())
+  sessionId  String
+  occurredAt DateTime     @default(now())
+  durationMs Int          @default(0)
+  session    FocusSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+}
+
+model Post {
+  id        String     @id @default(uuid())
+  userId    String
+  companyId String?
+  content   String
+  type      String     @default("post")
+  createdAt DateTime   @default(now())
+  comments  Comment[]
+  company   Company?   @relation(fields: [companyId], references: [id])
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reactions Reaction[]
+}
+
+model Reaction {
+  id     String @id @default(uuid())
+  postId String
+  userId String
+  type   String @default("like")
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  postId    String
+  userId    String
+  content   String
+  createdAt DateTime @default(now())
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model FocusRoom {
+  id        String    @id @default(uuid())
+  companyId String
+  name      String
+  timerEnd  DateTime?
+  isActive  Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  company   Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+}
