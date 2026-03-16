@@ -29,40 +29,13 @@ const awayTimer = document.getElementById('awayTimer');
 const guardStatus = document.getElementById('guardStatus');
 
 // --- Auth logic ---
-async function login() {
-    const handleInput = document.getElementById('handleInput');
-    const handle = handleInput.value.trim();
+function login() {
+    const handle = document.getElementById('handleInput').value.trim();
     if (!handle) return alert("Please enter a handle");
 
-    const email = `${handle.replace('@', '')}_vanilla@nazar.app`;
-    const password = 'nazar_vanilla_mvp_pw'; // Static for MVP vanilla users
-
-    try {
-        debugInfo.textContent = "Authenticating...";
-        let data;
-        try {
-            data = await window.api.fetch('/auth/login', {
-                method: 'POST',
-                body: JSON.stringify({ email, password })
-            });
-        } catch (e) {
-            // If login fails, try register
-            data = await window.api.fetch('/auth/register', {
-                method: 'POST',
-                body: JSON.stringify({ email, password, name: handle })
-            });
-        }
-
-        localStorage.setItem('nazar_token', data.token);
-        state.user = handle;
-        localStorage.setItem('nazar_user', handle);
-        showSessionView();
-        debugInfo.textContent = "Authenticated";
-    } catch (err) {
-        console.error("Auth failed", err);
-        alert("Authentication failed. " + (err.message || "Please try a different handle."));
-        debugInfo.textContent = "Auth Error";
-    }
+    state.user = handle;
+    localStorage.setItem('nazar_user', handle);
+    showSessionView();
 }
 
 function logout() {
@@ -224,8 +197,8 @@ async function startDetection() {
                         if (distractionCount) distractionCount.textContent = state.distractions;
                         if (awayAlert) awayAlert.style.display = 'flex';
 
-                        // Log distraction to backend
-                        logDistractionOnBackend(0); // Initial distraction event
+                        // Log distraction locally
+                        logDistractionLocally();
                     }
                 }
 
@@ -243,89 +216,58 @@ async function startDetection() {
 // --- Session Logic ---
 let timerInterval;
 
-async function startSession() {
-    try {
-        // Call backend to start session
-        const session = await window.api.fetch('/sessions', {
-            method: 'POST',
-            body: JSON.stringify({
-                plannedDuration: 25,
-                cameraEnabled: true
-            })
-        });
+function startSession() {
+    state.currentSessionId = Date.now().toString(); // Local ID
+    state.active = true;
+    state.timer = 25 * 60;
+    state.distractions = 0;
+    state.distractedTimeMs = 0;
+    state.isDistracted = false;
 
-        state.currentSessionId = session.id;
-        state.active = true;
-        state.timer = 25 * 60;
-        state.distractions = 0;
-        state.distractedTimeMs = 0;
-        state.isDistracted = false;
-
-        if (distractionCount) distractionCount.textContent = "0";
-        if (distractionTime) distractionTime.textContent = "0m 0s";
-        if (awayTimer) awayTimer.textContent = "0s";
-        if (guardStatus) {
-            guardStatus.textContent = I18N.T[I18N.getCurrentLang()].status_active;
-            guardStatus.style.color = "#10b981";
-        }
-        sessionStatus.style.display = 'flex';
-        startBtn.style.display = 'none';
-        stopBtn.style.display = 'block';
-
-        startCamera();
-
-        timerInterval = setInterval(() => {
-            state.timer--;
-            if (state.isDistracted) {
-                state.distractedTimeMs += 1000;
-            }
-            updateTimerDisplay();
-            updateDistractionDisplay();
-            if (state.timer <= 0) stopSession();
-        }, 1000);
-    } catch (error) {
-        console.error("Failed to start session", error);
-        alert("Critical: Could not start session on server.");
+    if (distractionCount) distractionCount.textContent = "0";
+    if (distractionTime) distractionTime.textContent = "0m 0s";
+    if (awayTimer) awayTimer.textContent = "0s";
+    if (guardStatus) {
+        guardStatus.textContent = I18N.T[I18N.getCurrentLang()].status_active;
+        guardStatus.style.color = "#10b981";
     }
+    sessionStatus.style.display = 'flex';
+    startBtn.style.display = 'none';
+    stopBtn.style.display = 'block';
+
+    startCamera();
+
+    timerInterval = setInterval(() => {
+        state.timer--;
+        if (state.isDistracted) {
+            state.distractedTimeMs += 1000;
+        }
+        updateTimerDisplay();
+        updateDistractionDisplay();
+        if (state.timer <= 0) stopSession();
+    }, 1000);
 }
 
-async function logDistractionOnBackend(durationMs) {
+function logDistractionLocally() {
     if (!state.currentSessionId) return;
-    try {
-        await window.api.fetch(`/sessions/${state.currentSessionId}/distraction`, {
-            method: 'POST',
-            body: JSON.stringify({ durationMs })
-        });
-    } catch (error) {
-        console.error("Failed to log distraction", error);
-    }
+    // For MVP local version, we just keep it in state
+    // Could save to a history array in localStorage if needed
+    console.log(`Distraction logged locally for session ${state.currentSessionId}`);
 }
 
-function updateDistractionDisplay() {
-    if (!distractionTime) return;
-    const totalSeconds = Math.floor(state.distractedTimeMs / 1000);
-    const mins = Math.floor(totalSeconds / 60);
-    const secs = totalSeconds % 60;
-    distractionTime.textContent = `${mins}m ${secs}s`;
-
-    // Also update overlay timer
-    if (awayTimer && state.isDistracted) {
-        awayTimer.textContent = `${totalSeconds}s`;
-    }
-}
-
-async function stopSession() {
-    if (state.currentSessionId) {
-        try {
-            await window.api.fetch(`/sessions/${state.currentSessionId}/end`, {
-                method: 'PATCH'
-            });
-        } catch (error) {
-            console.error("Failed to end session on backend", error);
-        }
-    }
-
+function stopSession() {
     state.active = false;
+    // Save session to history before clearing
+    const history = JSON.parse(localStorage.getItem('nazar_history') || '[]');
+    history.push({
+        id: state.currentSessionId,
+        user: state.user,
+        distractions: state.distractions,
+        totalTime: 25 * 60 - state.timer,
+        date: new Date().toISOString()
+    });
+    localStorage.setItem('nazar_history', JSON.stringify(history));
+
     state.currentSessionId = null;
     clearInterval(timerInterval);
     stopCamera();
