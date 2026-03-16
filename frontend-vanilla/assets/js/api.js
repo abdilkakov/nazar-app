@@ -28,45 +28,10 @@ function redirectIfAuth() {
     }
 }
 
-// Universal fetch wrapper with automatic JWT token attachment
+// Universal fetch wrapper - MOCKED for local-only vanilla version
 async function fetchAPI(endpoint, options = {}) {
-    const token = getToken();
-
-    const headers = {
-        'Content-Type': 'application/json',
-        ...options.headers,
-    };
-
-    if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-    }
-
-    try {
-        const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-            ...options,
-            headers
-        });
-
-        const data = await response.json();
-
-        // Handle auto-logout on unauthorized
-        if (response.status === 401) {
-            localStorage.removeItem('nazar_token');
-            if (!window.location.href.includes('index.html')) {
-                window.location.href = 'index.html';
-            }
-            throw new Error('Session expired');
-        }
-
-        if (!response.ok) {
-            throw new Error(data.error || 'API Request failed');
-        }
-
-        return data;
-    } catch (error) {
-        console.error(`API Error on ${endpoint}:`, error);
-        throw error;
-    }
+    console.warn(`API call to ${endpoint} ignored in local-only mode.`);
+    return {}; // Return empty object to prevent errors
 }
 
 // Expose to global window object
