@@ -1,6 +1,9 @@
 // frontend-vanilla/assets/js/api.js
 
-const API_BASE_URL = 'http://localhost:4000/api';
+// Use dynamic URL: check localStorage, then window variable, then default to localhost
+const API_BASE_URL = localStorage.getItem('NAZAR_API_URL') ||
+    window.NAZAR_API_URL ||
+    `http://${window.location.hostname}:4000/api`;
 
 // Helper function to get auth token
 function getToken() {

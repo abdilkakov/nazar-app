@@ -28,7 +28,7 @@ app.set('io', io);
 
 // Middleware
 app.use(cors({
-    origin: process.env.FRONTEND_URL || true,
+    origin: '*', // For MVP development, allow all. In production, this should be restricted.
     credentials: true
 }));
 app.use(express.json());
