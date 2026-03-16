@@ -21,7 +21,7 @@ function requireAuth() {
 function redirectIfAuth() {
     const token = getToken();
     if (token) {
-        window.location.href = 'dashboard.html';
+        window.location.href = 'app.html';
     }
 }
 
