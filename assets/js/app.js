@@ -9,7 +9,8 @@ let state = {
     cameraActive: false,
     modelsLoaded: false,
     detecting: false,
-    currentSessionId: null
+    currentSessionId: null,
+    currentDistractionStart: null
 };
 
 const video = document.getElementById('videoElement');
@@ -189,10 +190,12 @@ async function startDetection() {
                 if (faceLookingForward) {
                     lastFaceDetected = now;
                     state.isDistracted = false;
+                    state.currentDistractionStart = null;
                     if (awayAlert) awayAlert.style.display = 'none';
                 } else if (now - lastFaceDetected > 3000) { // 3 seconds of absence or looking away
                     if (!state.isDistracted) {
                         state.isDistracted = true;
+                        state.currentDistractionStart = now;
                         state.distractions++;
                         if (distractionCount) distractionCount.textContent = state.distractions;
                         if (awayAlert) awayAlert.style.display = 'flex';
@@ -239,8 +242,10 @@ function startSession() {
 
     timerInterval = setInterval(() => {
         state.timer--;
-        if (state.isDistracted) {
+        if (state.isDistracted && state.currentDistractionStart) {
             state.distractedTimeMs += 1000;
+            const awaySecs = Math.floor((Date.now() - state.currentDistractionStart) / 1000);
+            if (awayTimer) awayTimer.textContent = `${awaySecs}s`;
         }
         updateTimerDisplay();
         updateDistractionDisplay();
@@ -290,6 +295,13 @@ function updateTimerDisplay() {
     const mins = Math.floor(state.timer / 60);
     const secs = state.timer % 60;
     timerDisplay.textContent = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+}
+
+function updateDistractionDisplay() {
+    const totalSecs = Math.floor(state.distractedTimeMs / 1000);
+    const mins = Math.floor(totalSecs / 60);
+    const secs = totalSecs % 60;
+    if (distractionTime) distractionTime.textContent = `${mins}m ${secs}s`;
 }
 
 // Initial load
