@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NazarApp — Protect Your Focus. Work Deeper.</title>
+    <meta name="description"
+        content="NazarApp helps you manage attention and productivity without surveillance. AI-powered deep focus for individuals and teams.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+    <!-- Nav -->
+    <nav>
+        <div class="nav-inner">
+            <div class="logo">
+                <div class="logo-icon">👁</div>
+                NazarApp
+            </div>
+            <ul class="nav-links">
+                <li><a href="#features" data-i18n="nav_features">Features</a></li>
+                <li><a href="#how" data-i18n="nav_how">How It Works</a></li>
+                <li><a href="#teams" data-i18n="nav_teams">For Teams</a></li>
+                <li><a href="#privacy" data-i18n="nav_privacy">Privacy</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="app.html" class="nav-cta" data-i18n="nav_cta">Get Early Access</a></li>
+            </ul>
+            <div class="lang-switch">
+                <button class="lang-btn active" onclick="switchLang('en')">EN</button>
+                <button class="lang-btn" onclick="switchLang('ru')">RU</button>
+                <button class="lang-btn" onclick="switchLang('kz')">KZ</button>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">🌙</button>
+            <button class="mobile-menu" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="hero">
+        <div class="container">
+            <div class="hero-inner">
+                <div class="reveal">
+                    <div class="hero-tag" data-i18n="hero_tag">🚀 AI-powered focus platform</div>
+                    <h1 data-i18n-html="hero_title">Protect Your Focus.<br><span class="gradient">Work Deeper.</span>
+                    </h1>
+                    <p class="hero-desc" data-i18n="hero_desc">NazarApp uses camera-based head tracking to monitor your
+                        attention and boost productivity. Smart focus sessions, real-time analytics, privacy-first
+                        approach.</p>
+                    <div class="hero-btns">
+                        <button class="btn-primary" onclick="location.href='app.html'" data-i18n="hero_btn1">Start Free
+                            →</button>
+                        <button class="btn-secondary" onclick="location.href='#teams'" data-i18n="hero_btn2">For
+                            Teams</button>
+                    </div>
+                </div>
+                <div class="hero-mockup reveal">
+                    <div class="mockup-card">
+                        <div class="mockup-header">
+                            <span class="mockup-title">Focus Dashboard</span>
+                            <div class="mockup-dots"><span></span><span></span><span></span></div>
+                        </div>
+                        <div class="focus-score">
+                            <div class="score-ring"></div>
+                            <div class="score-label">Focus Score — Today</div>
+                        </div>
+                        <div class="mockup-stats">
+                            <div class="mini-stat">
+                                <div class="mini-stat-val">3.2h</div>
+                                <div class="mini-stat-label">Deep Work</div>
+                            </div>
+                            <div class="mini-stat">
+                                <div class="mini-stat-val">12</div>
+                                <div class="mini-stat-label">Sessions</div>
+                            </div>
+                            <div class="mini-stat">
+                                <div class="mini-stat-val">+8%</div>
+                                <div class="mini-stat-label">vs Last Week</div>
+                            </div>
+                        </div>
+                        <div class="mockup-bars">
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Problem -->
+    <section class="problem">
+        <div class="container">
+            <div class="section-tag reveal" data-i18n="prob_tag">● The Problem</div>
+            <h2 class="section-title reveal" data-i18n-html="prob_title">We lose <span style="color:#f87171">2–3 hours
+                    daily</span> to distractions.
+            </h2>
+            <p class="section-desc reveal" data-i18n="prob_desc">Social media, endless notifications, and constant
+                context-switching are
+                destroying our ability to do deep, meaningful work.</p>
+            <div class="problem-grid">
+                <div class="problem-stats reveal">
+                    <div class="problem-stat">
+                        <div class="problem-stat-icon">📱</div>
+                        <div class="problem-stat-text" data-i18n-html="prob_s1">Average person checks their phone
+                            <strong>96 times per
+                                day</strong>
+                        </div>
+                    </div>
+                    <div class="problem-stat">
+                        <div class="problem-stat-icon">🔔</div>
+                        <div class="problem-stat-text" data-i18n-html="prob_s2">It takes <strong>23 minutes</strong> to
+                            refocus after an
+                            interruption</div>
+                    </div>
+                    <div class="problem-stat">
+                        <div class="problem-stat-icon">🧠</div>
+                        <div class="problem-stat-text" data-i18n-html="prob_s3">Only <strong>2.5 hours</strong> of truly
+                            focused work per day on
+                            average</div>
+                    </div>
+                </div>
+                <div class="reveal" style="text-align:center;font-size:120px;opacity:0.15">🌀</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features">
+        <div class="container">
+            <div class="text-center">
+                <div class="section-tag reveal" data-i18n="feat_tag">● The Solution</div>
+                <h2 class="section-title reveal" data-i18n="feat_title">NazarApp protects your attention.</h2>
+                <p class="section-desc mx-auto reveal" data-i18n="feat_desc">Powerful tools designed to help you enter
+                    flow state, stay
+                    focused, and understand your productive patterns.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <div class="feature-icon">⚡</div>
+                    <h3 data-i18n="f1_t">Smart Focus Sessions</h3>
+                    <p data-i18n="f1_d">AI-optimized session lengths based on your personal focus patterns and energy
+                        levels.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">📊</div>
+                    <h3 data-i18n="f2_t">Productivity Index</h3>
+                    <p data-i18n="f2_d">Real-time score that reflects your focus quality — not just time spent.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">🎯</div>
+                    <h3 data-i18n="f3_t">Deep Work Mode</h3>
+                    <p data-i18n="f3_d">Block distractions, silence notifications, and enter a distraction-free zone
+                        with one click.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">🔍</div>
+                    <h3 data-i18n="f4_t">Distraction Analytics</h3>
+                    <p data-i18n="f4_d">See exactly when and why you lose focus. Data-driven insights to improve habits.
+                    </p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">👥</div>
+                    <h3 data-i18n="f5_t">Team Insights</h3>
+                    <p data-i18n="f5_d">Aggregated team productivity data without any individual surveillance or
+                        tracking.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">👁️</div>
+                    <h3 data-i18n="f6_t">Head Tracking</h3>
+                    <p data-i18n="f6_d">Camera-based attention monitoring. Processing happens locally — no video ever
+                        leaves your device.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how"
+        style="background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border)">
+        <div class="container">
+            <div class="text-center">
+                <div class="section-tag reveal" data-i18n="how_tag">● How It Works</div>
+                <h2 class="section-title reveal" data-i18n="how_title">Three steps to deeper work.</h2>
+            </div>
+            <div class="steps">
+                <div class="step reveal">
+                    <div class="step-num">1</div>
+                    <h3 data-i18n="h1_t">Choose Your Task</h3>
+                    <p data-i18n="h1_d">Select what you're working on. NazarApp suggests optimal session length based on
+                        task complexity.</p>
+                    <div class="step-connector"></div>
+                </div>
+                <div class="step reveal">
+                    <div class="step-num">2</div>
+                    <h3 data-i18n="h2_t">Activate Focus Mode</h3>
+                    <p data-i18n="h2_d">Enter distraction-free mode. AI monitors focus quality via head tracking and
+                        gently guides you back when attention drifts.</p>
+                    <div class="step-connector"></div>
+                </div>
+                <div class="step reveal">
+                    <div class="step-num">3</div>
+                    <h3 data-i18n="h3_t">Get Insights & Improve</h3>
+                    <p data-i18n="h3_d">Review your focus patterns, track progress over time, and build sustainable deep
+                        work habits.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- For Teams -->
+    <section id="teams" class="teams">
+        <div class="container">
+            <div class="section-tag reveal" data-i18n="team_tag">● For Teams</div>
+            <h2 class="section-title reveal" data-i18n="team_title">Healthy productivity for modern teams.</h2>
+            <p class="section-desc reveal" data-i18n="team_desc">Give your team the tools to focus better — without
+                micromanaging or
+                surveillance.</p>
+            <div class="teams-grid">
+                <div class="team-features reveal">
+                    <div class="team-feature">
+                        <div class="team-feature-icon">📈</div>
+                        <div>
+                            <h4 data-i18n="tf1_t">Aggregated Analytics</h4>
+                            <p data-i18n="tf1_d">Team-level focus trends without exposing individual data.</p>
+                        </div>
+                    </div>
+                    <div class="team-feature">
+                        <div class="team-feature-icon">🛡️</div>
+                        <div>
+                            <h4 data-i18n="tf2_t">No Individual Surveillance</h4>
+                            <p data-i18n="tf2_d">Respect privacy while improving collective productivity.</p>
+                        </div>
+                    </div>
+                    <div class="team-feature">
+                        <div class="team-feature-icon">🔋</div>
+                        <div>
+                            <h4 data-i18n="tf3_t">Energy Management</h4>
+                            <p data-i18n="tf3_d">Better planning based on team energy cycles and focus windows.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-mockup reveal">
+                    <div style="font-size:12px;color:var(--text-muted);margin-bottom:16px;font-weight:600">Team Focus —
+                        This Week</div>
+                    <div class="team-mockup-row">
+                        <span class="tmr-name">Engineering</span>
+                        <div class="tmr-bar-wrap">
+                            <div class="tmr-bar" style="width:85%"></div>
+                        </div>
+                        <span class="tmr-val">85%</span>
+                    </div>
+                    <div class="team-mockup-row">
+                        <span class="tmr-name">Design</span>
+                        <div class="tmr-bar-wrap">
+                            <div class="tmr-bar" style="width:72%"></div>
+                        </div>
+                        <span class="tmr-val">72%</span>
+                    </div>
+                    <div class="team-mockup-row">
+                        <span class="tmr-name">Product</span>
+                        <div class="tmr-bar-wrap">
+                            <div class="tmr-bar" style="width:68%"></div>
+                        </div>
+                        <span class="tmr-val">68%</span>
+                    </div>
+                    <div class="team-mockup-row">
+                        <span class="tmr-name">Marketing</span>
+                        <div class="tmr-bar-wrap">
+                            <div class="tmr-bar" style="width:60%"></div>
+                        </div>
+                        <span class="tmr-val">60%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Privacy -->
+    <section id="privacy">
+        <div class="container">
+            <div class="text-center">
+                <div class="section-tag reveal" data-i18n="priv_tag">● Privacy First</div>
+                <h2 class="section-title reveal" data-i18n="priv_title">Your focus, your data, your control.</h2>
+                <p class="section-desc mx-auto reveal" data-i18n="priv_desc">NazarApp uses your camera for head tracking
+                    only. All processing is local.</p>
+            </div>
+            <div class="privacy-grid">
+                <div class="privacy-card reveal">
+                    <div class="privacy-icon">📷</div>
+                    <h4 data-i18n="priv1_t">Smart Camera Use</h4>
+                    <p data-i18n="priv1_d">Camera tracks head movement only. All processing is local — no video is
+                        recorded or stored.</p>
+                </div>
+                <div class="privacy-card reveal">
+                    <div class="privacy-icon">🚫🎙️</div>
+                    <h4 data-i18n="priv2_t">No Mic Access</h4>
+                    <p data-i18n="priv2_d">Your conversations stay private. Always.</p>
+                </div>
+                <div class="privacy-card reveal">
+                    <div class="privacy-icon">🚫📍</div>
+                    <h4 data-i18n="priv3_t">No Outside Tracking</h4>
+                    <p data-i18n="priv3_d">We don't track anything outside the app.</p>
+                </div>
+                <div class="privacy-card reveal">
+                    <div class="privacy-icon">🔒</div>
+                    <h4 data-i18n="priv4_t">Privacy Architecture</h4>
+                    <p data-i18n="priv4_d">Local processing. No cloud uploads. GDPR compliant.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof -->
+    <section class="social-proof">
+        <div class="container">
+            <div class="text-center">
+                <div class="section-tag reveal" data-i18n="social_tag">● Trusted By</div>
+                <h2 class="section-title reveal" data-i18n="social_title">Built for founders and developers.</h2>
+            </div>
+            <div class="testimonials">
+                <div class="testimonial reveal">
+                    <p class="testimonial-text" data-i18n="t1">"NazarApp helped me go from 2 hours of deep work to 4+
+                        hours daily. The focus analytics are incredible."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">AK</div>
+                        <div>
+                            <div class="testimonial-name">Alex K.</div>
+                            <div class="testimonial-role">Software Engineer</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial reveal">
+                    <p class="testimonial-text" data-i18n="t2">"Finally, a productivity tool that respects my team's
+                        privacy. The aggregated insights are exactly what we needed."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">SM</div>
+                        <div>
+                            <div class="testimonial-name">Sara M.</div>
+                            <div class="testimonial-role">Startup Founder</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial reveal">
+                    <p class="testimonial-text" data-i18n="t3">"As a student, this app changed how I study. My exam
+                        scores improved 30% after using the deep work mode."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">DN</div>
+                        <div>
+                            <div class="testimonial-name">Dias N.</div>
+                            <div class="testimonial-role">CS Student</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="logos reveal">
+                <span>TECHSTARS</span>
+                <span>Y COMBINATOR</span>
+                <span>NOTION</span>
+                <span>VERCEL</span>
+                <span>LINEAR</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team -->
+    <section id="team">
+        <div class="container">
+            <div class="text-center">
+                <div class="section-tag reveal" data-i18n="our_tag">● Our Team</div>
+                <h2 class="section-title reveal" data-i18n="our_title">The people behind NazarApp.</h2>
+            </div>
+            <div class="team-members">
+                <div class="member-card reveal">
+                    <div class="member-avatar hacker">🧑‍💻</div>
+                    <div class="member-role">Serik — CTO</div>
+                    <h3 data-i18n="m1_t">Tech & Architecture</h3>
+                    <p data-i18n="m1_d">Building the AI engine and privacy-first infrastructure that powers every focus
+                        session.</p>
+                </div>
+                <div class="member-card reveal">
+                    <div class="member-avatar hipster">🎨</div>
+                    <div class="member-role">Nurislam — Designer</div>
+                    <h3 data-i18n="m2_t">Product & Design</h3>
+                    <p data-i18n="m2_d">Crafting the minimal, distraction-free interface that helps users stay in flow
+                        state.</p>
+                </div>
+                <div class="member-card reveal">
+                    <div class="member-avatar hustler">🚀</div>
+                    <div class="member-role">Zhasulan — CEO</div>
+                    <h3 data-i18n="m3_t">Vision & Growth</h3>
+                    <p data-i18n="m3_d">Driving the mission to make mindful productivity accessible to everyone,
+                        everywhere.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section id="cta" class="cta-section">
+        <div class="container">
+            <h2 class="reveal" data-i18n-html="cta_title">Start working with <span
+                    style="color:var(--accent)">clarity</span> today.</h2>
+            <p class="reveal" data-i18n="cta_desc">Join thousands who've taken control of their attention and
+                productivity.</p>
+            <button class="cta-btn reveal" onclick="location.href='app.html'" data-i18n="cta_btn">Get Early Access
+                →</button>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" style="background: var(--bg2); border-top: 1px solid var(--border)">
+        <div class="container">
+            <div class="text-center">
+                <div class="section-tag reveal" data-i18n="faq_tag">● FAQ</div>
+                <h2 class="section-title reveal" data-i18n="faq_title">Frequently asked questions.</h2>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item reveal">
+                    <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+                        <span data-i18n="fq1">Is NazarApp really free?</span> <span>+</span>
+                    </button>
+                    <div class="faq-a">
+                        <p data-i18n="fa1">Yes! We offer a generous free tier for individual users. Team plans with
+                            advanced analytics
+                            start at competitive prices.</p>
+                    </div>
+                </div>
+                <div class="faq-item reveal">
+                    <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+                        <span data-i18n="fq2">How does head tracking work?</span> <span>+</span>
+                    </button>
+                    <div class="faq-a">
+                        <p data-i18n="fa2">NazarApp uses your webcam to detect head position and movement. All
+                            processing happens locally in your browser — no video is ever sent to servers.</p>
+                    </div>
+                </div>
+                <div class="faq-item reveal">
+                    <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+                        <span data-i18n="fq3">Does NazarApp record my screen?</span> <span>+</span>
+                    </button>
+                    <div class="faq-a">
+                        <p data-i18n="fa3">No. We never capture screenshots, record keystrokes, or monitor your activity
+                            outside the app. Privacy is our core principle.</p>
+                    </div>
+                </div>
+                <div class="faq-item reveal">
+                    <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+                        <span data-i18n="fq4">Can managers see individual data?</span> <span>+</span>
+                    </button>
+                    <div class="faq-a">
+                        <p data-i18n="fa4">No. Team plans only show aggregated, anonymous data. Managers see team-level
+                            trends, never individual metrics.</p>
+                    </div>
+                </div>
+                <div class="faq-item reveal">
+                    <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+                        <span data-i18n="fq5">What platforms do you support?</span> <span>+</span>
+                    </button>
+                    <div class="faq-a">
+                        <p data-i18n="fa5">NazarApp is currently available as a web app, with native macOS, Windows, iOS
+                            and Android apps coming soon.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-copy">© 2026 NazarApp. All rights reserved.</div>
+                <div class="footer-links">
+                    <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
+                    <a href="#" data-i18n="footer_terms">Terms of Service</a>
+                    <a href="#">Twitter</a>
+                    <a href="#">LinkedIn</a>
+                    <a href="#">GitHub</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/i18n.js"></script>
+    <script src="assets/js/utils.js"></script>
+</body>
+
+</html>
