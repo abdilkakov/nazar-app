@@ -52,7 +52,7 @@ if (loginForm) {
 
             // Save token and redirect
             localStorage.setItem('nazar_token', data.token);
-            window.location.href = 'dashboard.html';
+            window.location.href = 'app.html';
 
         } catch (error) {
             showAuthError(error.message || 'Login failed. Check your credentials.');
@@ -79,7 +79,7 @@ if (registerForm) {
 
             // Save token and redirect
             localStorage.setItem('nazar_token', data.token);
-            window.location.href = 'dashboard.html';
+            window.location.href = 'app.html';
 
         } catch (error) {
             showAuthError(error.message || 'Registration failed.');
