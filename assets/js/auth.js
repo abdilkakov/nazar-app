@@ -39,24 +39,12 @@ function showAuthError(message) {
 if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        authError.classList.add('hidden');
-
         const email = document.getElementById('login-email').value;
-        const password = document.getElementById('login-password').value;
 
-        try {
-            const data = await window.api.fetch('/auth/login', {
-                method: 'POST',
-                body: JSON.stringify({ email, password })
-            });
-
-            // Save token and redirect
-            localStorage.setItem('nazar_token', data.token);
-            window.location.href = 'app.html';
-
-        } catch (error) {
-            showAuthError(error.message || 'Login failed. Check your credentials.');
-        }
+        // Mock login
+        localStorage.setItem('nazar_token', 'local-token-' + Date.now());
+        localStorage.setItem('nazar_user', email.split('@')[0]);
+        window.location.href = 'app.html';
     });
 }
 
@@ -64,25 +52,12 @@ if (loginForm) {
 if (registerForm) {
     registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        authError.classList.add('hidden');
-
         const email = document.getElementById('reg-email').value;
-        const password = document.getElementById('reg-password').value;
         const name = document.getElementById('reg-name').value;
-        const role = document.getElementById('reg-role').value;
 
-        try {
-            const data = await window.api.fetch('/auth/register', {
-                method: 'POST',
-                body: JSON.stringify({ email, password, name, role })
-            });
-
-            // Save token and redirect
-            localStorage.setItem('nazar_token', data.token);
-            window.location.href = 'app.html';
-
-        } catch (error) {
-            showAuthError(error.message || 'Registration failed.');
-        }
+        // Mock registration
+        localStorage.setItem('nazar_token', 'local-token-' + Date.now());
+        localStorage.setItem('nazar_user', name || email.split('@')[0]);
+        window.location.href = 'app.html';
     });
 }
