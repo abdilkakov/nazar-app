@@ -1,496 +1,685 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NazarApp — Protect Your Focus. Work Deeper.</title>
-    <meta name="description"
-        content="NazarApp helps you manage attention and productivity without surveillance. AI-powered deep focus for individuals and teams.">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NazarApp — Protect Your Focus. Work Deeper.</title>
+<meta name="description" content="AI-powered focus tracking tool. Deep work sessions, productivity analytics, privacy-first approach.">
+<meta property="og:title" content="NazarApp — Protect Your Focus">
+<meta property="og:description" content="AI-powered deep work and focus management tool.">
+<meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0A0A0F;--bg2:#13131A;--surface:rgba(255,255,255,0.04);--border:rgba(255,255,255,0.08);--accent:#6C63FF;--accent-glow:rgba(108,99,255,0.15);--success:#22C55E;--warning:#F59E0B;--danger:#EF4444;--text:#F8F8F8;--text-muted:#888;--radius:16px;--transition:200ms ease}
+[data-theme="light"]{--bg:#F5F5F7;--bg2:#FFFFFF;--surface:rgba(0,0,0,0.03);--border:rgba(0,0,0,0.08);--text:#1A1A2E;--text-muted:#666}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.text-center{text-align:center}
+.section-tag{font-size:13px;font-weight:600;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px}
+.section-title{font-size:clamp(28px,5vw,48px);font-weight:800;line-height:1.2;margin-bottom:16px}
+.section-desc{font-size:18px;color:var(--text-muted);max-width:600px;margin-bottom:40px}
+.mx-auto{margin-left:auto;margin-right:auto}
+.gradient{background:linear-gradient(135deg,var(--accent),#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.btn-primary{padding:14px 32px;background:var(--accent);color:#fff;border:none;border-radius:100px;font-weight:600;font-size:16px;cursor:pointer;transition:all var(--transition);font-family:inherit}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px var(--accent-glow)}
+.btn-secondary{padding:14px 32px;background:transparent;color:var(--text);border:1px solid var(--border);border-radius:100px;font-weight:600;font-size:16px;cursor:pointer;transition:all var(--transition);font-family:inherit}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+.glass{background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--border)}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.6s ease,transform 0.6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+#scrollProgress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),#a78bfa);z-index:10001;transition:width 50ms linear;width:0}
+nav{position:fixed;top:0;left:0;right:0;z-index:10000;padding:12px 0;transition:all var(--transition)}
+nav.scrolled{background:rgba(10,10,15,0.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+[data-theme="light"] nav.scrolled{background:rgba(245,245,247,0.85)}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px}
+.logo-icon{width:36px;height:36px;background:var(--accent-glow);border:1px solid var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.nav-links{display:flex;list-style:none;gap:28px;align-items:center}
+.nav-links a{font-size:14px;font-weight:500;color:var(--text-muted);transition:color var(--transition)}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{background:var(--accent)!important;color:#fff!important;padding:8px 20px;border-radius:100px;font-weight:600!important}
+.nav-right{display:flex;align-items:center;gap:12px}
+.lang-switch{display:flex;gap:4px}
+.lang-btn{background:none;border:1px solid var(--border);color:var(--text-muted);padding:4px 10px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:all var(--transition)}
+.lang-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.theme-toggle{background:none;border:1px solid var(--border);width:36px;height:36px;border-radius:10px;font-size:16px;cursor:pointer;transition:all var(--transition);display:flex;align-items:center;justify-content:center}
+.theme-toggle:hover{border-color:var(--accent)}
+.hamburger{display:none;background:none;border:none;color:var(--text);font-size:24px;cursor:pointer}
+.mobile-menu{display:none;position:fixed;top:60px;left:0;right:0;background:var(--bg2);border-bottom:1px solid var(--border);padding:24px;z-index:9999}
+.mobile-menu.open{display:flex;flex-direction:column;gap:16px}
+.mobile-menu a{font-size:16px;font-weight:500;padding:12px 0;border-bottom:1px solid var(--border)}
+@media(max-width:768px){.nav-links,.lang-switch{display:none}.hamburger{display:block}}
+.hero{padding:140px 0 60px;min-height:100vh;display:flex;align-items:center}
+.hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.hero-tag{display:inline-block;padding:8px 16px;background:var(--accent-glow);border:1px solid rgba(108,99,255,0.2);border-radius:100px;font-size:13px;font-weight:600;margin-bottom:24px}
+.hero h1{font-size:clamp(36px,6vw,64px);font-weight:900;line-height:1.1;margin-bottom:20px}
+.hero-desc{font-size:18px;color:var(--text-muted);margin-bottom:32px;max-width:500px}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap}
+.typewriter{border-right:3px solid var(--accent);animation:blink .7s step-end infinite}
+@keyframes blink{50%{border-color:transparent}}
+.trust-bar{margin-top:40px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.trust-avatars{display:flex}
+.trust-avatars span{width:32px;height:32px;border-radius:50%;border:2px solid var(--bg);margin-left:-8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
+.trust-text{font-size:13px;color:var(--text-muted)}
+.trust-logos{display:flex;gap:24px;margin-top:12px;opacity:0.4;font-size:13px;font-weight:700;letter-spacing:1px}
+.mockup-card{background:var(--bg2);border:1px solid var(--border);border-radius:24px;padding:32px;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.mockup-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.mockup-title{font-size:13px;font-weight:600;color:var(--text-muted)}
+.mockup-dots span{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:6px}
+.mockup-dots span:nth-child(1){background:#EF4444}.mockup-dots span:nth-child(2){background:#F59E0B}.mockup-dots span:nth-child(3){background:#22C55E}
+.score-ring-wrap{width:140px;height:140px;margin:0 auto 16px;position:relative}
+.score-ring-wrap svg{width:100%;height:100%;transform:rotate(-90deg)}
+.score-ring-wrap .ring-bg{fill:none;stroke:var(--border);stroke-width:8}
+.score-ring-wrap .ring-fg{fill:none;stroke:var(--accent);stroke-width:8;stroke-linecap:round;stroke-dasharray:408;stroke-dashoffset:408;transition:stroke-dashoffset 2s ease}
+.score-value{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800}
+.score-label{text-align:center;font-size:12px;color:var(--text-muted);margin-bottom:20px}
+.mockup-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.mini-stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center}
+.mini-stat-val{font-size:20px;font-weight:800}
+.mini-stat-label{font-size:10px;color:var(--text-muted);margin-top:4px}
+.mockup-bars{display:flex;gap:6px;align-items:flex-end;height:60px}
+.mockup-bars .bar{flex:1;background:var(--accent);border-radius:4px 4px 0 0;opacity:0.6;animation:barGrow 2s ease forwards}
+.mockup-bars .bar:nth-child(1){height:40%}.mockup-bars .bar:nth-child(2){height:65%}.mockup-bars .bar:nth-child(3){height:50%}.mockup-bars .bar:nth-child(4){height:80%}.mockup-bars .bar:nth-child(5){height:70%}.mockup-bars .bar:nth-child(6){height:90%}.mockup-bars .bar:nth-child(7){height:75%}
+@keyframes barGrow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@media(max-width:768px){.hero-inner{grid-template-columns:1fr}.hero{padding:120px 0 40px;min-height:auto}}
+.problem{padding:100px 0;border-top:1px solid var(--border)}
+.problem-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin:40px 0}
+.problem-stat{text-align:center;padding:24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}
+.problem-stat-num{font-size:48px;font-weight:900;color:var(--accent);margin-bottom:4px}
+.problem-stat-label{font-size:14px;color:var(--text-muted)}
+.calculator{margin:40px auto;max-width:500px;padding:32px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);text-align:center}
+.calculator input[type="range"]{width:100%;accent-color:var(--accent);margin:16px 0}
+.calculator-result{font-size:28px;font-weight:800;color:var(--danger);margin-top:12px}
+.split-preview{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px}
+.split-card{padding:32px;border-radius:var(--radius);border:1px solid var(--border);text-align:center}
+.split-card.chaos{background:rgba(239,68,68,0.05);border-color:rgba(239,68,68,0.2)}
+.split-card.order{background:rgba(34,197,94,0.05);border-color:rgba(34,197,94,0.2)}
+.split-card h4{margin-bottom:16px;font-size:16px}
+.split-icons{font-size:28px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+@media(max-width:768px){.problem-stats{grid-template-columns:1fr 1fr}.split-preview{grid-template-columns:1fr}}
+.features{padding:100px 0}
+.bento-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.bento-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:32px;transition:all var(--transition);cursor:default}
+.bento-card:hover{transform:translateY(-4px);border-color:var(--accent)}
+.bento-card.large{grid-column:span 2}
+.bento-card .bento-icon{font-size:32px;margin-bottom:16px}
+.bento-card h3{font-size:18px;font-weight:700;margin-bottom:8px}
+.bento-card p{font-size:14px;color:var(--text-muted)}
+@media(max-width:768px){.bento-grid{grid-template-columns:1fr}.bento-card.large{grid-column:span 1}}
+.how{padding:100px 0;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-top:48px;position:relative}
+.timeline::before{content:'';position:absolute;top:28px;left:40px;right:40px;height:2px;background:var(--border)}
+.step{text-align:center;position:relative}
+.step-num{width:56px;height:56px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;margin:0 auto 20px;position:relative;z-index:1}
+.step h3{font-size:16px;font-weight:700;margin-bottom:8px}
+.step p{font-size:14px;color:var(--text-muted)}
+@media(max-width:768px){.timeline{grid-template-columns:1fr;gap:40px}.timeline::before{display:none}}
+.stats-section{padding:80px 0;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+[data-theme="dark"] .stats-section{background:rgba(255,255,255,0.02)}
+[data-theme="light"] .stats-section{background:#1A1A2E;color:#fff}
+[data-theme="light"] .stats-section .stat-label{color:rgba(255,255,255,0.6)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;text-align:center}
+.stat-big{font-size:clamp(36px,5vw,56px);font-weight:900;color:var(--accent)}
+.stat-label{font-size:14px;color:var(--text-muted);margin-top:8px}
+@media(max-width:768px){.stats-grid{grid-template-columns:1fr 1fr}}
+.pricing{padding:100px 0}
+.pricing-toggle{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:48px}
+.pricing-toggle span{font-size:14px;font-weight:600}
+.toggle-switch{width:52px;height:28px;background:var(--border);border-radius:100px;position:relative;cursor:pointer;transition:background var(--transition)}
+.toggle-switch.active{background:var(--accent)}
+.toggle-switch::after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;background:#fff;border-radius:50%;transition:transform var(--transition)}
+.toggle-switch.active::after{transform:translateX(24px)}
+.pricing-badge{display:inline-block;padding:4px 12px;background:var(--success);color:#fff;border-radius:100px;font-size:11px;font-weight:700;margin-left:8px}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.price-card{background:var(--bg2);border:1px solid var(--border);border-radius:24px;padding:40px 32px;position:relative;transition:all var(--transition)}
+.price-card.popular{border-color:var(--accent);box-shadow:0 0 40px var(--accent-glow)}
+.price-card.popular::before{content:attr(data-badge);position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:4px 16px;border-radius:100px;font-size:12px;font-weight:700}
+.price-card h3{font-size:22px;font-weight:800;margin-bottom:8px}
+.price-card .price{font-size:48px;font-weight:900;margin:16px 0}
+.price-card .price small{font-size:16px;font-weight:400;color:var(--text-muted)}
+.price-card .price-desc{font-size:14px;color:var(--text-muted);margin-bottom:24px}
+.price-features{list-style:none;margin-bottom:32px}
+.price-features li{padding:8px 0;font-size:14px;display:flex;align-items:center;gap:8px}
+.price-features li::before{content:'✓';color:var(--success);font-weight:700}
+.price-features li.disabled{color:var(--text-muted);opacity:0.5}
+.price-features li.disabled::before{content:'✗';color:var(--text-muted)}
+@media(max-width:768px){.pricing-grid{grid-template-columns:1fr}}
+.testimonials{padding:100px 0;overflow:hidden}
+.testimonial-track{display:flex;gap:24px;animation:scrollTrack 30s linear infinite;width:max-content}
+.testimonial-track:hover{animation-play-state:paused}
+.testimonial-card{min-width:350px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:32px;flex-shrink:0}
+.testimonial-stars{color:#F59E0B;margin-bottom:12px;font-size:14px}
+.testimonial-text{font-size:15px;margin-bottom:20px;line-height:1.6}
+.testimonial-author{display:flex;align-items:center;gap:12px}
+.testimonial-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff}
+.testimonial-name{font-size:14px;font-weight:600}
+.testimonial-role{font-size:12px;color:var(--text-muted)}
+@keyframes scrollTrack{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.team{padding:100px 0}
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
+.team-card{perspective:600px;height:320px}
+.team-card-inner{position:relative;width:100%;height:100%;transition:transform 0.6s ease;transform-style:preserve-3d}
+.team-card:hover .team-card-inner{transform:rotateY(180deg)}
+.team-front,.team-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);border:1px solid var(--border);padding:32px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:var(--bg2)}
+.team-back{transform:rotateY(180deg);background:var(--accent-glow)}
+.team-avatar{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:#fff;margin-bottom:16px}
+.team-card h3{font-size:18px;font-weight:700;margin-bottom:4px}
+.team-card .team-role{font-size:13px;color:var(--text-muted);margin-bottom:12px}
+.team-card p{font-size:14px;color:var(--text-muted);line-height:1.5}
+.team-socials{display:flex;gap:12px;margin-top:16px}
+.team-socials a{color:var(--text-muted);font-size:14px;transition:color var(--transition)}
+.team-socials a:hover{color:var(--accent)}
+@media(max-width:768px){.team-grid{grid-template-columns:1fr}}
+.faq{padding:100px 0;background:var(--bg2);border-top:1px solid var(--border)}
+.faq-search{width:100%;max-width:400px;margin:0 auto 32px;padding:12px 20px;background:var(--bg);border:1px solid var(--border);border-radius:100px;color:var(--text);font-size:15px;font-family:inherit;display:block}
+.faq-list{max-width:700px;margin:0 auto}
+.faq-item{border-bottom:1px solid var(--border);overflow:hidden}
+.faq-q{width:100%;background:none;border:none;color:var(--text);padding:20px 0;font-size:16px;font-weight:600;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-family:inherit}
+.faq-q .icon{font-size:20px;transition:transform var(--transition)}
+.faq-item.open .faq-q .icon{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height 0.4s ease}
+.faq-item.open .faq-a{max-height:200px}
+.faq-a p{padding:0 0 20px;font-size:15px;color:var(--text-muted);line-height:1.6}
+.cta-section{padding:100px 0;text-align:center}
+.cta-section h2{font-size:clamp(28px,5vw,48px);font-weight:900;margin-bottom:16px}
+.cta-section p{font-size:18px;color:var(--text-muted);margin-bottom:32px;max-width:500px;margin-left:auto;margin-right:auto}
+.newsletter-form{display:flex;gap:12px;max-width:440px;margin:0 auto 24px}
+.newsletter-form input{flex:1;padding:14px 20px;background:var(--bg2);border:1px solid var(--border);border-radius:100px;color:var(--text);font-family:inherit;font-size:15px}
+.newsletter-form button{padding:14px 28px;background:var(--accent);color:#fff;border:none;border-radius:100px;font-weight:700;cursor:pointer;font-family:inherit;transition:all var(--transition)}
+footer{padding:60px 0 32px;border-top:1px solid var(--border)}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-grid h4{font-size:14px;font-weight:700;margin-bottom:16px}
+.footer-grid a{display:block;font-size:14px;color:var(--text-muted);padding:4px 0;transition:color var(--transition)}
+.footer-grid a:hover{color:var(--accent)}
+.footer-brand{font-size:14px;color:var(--text-muted);line-height:1.6}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px;border-top:1px solid var(--border);font-size:13px;color:var(--text-muted)}
+.footer-social{display:flex;gap:16px}
+.footer-social a{font-size:18px;transition:transform var(--transition)}
+.footer-social a:hover{transform:translateY(-2px);color:var(--accent)}
+@media(max-width:768px){.footer-grid{grid-template-columns:1fr 1fr}.footer-bottom{flex-direction:column;gap:12px}}
+.toast{position:fixed;bottom:32px;right:32px;background:var(--success);color:#fff;padding:16px 24px;border-radius:12px;font-weight:600;font-size:14px;transform:translateY(100px);opacity:0;transition:all 0.4s ease;z-index:99999}
+.toast.show{transform:translateY(0);opacity:1}
+</style>
 </head>
-
 <body>
-    <!-- Nav -->
-    <nav>
-        <div class="nav-inner">
-            <div class="logo">
-                <div class="logo-icon">👁</div>
-                NazarApp
-            </div>
-            <ul class="nav-links">
-                <li><a href="#features" data-i18n="nav_features">Features</a></li>
-                <li><a href="#how" data-i18n="nav_how">How It Works</a></li>
-                <li><a href="#teams" data-i18n="nav_teams">For Teams</a></li>
-                <li><a href="#privacy" data-i18n="nav_privacy">Privacy</a></li>
-                <li><a href="#faq">FAQ</a></li>
-                <li><a href="app.html" class="nav-cta" data-i18n="nav_cta">Get Early Access</a></li>
-            </ul>
-            <div class="lang-switch">
-                <button class="lang-btn active" onclick="switchLang('en')">EN</button>
-                <button class="lang-btn" onclick="switchLang('ru')">RU</button>
-                <button class="lang-btn" onclick="switchLang('kz')">KZ</button>
-            </div>
-            <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">🌙</button>
-            <button class="mobile-menu" onclick="toggleMobileMenu()">☰</button>
-        </div>
-    </nav>
+<div id="scrollProgress"></div>
 
-    <!-- Hero -->
-    <header class="hero">
-        <div class="container">
-            <div class="hero-inner">
-                <div class="reveal">
-                    <div class="hero-tag" data-i18n="hero_tag">🚀 AI-powered focus platform</div>
-                    <h1 data-i18n-html="hero_title">Protect Your Focus.<br><span class="gradient">Work Deeper.</span>
-                    </h1>
-                    <p class="hero-desc" data-i18n="hero_desc">NazarApp uses camera-based head tracking to monitor your
-                        attention and boost productivity. Smart focus sessions, real-time analytics, privacy-first
-                        approach.</p>
-                    <div class="hero-btns">
-                        <button class="btn-primary" onclick="location.href='app.html'" data-i18n="hero_btn1">Start Free
-                            →</button>
-                        <button class="btn-secondary" onclick="location.href='#teams'" data-i18n="hero_btn2">For
-                            Teams</button>
-                    </div>
-                </div>
-                <div class="hero-mockup reveal">
-                    <div class="mockup-card">
-                        <div class="mockup-header">
-                            <span class="mockup-title">Focus Dashboard</span>
-                            <div class="mockup-dots"><span></span><span></span><span></span></div>
-                        </div>
-                        <div class="focus-score">
-                            <div class="score-ring"></div>
-                            <div class="score-label">Focus Score — Today</div>
-                        </div>
-                        <div class="mockup-stats">
-                            <div class="mini-stat">
-                                <div class="mini-stat-val">3.2h</div>
-                                <div class="mini-stat-label">Deep Work</div>
-                            </div>
-                            <div class="mini-stat">
-                                <div class="mini-stat-val">12</div>
-                                <div class="mini-stat-label">Sessions</div>
-                            </div>
-                            <div class="mini-stat">
-                                <div class="mini-stat-val">+8%</div>
-                                <div class="mini-stat-label">vs Last Week</div>
-                            </div>
-                        </div>
-                        <div class="mockup-bars">
-                            <div class="bar"></div>
-                            <div class="bar"></div>
-                            <div class="bar"></div>
-                            <div class="bar"></div>
-                            <div class="bar"></div>
-                            <div class="bar"></div>
-                            <div class="bar"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
+<!-- NAVBAR -->
+<nav id="navbar">
+<div class="nav-inner">
+<div class="logo"><div class="logo-icon">👁</div>NazarApp</div>
+<ul class="nav-links">
+<li><a href="#features" data-i18n="nav_features">Features</a></li>
+<li><a href="#how" data-i18n="nav_how">How It Works</a></li>
+<li><a href="#pricing" data-i18n="nav_pricing">Pricing</a></li>
+<li><a href="#testimonials" data-i18n="nav_reviews">Reviews</a></li>
+<li><a href="#faq">FAQ</a></li>
+<li><a href="app.html" class="nav-cta" data-i18n="nav_cta">Get Early Access</a></li>
+</ul>
+<div class="nav-right">
+<div class="lang-switch">
+<button class="lang-btn active" onclick="setLang('en')">EN</button>
+<button class="lang-btn" onclick="setLang('ru')">RU</button>
+<button class="lang-btn" onclick="setLang('kz')">KZ</button>
+</div>
+<button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</button>
+<button class="hamburger" onclick="toggleMobile()" id="hamburgerBtn">☰</button>
+</div>
+</div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+<a href="#features" onclick="toggleMobile()" data-i18n="nav_features">Features</a>
+<a href="#how" onclick="toggleMobile()" data-i18n="nav_how">How It Works</a>
+<a href="#pricing" onclick="toggleMobile()" data-i18n="nav_pricing">Pricing</a>
+<a href="#testimonials" onclick="toggleMobile()" data-i18n="nav_reviews">Reviews</a>
+<a href="#faq" onclick="toggleMobile()">FAQ</a>
+<a href="app.html" data-i18n="nav_cta">Get Early Access</a>
+</div>
 
-    <!-- Problem -->
-    <section class="problem">
-        <div class="container">
-            <div class="section-tag reveal" data-i18n="prob_tag">● The Problem</div>
-            <h2 class="section-title reveal" data-i18n-html="prob_title">We lose <span style="color:#f87171">2–3 hours
-                    daily</span> to distractions.
-            </h2>
-            <p class="section-desc reveal" data-i18n="prob_desc">Social media, endless notifications, and constant
-                context-switching are
-                destroying our ability to do deep, meaningful work.</p>
-            <div class="problem-grid">
-                <div class="problem-stats reveal">
-                    <div class="problem-stat">
-                        <div class="problem-stat-icon">📱</div>
-                        <div class="problem-stat-text" data-i18n-html="prob_s1">Average person checks their phone
-                            <strong>96 times per
-                                day</strong>
-                        </div>
-                    </div>
-                    <div class="problem-stat">
-                        <div class="problem-stat-icon">🔔</div>
-                        <div class="problem-stat-text" data-i18n-html="prob_s2">It takes <strong>23 minutes</strong> to
-                            refocus after an
-                            interruption</div>
-                    </div>
-                    <div class="problem-stat">
-                        <div class="problem-stat-icon">🧠</div>
-                        <div class="problem-stat-text" data-i18n-html="prob_s3">Only <strong>2.5 hours</strong> of truly
-                            focused work per day on
-                            average</div>
-                    </div>
-                </div>
-                <div class="reveal" style="text-align:center;font-size:120px;opacity:0.15">🌀</div>
-            </div>
-        </div>
-    </section>
+<!-- HERO -->
+<header class="hero">
+<div class="container">
+<div class="hero-inner">
+<div class="reveal">
+<div class="hero-tag" data-i18n="hero_tag">🚀 AI-powered focus platform</div>
+<h1 data-i18n="hero_h1_static">Protect Your Focus.<br><span class="gradient typewriter" id="typewriterText"></span></h1>
+<p class="hero-desc" data-i18n="hero_desc">NazarApp uses camera-based head tracking to monitor your attention and boost productivity. Smart focus sessions, real-time analytics, privacy-first approach.</p>
+<div class="hero-btns">
+<button class="btn-primary" onclick="location.href='app.html'" data-i18n="hero_btn1">Start Free →</button>
+<button class="btn-secondary" onclick="document.getElementById('how').scrollIntoView()" data-i18n="hero_btn2">See It Live ↓</button>
+</div>
+<div class="trust-bar">
+<div class="trust-avatars"><span style="background:#6C63FF">AK</span><span style="background:#22C55E">SM</span><span style="background:#F59E0B">DN</span><span style="background:#EF4444">JL</span><span style="background:#EC4899">MR</span></div>
+<span class="trust-text" data-i18n="hero_trust">Trusted by <strong>2,000+</strong> makers</span>
+</div>
+<div class="trust-logos"><span>NOTION</span><span>LINEAR</span><span>VERCEL</span><span>FIGMA</span></div>
+</div>
+<div class="reveal" style="animation-delay:0.2s">
+<div class="mockup-card">
+<div class="mockup-header"><span class="mockup-title" data-i18n="mock_title">Focus Dashboard</span><div class="mockup-dots"><span></span><span></span><span></span></div></div>
+<div class="score-ring-wrap"><svg viewBox="0 0 140 140"><circle class="ring-bg" cx="70" cy="70" r="65"/><circle class="ring-fg" id="heroRing" cx="70" cy="70" r="65"/></svg><div class="score-value" id="heroScore">0</div></div>
+<div class="score-label" data-i18n="mock_score">Focus Score — Today</div>
+<div class="mockup-stats">
+<div class="mini-stat"><div class="mini-stat-val" id="heroDeep">0h</div><div class="mini-stat-label" data-i18n="mock_deep">Deep Work</div></div>
+<div class="mini-stat"><div class="mini-stat-val" id="heroSessions">0</div><div class="mini-stat-label" data-i18n="mock_sessions">Sessions</div></div>
+<div class="mini-stat"><div class="mini-stat-val" id="heroGrowth">0%</div><div class="mini-stat-label" data-i18n="mock_vs">vs Last Week</div></div>
+</div>
+<div class="mockup-bars"><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+</div>
+</div>
+</div>
+</div>
+</header>
 
-    <!-- Features -->
-    <section id="features">
-        <div class="container">
-            <div class="text-center">
-                <div class="section-tag reveal" data-i18n="feat_tag">● The Solution</div>
-                <h2 class="section-title reveal" data-i18n="feat_title">NazarApp protects your attention.</h2>
-                <p class="section-desc mx-auto reveal" data-i18n="feat_desc">Powerful tools designed to help you enter
-                    flow state, stay
-                    focused, and understand your productive patterns.</p>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card reveal">
-                    <div class="feature-icon">⚡</div>
-                    <h3 data-i18n="f1_t">Smart Focus Sessions</h3>
-                    <p data-i18n="f1_d">AI-optimized session lengths based on your personal focus patterns and energy
-                        levels.</p>
-                </div>
-                <div class="feature-card reveal">
-                    <div class="feature-icon">📊</div>
-                    <h3 data-i18n="f2_t">Productivity Index</h3>
-                    <p data-i18n="f2_d">Real-time score that reflects your focus quality — not just time spent.</p>
-                </div>
-                <div class="feature-card reveal">
-                    <div class="feature-icon">🎯</div>
-                    <h3 data-i18n="f3_t">Deep Work Mode</h3>
-                    <p data-i18n="f3_d">Block distractions, silence notifications, and enter a distraction-free zone
-                        with one click.</p>
-                </div>
-                <div class="feature-card reveal">
-                    <div class="feature-icon">🔍</div>
-                    <h3 data-i18n="f4_t">Distraction Analytics</h3>
-                    <p data-i18n="f4_d">See exactly when and why you lose focus. Data-driven insights to improve habits.
-                    </p>
-                </div>
-                <div class="feature-card reveal">
-                    <div class="feature-icon">👥</div>
-                    <h3 data-i18n="f5_t">Team Insights</h3>
-                    <p data-i18n="f5_d">Aggregated team productivity data without any individual surveillance or
-                        tracking.</p>
-                </div>
-                <div class="feature-card reveal">
-                    <div class="feature-icon">👁️</div>
-                    <h3 data-i18n="f6_t">Head Tracking</h3>
-                    <p data-i18n="f6_d">Camera-based attention monitoring. Processing happens locally — no video ever
-                        leaves your device.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- PROBLEM -->
+<section class="problem" id="problem">
+<div class="container">
+<div class="text-center">
+<div class="section-tag reveal" data-i18n="prob_tag">● The Problem</div>
+<h2 class="section-title reveal" data-i18n="prob_title">We lose <span style="color:#f87171">2–3 hours daily</span> to distractions.</h2>
+<p class="section-desc mx-auto reveal" data-i18n="prob_desc">Social media, endless notifications, and constant context-switching are destroying our ability to do deep, meaningful work.</p>
+</div>
+<div class="problem-stats">
+<div class="problem-stat reveal"><div class="problem-stat-num" data-count="96">0</div><div class="problem-stat-label" data-i18n="prob_s1">Phone checks per day</div></div>
+<div class="problem-stat reveal"><div class="problem-stat-num" data-count="23">0</div><div class="problem-stat-label" data-i18n="prob_s2">Min to refocus</div></div>
+<div class="problem-stat reveal"><div class="problem-stat-num" data-count="2">0</div><div class="problem-stat-label" data-i18n="prob_s3">Hours of real focus</div></div>
+<div class="problem-stat reveal"><div class="problem-stat-num" data-count="40">0</div><div class="problem-stat-label" data-i18n="prob_s4">% time wasted</div></div>
+</div>
+<div class="calculator reveal">
+<h4 style="margin-bottom:8px" data-i18n="calc_title">📊 Distraction Calculator</h4>
+<p style="font-size:14px;color:var(--text-muted);margin-bottom:16px" data-i18n="calc_desc">How many hours do you work per day?</p>
+<input type="range" id="calcSlider" min="4" max="14" value="8" oninput="updateCalc()">
+<div style="font-size:16px;font-weight:600" id="calcHours">8 hours/day</div>
+<div class="calculator-result" id="calcResult">You lose ~730 hours/year</div>
+</div>
+<div class="split-preview">
+<div class="split-card chaos reveal"><h4 style="color:#EF4444" data-i18n="split_without">❌ Without NazarApp</h4><div class="split-icons">📱🔔💬📧🎵🌀😰⏰</div><p style="font-size:14px;color:var(--text-muted);margin-top:12px" data-i18n="split_without_desc">Constant interruptions, lost context, shallow work</p></div>
+<div class="split-card order reveal"><h4 style="color:#22C55E" data-i18n="split_with">✅ With NazarApp</h4><div class="split-icons">🎯🧠⚡📊🛡️✨🚀💎</div><p style="font-size:14px;color:var(--text-muted);margin-top:12px" data-i18n="split_with_desc">Deep focus, tracked progress, meaningful work</p></div>
+</div>
+</div>
+</section>
 
-    <!-- How It Works -->
-    <section id="how"
-        style="background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border)">
-        <div class="container">
-            <div class="text-center">
-                <div class="section-tag reveal" data-i18n="how_tag">● How It Works</div>
-                <h2 class="section-title reveal" data-i18n="how_title">Three steps to deeper work.</h2>
-            </div>
-            <div class="steps">
-                <div class="step reveal">
-                    <div class="step-num">1</div>
-                    <h3 data-i18n="h1_t">Choose Your Task</h3>
-                    <p data-i18n="h1_d">Select what you're working on. NazarApp suggests optimal session length based on
-                        task complexity.</p>
-                    <div class="step-connector"></div>
-                </div>
-                <div class="step reveal">
-                    <div class="step-num">2</div>
-                    <h3 data-i18n="h2_t">Activate Focus Mode</h3>
-                    <p data-i18n="h2_d">Enter distraction-free mode. AI monitors focus quality via head tracking and
-                        gently guides you back when attention drifts.</p>
-                    <div class="step-connector"></div>
-                </div>
-                <div class="step reveal">
-                    <div class="step-num">3</div>
-                    <h3 data-i18n="h3_t">Get Insights & Improve</h3>
-                    <p data-i18n="h3_d">Review your focus patterns, track progress over time, and build sustainable deep
-                        work habits.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- FEATURES BENTO -->
+<section class="features" id="features">
+<div class="container">
+<div class="text-center">
+<div class="section-tag reveal" data-i18n="feat_tag">● The Solution</div>
+<h2 class="section-title reveal" data-i18n="feat_title">Everything you need to focus deeper.</h2>
+<p class="section-desc mx-auto reveal" data-i18n="feat_desc">Powerful tools designed to help you enter flow state, stay focused, and understand your productive patterns.</p>
+</div>
+<div class="bento-grid">
+<div class="bento-card large reveal"><div class="bento-icon">⚡</div><h3 data-i18n="f1_t">Smart Focus Sessions</h3><p data-i18n="f1_d">AI-optimized session lengths based on your personal focus patterns and energy levels. Pomodoro, Deep Work, or Custom modes.</p></div>
+<div class="bento-card reveal"><div class="bento-icon">📊</div><h3 data-i18n="f2_t">Productivity Index</h3><p data-i18n="f2_d">Real-time score reflecting your focus quality — not just time spent.</p></div>
+<div class="bento-card reveal"><div class="bento-icon">��</div><h3 data-i18n="f3_t">Deep Work Mode</h3><p data-i18n="f3_d">Block distractions and enter a distraction-free zone with one click.</p></div>
+<div class="bento-card large reveal"><div class="bento-icon">👁️</div><h3 data-i18n="f4_t">Head Tracking</h3><p data-i18n="f4_d">Camera-based attention monitoring. All processing happens locally — no video ever leaves your device. 100% privacy-first.</p></div>
+<div class="bento-card reveal"><div class="bento-icon">🔍</div><h3 data-i18n="f5_t">Distraction Analytics</h3><p data-i18n="f5_d">See exactly when and why you lose focus with data-driven insights.</p></div>
+<div class="bento-card reveal"><div class="bento-icon">👥</div><h3 data-i18n="f6_t">Team Insights</h3><p data-i18n="f6_d">Aggregated team productivity data without any individual surveillance.</p></div>
+<div class="bento-card reveal"><div class="bento-icon">🎵</div><h3 data-i18n="f7_t">Ambient Focus Sounds</h3><p data-i18n="f7_d">Rain, lo-fi tones, white noise — generated in-browser to help you flow.</p></div>
+<div class="bento-card reveal"><div class="bento-icon">🔥</div><h3 data-i18n="f8_t">Focus Streaks & Gamification</h3><p data-i18n="f8_d">Earn XP, level up, and unlock achievements for consistent deep work.</p></div>
+<div class="bento-card reveal"><div class="bento-icon">⏰</div><h3 data-i18n="f9_t">Smart Break Reminders</h3><p data-i18n="f9_d">Science-backed break schedules with guided breathing exercises.</p></div>
+</div>
+</div>
+</section>
 
-    <!-- For Teams -->
-    <section id="teams" class="teams">
-        <div class="container">
-            <div class="section-tag reveal" data-i18n="team_tag">● For Teams</div>
-            <h2 class="section-title reveal" data-i18n="team_title">Healthy productivity for modern teams.</h2>
-            <p class="section-desc reveal" data-i18n="team_desc">Give your team the tools to focus better — without
-                micromanaging or
-                surveillance.</p>
-            <div class="teams-grid">
-                <div class="team-features reveal">
-                    <div class="team-feature">
-                        <div class="team-feature-icon">📈</div>
-                        <div>
-                            <h4 data-i18n="tf1_t">Aggregated Analytics</h4>
-                            <p data-i18n="tf1_d">Team-level focus trends without exposing individual data.</p>
-                        </div>
-                    </div>
-                    <div class="team-feature">
-                        <div class="team-feature-icon">🛡️</div>
-                        <div>
-                            <h4 data-i18n="tf2_t">No Individual Surveillance</h4>
-                            <p data-i18n="tf2_d">Respect privacy while improving collective productivity.</p>
-                        </div>
-                    </div>
-                    <div class="team-feature">
-                        <div class="team-feature-icon">🔋</div>
-                        <div>
-                            <h4 data-i18n="tf3_t">Energy Management</h4>
-                            <p data-i18n="tf3_d">Better planning based on team energy cycles and focus windows.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="team-mockup reveal">
-                    <div style="font-size:12px;color:var(--text-muted);margin-bottom:16px;font-weight:600">Team Focus —
-                        This Week</div>
-                    <div class="team-mockup-row">
-                        <span class="tmr-name">Engineering</span>
-                        <div class="tmr-bar-wrap">
-                            <div class="tmr-bar" style="width:85%"></div>
-                        </div>
-                        <span class="tmr-val">85%</span>
-                    </div>
-                    <div class="team-mockup-row">
-                        <span class="tmr-name">Design</span>
-                        <div class="tmr-bar-wrap">
-                            <div class="tmr-bar" style="width:72%"></div>
-                        </div>
-                        <span class="tmr-val">72%</span>
-                    </div>
-                    <div class="team-mockup-row">
-                        <span class="tmr-name">Product</span>
-                        <div class="tmr-bar-wrap">
-                            <div class="tmr-bar" style="width:68%"></div>
-                        </div>
-                        <span class="tmr-val">68%</span>
-                    </div>
-                    <div class="team-mockup-row">
-                        <span class="tmr-name">Marketing</span>
-                        <div class="tmr-bar-wrap">
-                            <div class="tmr-bar" style="width:60%"></div>
-                        </div>
-                        <span class="tmr-val">60%</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+<div class="container">
+<div class="text-center">
+<div class="section-tag reveal" data-i18n="how_tag">● How It Works</div>
+<h2 class="section-title reveal" data-i18n="how_title">Four steps to deeper work.</h2>
+</div>
+<div class="timeline">
+<div class="step reveal"><div class="step-num">1</div><h3 data-i18n="h1_t">Choose Your Task</h3><p data-i18n="h1_d">Select what you're working on. NazarApp suggests optimal session length.</p></div>
+<div class="step reveal"><div class="step-num">2</div><h3 data-i18n="h2_t">Activate Focus Mode</h3><p data-i18n="h2_d">Enter distraction-free mode. AI monitors focus quality via head tracking.</p></div>
+<div class="step reveal"><div class="step-num">3</div><h3 data-i18n="h3_t">Get Insights & Improve</h3><p data-i18n="h3_d">Review focus patterns, track progress, and build sustainable habits.</p></div>
+<div class="step reveal"><div class="step-num">4</div><h3 data-i18n="h4_t">Share Progress with Team</h3><p data-i18n="h4_d">Aggregated analytics for teams — no individual surveillance.</p></div>
+</div>
+</div>
+</section>
 
-    <!-- Privacy -->
-    <section id="privacy">
-        <div class="container">
-            <div class="text-center">
-                <div class="section-tag reveal" data-i18n="priv_tag">● Privacy First</div>
-                <h2 class="section-title reveal" data-i18n="priv_title">Your focus, your data, your control.</h2>
-                <p class="section-desc mx-auto reveal" data-i18n="priv_desc">NazarApp uses your camera for head tracking
-                    only. All processing is local.</p>
-            </div>
-            <div class="privacy-grid">
-                <div class="privacy-card reveal">
-                    <div class="privacy-icon">📷</div>
-                    <h4 data-i18n="priv1_t">Smart Camera Use</h4>
-                    <p data-i18n="priv1_d">Camera tracks head movement only. All processing is local — no video is
-                        recorded or stored.</p>
-                </div>
-                <div class="privacy-card reveal">
-                    <div class="privacy-icon">🚫🎙️</div>
-                    <h4 data-i18n="priv2_t">No Mic Access</h4>
-                    <p data-i18n="priv2_d">Your conversations stay private. Always.</p>
-                </div>
-                <div class="privacy-card reveal">
-                    <div class="privacy-icon">🚫📍</div>
-                    <h4 data-i18n="priv3_t">No Outside Tracking</h4>
-                    <p data-i18n="priv3_d">We don't track anything outside the app.</p>
-                </div>
-                <div class="privacy-card reveal">
-                    <div class="privacy-icon">🔒</div>
-                    <h4 data-i18n="priv4_t">Privacy Architecture</h4>
-                    <p data-i18n="priv4_d">Local processing. No cloud uploads. GDPR compliant.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- STATS -->
+<section class="stats-section">
+<div class="container">
+<div class="stats-grid">
+<div class="reveal"><div class="stat-big" data-count="4.2" data-suffix="h">0</div><div class="stat-label" data-i18n="st1">Deep work gained daily</div></div>
+<div class="reveal"><div class="stat-big" data-count="89" data-suffix="%">0</div><div class="stat-label" data-i18n="st2">Better focus reported</div></div>
+<div class="reveal"><div class="stat-big" data-count="50" data-suffix="k+">0</div><div class="stat-label" data-i18n="st3">Sessions completed</div></div>
+<div class="reveal"><div class="stat-big" data-count="12" data-suffix="min">0</div><div class="stat-label" data-i18n="st4">Average session length</div></div>
+</div>
+</div>
+</section>
 
-    <!-- Social Proof -->
-    <section class="social-proof">
-        <div class="container">
-            <div class="text-center">
-                <div class="section-tag reveal" data-i18n="social_tag">● Trusted By</div>
-                <h2 class="section-title reveal" data-i18n="social_title">Built for founders and developers.</h2>
-            </div>
-            <div class="testimonials">
-                <div class="testimonial reveal">
-                    <p class="testimonial-text" data-i18n="t1">"NazarApp helped me go from 2 hours of deep work to 4+
-                        hours daily. The focus analytics are incredible."</p>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">AK</div>
-                        <div>
-                            <div class="testimonial-name">Alex K.</div>
-                            <div class="testimonial-role">Software Engineer</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial reveal">
-                    <p class="testimonial-text" data-i18n="t2">"Finally, a productivity tool that respects my team's
-                        privacy. The aggregated insights are exactly what we needed."</p>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">SM</div>
-                        <div>
-                            <div class="testimonial-name">Sara M.</div>
-                            <div class="testimonial-role">Startup Founder</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial reveal">
-                    <p class="testimonial-text" data-i18n="t3">"As a student, this app changed how I study. My exam
-                        scores improved 30% after using the deep work mode."</p>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">DN</div>
-                        <div>
-                            <div class="testimonial-name">Dias N.</div>
-                            <div class="testimonial-role">CS Student</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="logos reveal">
-                <span>TECHSTARS</span>
-                <span>Y COMBINATOR</span>
-                <span>NOTION</span>
-                <span>VERCEL</span>
-                <span>LINEAR</span>
-            </div>
-        </div>
-    </section>
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+<div class="container">
+<div class="text-center">
+<div class="section-tag reveal" data-i18n="price_tag">● Pricing</div>
+<h2 class="section-title reveal" data-i18n="price_title">Simple pricing. No surprises.</h2>
+</div>
+<div class="pricing-toggle reveal">
+<span data-i18n="price_monthly">Monthly</span>
+<div class="toggle-switch" id="pricingToggle" onclick="togglePricing()"></div>
+<span data-i18n="price_annual">Annual</span><span class="pricing-badge">-30%</span>
+</div>
+<div class="pricing-grid">
+<div class="price-card reveal">
+<h3 data-i18n="plan_free">Free</h3>
+<div class="price">$0<small>/mo</small></div>
+<p class="price-desc" data-i18n="plan_free_desc">Perfect for getting started</p>
+<ul class="price-features">
+<li data-i18n="pf1">3 sessions per day</li><li data-i18n="pf2">Basic analytics</li><li data-i18n="pf3">Head tracking</li><li data-i18n="pf4">Pomodoro timer</li>
+<li class="disabled" data-i18n="pf5">Custom session lengths</li><li class="disabled" data-i18n="pf6">Ambient sounds</li><li class="disabled" data-i18n="pf7">Team features</li>
+</ul>
+<button class="btn-secondary" style="width:100%" onclick="location.href='app.html'" data-i18n="plan_free_btn">Get Started</button>
+</div>
+<div class="price-card popular reveal" data-badge="Most Popular">
+<h3>Pro</h3>
+<div class="price" id="proPrice">$9<small>/mo</small></div>
+<p class="price-desc" data-i18n="plan_pro_desc">For serious deep workers</p>
+<ul class="price-features">
+<li data-i18n="pp1">Unlimited sessions</li><li data-i18n="pp2">Advanced analytics</li><li data-i18n="pf3">Head tracking</li><li data-i18n="pp3">All timer modes</li>
+<li data-i18n="pf5">Custom session lengths</li><li data-i18n="pp4">Ambient focus sounds</li><li data-i18n="pp5">Achievements & streaks</li>
+</ul>
+<button class="btn-primary" style="width:100%" onclick="location.href='app.html'" data-i18n="plan_pro_btn">Start Pro Trial</button>
+</div>
+<div class="price-card reveal">
+<h3 data-i18n="plan_team">Team</h3>
+<div class="price" id="teamPrice">$29<small>/mo per 5 users</small></div>
+<p class="price-desc" data-i18n="plan_team_desc">Privacy-first team insights</p>
+<ul class="price-features">
+<li data-i18n="pt1">Everything in Pro</li><li data-i18n="pt2">Team dashboard</li><li data-i18n="pt3">Aggregated analytics</li><li data-i18n="pt4">Energy management</li>
+<li data-i18n="pt5">No individual tracking</li><li data-i18n="pt6">Priority support</li><li data-i18n="pt7">Custom integrations</li>
+</ul>
+<button class="btn-secondary" style="width:100%" onclick="location.href='app.html'" data-i18n="plan_team_btn">Contact Sales</button>
+</div>
+</div>
+</div>
+</section>
 
-    <!-- Team -->
-    <section id="team">
-        <div class="container">
-            <div class="text-center">
-                <div class="section-tag reveal" data-i18n="our_tag">● Our Team</div>
-                <h2 class="section-title reveal" data-i18n="our_title">The people behind NazarApp.</h2>
-            </div>
-            <div class="team-members">
-                <div class="member-card reveal">
-                    <div class="member-avatar hacker">🧑‍💻</div>
-                    <div class="member-role">Serik — CTO</div>
-                    <h3 data-i18n="m1_t">Tech & Architecture</h3>
-                    <p data-i18n="m1_d">Building the AI engine and privacy-first infrastructure that powers every focus
-                        session.</p>
-                </div>
-                <div class="member-card reveal">
-                    <div class="member-avatar hipster">🎨</div>
-                    <div class="member-role">Nurislam — Designer</div>
-                    <h3 data-i18n="m2_t">Product & Design</h3>
-                    <p data-i18n="m2_d">Crafting the minimal, distraction-free interface that helps users stay in flow
-                        state.</p>
-                </div>
-                <div class="member-card reveal">
-                    <div class="member-avatar hustler">🚀</div>
-                    <div class="member-role">Zhasulan — CEO</div>
-                    <h3 data-i18n="m3_t">Vision & Growth</h3>
-                    <p data-i18n="m3_d">Driving the mission to make mindful productivity accessible to everyone,
-                        everywhere.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+<div class="container">
+<div class="text-center">
+<div class="section-tag reveal" data-i18n="test_tag">● Testimonials</div>
+<h2 class="section-title reveal" data-i18n="test_title">Loved by makers worldwide.</h2>
+</div>
+</div>
+<div class="testimonial-track" id="testimonialTrack">
+<div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text" data-i18n="t1">"NazarApp helped me go from 2 hours of deep work to 4+ hours daily. The focus analytics are incredible."</p><div class="testimonial-author"><div class="testimonial-avatar" style="background:#6C63FF">AK</div><div><div class="testimonial-name">Alex K.</div><div class="testimonial-role" data-i18n="t1_role">Software Engineer</div></div></div></div>
+<div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text" data-i18n="t2">"Finally, a productivity tool that respects my team's privacy. The aggregated insights are exactly what we needed."</p><div class="testimonial-author"><div class="testimonial-avatar" style="background:#22C55E">SM</div><div><div class="testimonial-name">Sara M.</div><div class="testimonial-role" data-i18n="t2_role">Startup Founder</div></div></div></div>
+<div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text" data-i18n="t3">"As a student, this app changed how I study. My exam scores improved 30% after using the deep work mode."</p><div class="testimonial-author"><div class="testimonial-avatar" style="background:#F59E0B">DN</div><div><div class="testimonial-name">Dias N.</div><div class="testimonial-role" data-i18n="t3_role">CS Student</div></div></div></div>
+<div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text" data-i18n="t4">"The gamification aspect keeps me motivated. I'm on a 45-day streak and my productivity has never been higher."</p><div class="testimonial-author"><div class="testimonial-avatar" style="background:#EC4899">LW</div><div><div class="testimonial-name">Lisa W.</div><div class="testimonial-role" data-i18n="t4_role">Product Designer</div></div></div></div>
+<div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text" data-i18n="t5">"The ambient sounds feature is a game changer. Combined with focus tracking, it's like having a productivity coach."</p><div class="testimonial-author"><div class="testimonial-avatar" style="background:#EF4444">MR</div><div><div class="testimonial-name">Mike R.</div><div class="testimonial-role" data-i18n="t5_role">Freelance Developer</div></div></div></div>
+<div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text" data-i18n="t6">"Our team adopted NazarApp 3 months ago. Average deep work hours went up 40% without any surveillance concerns."</p><div class="testimonial-author"><div class="testimonial-avatar" style="background:#8B5CF6">JL</div><div><div class="testimonial-name">James L.</div><div class="testimonial-role" data-i18n="t6_role">Engineering Manager</div></div></div></div>
+<div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text" data-i18n="t1">"NazarApp helped me go from 2 hours of deep work to 4+ hours daily. The focus analytics are incredible."</p><div class="testimonial-author"><div class="testimonial-avatar" style="background:#6C63FF">AK</div><div><div class="testimonial-name">Alex K.</div><div class="testimonial-role" data-i18n="t1_role">Software Engineer</div></div></div></div>
+<div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text" data-i18n="t2">"Finally, a productivity tool that respects my team's privacy. The aggregated insights are exactly what we needed."</p><div class="testimonial-author"><div class="testimonial-avatar" style="background:#22C55E">SM</div><div><div class="testimonial-name">Sara M.</div><div class="testimonial-role" data-i18n="t2_role">Startup Founder</div></div></div></div>
+<div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text" data-i18n="t3">"As a student, this app changed how I study. My exam scores improved 30% after using the deep work mode."</p><div class="testimonial-author"><div class="testimonial-avatar" style="background:#F59E0B">DN</div><div><div class="testimonial-name">Dias N.</div><div class="testimonial-role" data-i18n="t3_role">CS Student</div></div></div></div>
+<div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text" data-i18n="t4">"The gamification aspect keeps me motivated. I'm on a 45-day streak and my productivity has never been higher."</p><div class="testimonial-author"><div class="testimonial-avatar" style="background:#EC4899">LW</div><div><div class="testimonial-name">Lisa W.</div><div class="testimonial-role" data-i18n="t4_role">Product Designer</div></div></div></div>
+<div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text" data-i18n="t5">"The ambient sounds feature is a game changer. Combined with focus tracking, it's like having a productivity coach."</p><div class="testimonial-author"><div class="testimonial-avatar" style="background:#EF4444">MR</div><div><div class="testimonial-name">Mike R.</div><div class="testimonial-role" data-i18n="t5_role">Freelance Developer</div></div></div></div>
+<div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text" data-i18n="t6">"Our team adopted NazarApp 3 months ago. Average deep work hours went up 40% without any surveillance concerns."</p><div class="testimonial-author"><div class="testimonial-avatar" style="background:#8B5CF6">JL</div><div><div class="testimonial-name">James L.</div><div class="testimonial-role" data-i18n="t6_role">Engineering Manager</div></div></div></div>
+</div>
+</section>
 
-    <!-- CTA -->
-    <section id="cta" class="cta-section">
-        <div class="container">
-            <h2 class="reveal" data-i18n-html="cta_title">Start working with <span
-                    style="color:var(--accent)">clarity</span> today.</h2>
-            <p class="reveal" data-i18n="cta_desc">Join thousands who've taken control of their attention and
-                productivity.</p>
-            <button class="cta-btn reveal" onclick="location.href='app.html'" data-i18n="cta_btn">Get Early Access
-                →</button>
-        </div>
-    </section>
+<!-- TEAM -->
+<section class="team" id="team">
+<div class="container">
+<div class="text-center">
+<div class="section-tag reveal" data-i18n="team_tag">● Our Team</div>
+<h2 class="section-title reveal" data-i18n="team_title">The people behind NazarApp.</h2>
+</div>
+<div class="team-grid">
+<div class="team-card reveal"><div class="team-card-inner"><div class="team-front"><div class="team-avatar" style="background:linear-gradient(135deg,#6C63FF,#a78bfa)">SA</div><h3>Serik</h3><div class="team-role" data-i18n="m1_role">CTO — Tech & Architecture</div><p data-i18n="m1_d">Building the AI engine and privacy-first infrastructure.</p></div><div class="team-back"><h3>Serik</h3><p style="margin:12px 0" data-i18n="m1_bio">Full-stack engineer passionate about privacy tech and ML. Previously at Kaspi.kz.</p><div class="team-socials"><a href="#">Twitter/X</a><a href="#">LinkedIn</a><a href="#">GitHub</a></div></div></div></div>
+<div class="team-card reveal"><div class="team-card-inner"><div class="team-front"><div class="team-avatar" style="background:linear-gradient(135deg,#EC4899,#f472b6)">NA</div><h3>Nurislam</h3><div class="team-role" data-i18n="m2_role">Designer — Product & Design</div><p data-i18n="m2_d">Crafting the distraction-free interface for flow state.</p></div><div class="team-back"><h3>Nurislam</h3><p style="margin:12px 0" data-i18n="m2_bio">UI/UX designer focused on building calm, minimal interfaces that help people focus.</p><div class="team-socials"><a href="#">Twitter/X</a><a href="#">LinkedIn</a><a href="#">Dribbble</a></div></div></div></div>
+<div class="team-card reveal"><div class="team-card-inner"><div class="team-front"><div class="team-avatar" style="background:linear-gradient(135deg,#22C55E,#4ade80)">ZA</div><h3>Zhasulan</h3><div class="team-role" data-i18n="m3_role">CEO — Vision & Growth</div><p data-i18n="m3_d">Driving the mission to make mindful productivity accessible.</p></div><div class="team-back"><h3>Zhasulan</h3><p style="margin:12px 0" data-i18n="m3_bio">Entrepreneur and growth strategist. Believes in products that respect users.</p><div class="team-socials"><a href="#">Twitter/X</a><a href="#">LinkedIn</a><a href="#">Email</a></div></div></div></div>
+</div>
+</div>
+</section>
 
-    <!-- FAQ -->
-    <section id="faq" style="background: var(--bg2); border-top: 1px solid var(--border)">
-        <div class="container">
-            <div class="text-center">
-                <div class="section-tag reveal" data-i18n="faq_tag">● FAQ</div>
-                <h2 class="section-title reveal" data-i18n="faq_title">Frequently asked questions.</h2>
-            </div>
-            <div class="faq-list">
-                <div class="faq-item reveal">
-                    <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
-                        <span data-i18n="fq1">Is NazarApp really free?</span> <span>+</span>
-                    </button>
-                    <div class="faq-a">
-                        <p data-i18n="fa1">Yes! We offer a generous free tier for individual users. Team plans with
-                            advanced analytics
-                            start at competitive prices.</p>
-                    </div>
-                </div>
-                <div class="faq-item reveal">
-                    <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
-                        <span data-i18n="fq2">How does head tracking work?</span> <span>+</span>
-                    </button>
-                    <div class="faq-a">
-                        <p data-i18n="fa2">NazarApp uses your webcam to detect head position and movement. All
-                            processing happens locally in your browser — no video is ever sent to servers.</p>
-                    </div>
-                </div>
-                <div class="faq-item reveal">
-                    <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
-                        <span data-i18n="fq3">Does NazarApp record my screen?</span> <span>+</span>
-                    </button>
-                    <div class="faq-a">
-                        <p data-i18n="fa3">No. We never capture screenshots, record keystrokes, or monitor your activity
-                            outside the app. Privacy is our core principle.</p>
-                    </div>
-                </div>
-                <div class="faq-item reveal">
-                    <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
-                        <span data-i18n="fq4">Can managers see individual data?</span> <span>+</span>
-                    </button>
-                    <div class="faq-a">
-                        <p data-i18n="fa4">No. Team plans only show aggregated, anonymous data. Managers see team-level
-                            trends, never individual metrics.</p>
-                    </div>
-                </div>
-                <div class="faq-item reveal">
-                    <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
-                        <span data-i18n="fq5">What platforms do you support?</span> <span>+</span>
-                    </button>
-                    <div class="faq-a">
-                        <p data-i18n="fa5">NazarApp is currently available as a web app, with native macOS, Windows, iOS
-                            and Android apps coming soon.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- FAQ -->
+<section class="faq" id="faq">
+<div class="container">
+<div class="text-center">
+<div class="section-tag reveal" data-i18n="faq_tag">● FAQ</div>
+<h2 class="section-title reveal" data-i18n="faq_title">Frequently asked questions.</h2>
+</div>
+<input type="text" class="faq-search" id="faqSearch" oninput="filterFaq()" data-i18n-placeholder="faq_search" placeholder="🔍 Search questions...">
+<div class="faq-list" id="faqList">
+<div class="faq-item reveal"><button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')"><span data-i18n="fq1">Is NazarApp really free?</span><span class="icon">+</span></button><div class="faq-a"><p data-i18n="fa1">Yes! The free tier gives you 3 sessions per day with basic analytics and head tracking. Pro features like unlimited sessions and ambient sounds start at $9/mo.</p></div></div>
+<div class="faq-item reveal"><button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')"><span data-i18n="fq2">How does head tracking work?</span><span class="icon">+</span></button><div class="faq-a"><p data-i18n="fa2">NazarApp uses your webcam to detect head position and movement. All processing happens locally in your browser — no video is ever sent to servers.</p></div></div>
+<div class="faq-item reveal"><button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')"><span data-i18n="fq3">Does NazarApp record my screen?</span><span class="icon">+</span></button><div class="faq-a"><p data-i18n="fa3">No. We never capture screenshots, record keystrokes, or monitor activity outside the app. Privacy is our core principle.</p></div></div>
+<div class="faq-item reveal"><button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')"><span data-i18n="fq4">Can managers see individual data?</span><span class="icon">+</span></button><div class="faq-a"><p data-i18n="fa4">No. Team plans only show aggregated, anonymous data. Managers see team-level trends, never individual metrics.</p></div></div>
+<div class="faq-item reveal"><button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')"><span data-i18n="fq5">What about pricing and billing?</span><span class="icon">+</span></button><div class="faq-a"><p data-i18n="fa5">We offer monthly and annual billing. Annual plans get 30% off. You can cancel anytime — no contracts, no hidden fees.</p></div></div>
+<div class="faq-item reveal"><button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')"><span data-i18n="fq6">Is there a mobile app?</span><span class="icon">+</span></button><div class="faq-a"><p data-i18n="fa6">NazarApp currently works as a web app on desktop browsers. Native iOS and Android apps are coming Q3 2026.</p></div></div>
+<div class="faq-item reveal"><button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')"><span data-i18n="fq7">What integrations do you support?</span><span class="icon">+</span></button><div class="faq-a"><p data-i18n="fa7">We integrate with Notion, Linear, and Slack for session logging. More integrations including Jira and Asana are coming soon.</p></div></div>
+<div class="faq-item reveal"><button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')"><span data-i18n="fq8">What is your refund policy?</span><span class="icon">+</span></button><div class="faq-a"><p data-i18n="fa8">We offer a 14-day money-back guarantee on all paid plans. No questions asked — just contact support.</p></div></div>
+</div>
+</div>
+</section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-inner">
-                <div class="footer-copy">© 2026 NazarApp. All rights reserved.</div>
-                <div class="footer-links">
-                    <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
-                    <a href="#" data-i18n="footer_terms">Terms of Service</a>
-                    <a href="#">Twitter</a>
-                    <a href="#">LinkedIn</a>
-                    <a href="#">GitHub</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+<!-- CTA -->
+<section class="cta-section" id="cta">
+<div class="container">
+<h2 class="reveal" data-i18n="cta_title">Start working with <span class="gradient">clarity</span> today.</h2>
+<p class="reveal" data-i18n="cta_desc">Join thousands who've taken control of their attention and productivity.</p>
+<div class="newsletter-form reveal">
+<input type="email" id="newsletterEmail" data-i18n-placeholder="cta_email" placeholder="Enter your email">
+<button onclick="subscribe()" data-i18n="cta_btn">Join Waitlist</button>
+</div>
+<button class="btn-primary reveal" onclick="location.href='app.html'" style="margin-top:8px" data-i18n="cta_launch">Launch App →</button>
+</div>
+</section>
 
-    <script src="assets/js/i18n.js"></script>
-    <script src="assets/js/utils.js"></script>
+<!-- FOOTER -->
+<footer>
+<div class="container">
+<div class="footer-grid">
+<div><div class="logo" style="margin-bottom:16px"><div class="logo-icon">👁</div>NazarApp</div><p class="footer-brand" data-i18n="footer_brand">AI-powered focus tracking tool. Deep work sessions, productivity analytics, privacy-first approach. Built with ❤️ in Kazakhstan.</p></div>
+<div><h4 data-i18n="footer_product">Product</h4><a href="#features" data-i18n="nav_features">Features</a><a href="#pricing" data-i18n="nav_pricing">Pricing</a><a href="#how" data-i18n="nav_how">How It Works</a><a href="app.html" data-i18n="footer_dashboard">Dashboard</a></div>
+<div><h4 data-i18n="footer_company">Company</h4><a href="#team" data-i18n="footer_team">Team</a><a href="#" data-i18n="footer_blog">Blog</a><a href="#" data-i18n="footer_careers">Careers</a><a href="#" data-i18n="footer_press">Press</a></div>
+<div><h4 data-i18n="footer_resources">Resources</h4><a href="#faq">FAQ</a><a href="#" data-i18n="footer_docs">Documentation</a><a href="#" data-i18n="footer_privacy">Privacy Policy</a><a href="#" data-i18n="footer_terms">Terms of Service</a></div>
+</div>
+<div class="footer-bottom">
+<span data-i18n="footer_copy">Made with ❤️ in Kazakhstan · © 2026 NazarApp</span>
+<div class="footer-social"><a href="#" title="Twitter/X">𝕏</a><a href="#" title="LinkedIn">in</a><a href="#" title="GitHub">⌂</a></div>
+</div>
+</div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== i18n TRANSLATIONS =====
+const LANG={
+en:{},
+ru:{
+nav_features:'Функции',nav_how:'Как работает',nav_pricing:'Цены',nav_reviews:'Отзывы',nav_cta:'Раннее подключение',
+hero_tag:'🚀 AI-платформа для фокуса',hero_desc:'NazarApp использует камеру для отслеживания внимания и повышения продуктивности. Умные фокус-сессии, аналитика в реальном времени, приватность прежде всего.',
+hero_btn1:'Начать бесплатно →',hero_btn2:'Посмотреть демо ↓',hero_trust:'Нас выбрали <strong>2,000+</strong> создателей',
+mock_title:'Панель фокуса',mock_score:'Оценка фокуса — Сегодня',mock_deep:'Глубокая работа',mock_sessions:'Сессии',mock_vs:'vs Прошлая неделя',
+prob_tag:'● Проблема',prob_title:'Мы теряем <span style="color:#f87171">2–3 часа в день</span> на отвлечения.',prob_desc:'Соцсети, бесконечные уведомления и постоянное переключение контекста разрушают нашу способность к глубокой, значимой работе.',
+prob_s1:'Проверок телефона в день',prob_s2:'Мин для восстановления фокуса',prob_s3:'Часов реальной работы',prob_s4:'% потерянного времени',
+calc_title:'�� Калькулятор отвлечений',calc_desc:'Сколько часов в день вы работаете?',
+split_without:'❌ Без NazarApp',split_with:'✅ С NazarApp',split_without_desc:'Постоянные прерывания, потеря контекста, поверхностная работа',split_with_desc:'Глубокий фокус, отслеживание прогресса, значимая работа',
+feat_tag:'● Решение',feat_title:'Всё для более глубокой работы.',feat_desc:'Мощные инструменты для достижения состояния потока, поддержания фокуса и анализа продуктивности.',
+f1_t:'Умные фокус-сессии',f1_d:'Оптимальная длительность сессий на основе ваших паттернов фокуса. Помодоро, Глубокая работа или Свой режим.',
+f2_t:'Индекс продуктивности',f2_d:'Оценка качества вашего фокуса в реальном времени — а не просто затраченного времени.',
+f3_t:'Режим глубокой работы',f3_d:'Блокируйте отвлечения и входите в зону без отвлечений одним кликом.',
+f4_t:'Отслеживание головы',f4_d:'Мониторинг внимания через камеру. Все вычисления локальные — видео никогда не покидает устройство. 100% приватность.',
+f5_t:'Аналитика отвлечений',f5_d:'Видите, когда и почему вы теряете фокус, с инсайтами на основе данных.',
+f6_t:'Командные инсайты',f6_d:'Агрегированная продуктивность команды без индивидуальной слежки.',
+f7_t:'Фоновые звуки',f7_d:'Дождь, lo-fi мелодии, белый шум — генерируются в браузере для состояния потока.',
+f8_t:'Серии фокуса и геймификация',f8_d:'Зарабатывайте XP, повышайте уровень и открывайте достижения.',
+f9_t:'Умные напоминания о перерывах',f9_d:'Научно обоснованные перерывы с дыхательными упражнениями.',
+how_tag:'● Как это работает',how_title:'Четыре шага к глубокой работе.',
+h1_t:'Выберите задачу',h1_d:'Укажите, над чем работаете. NazarApp предложит оптимальную длительность.',
+h2_t:'Включите режим фокуса',h2_d:'Войдите в режим без отвлечений. AI отслеживает качество фокуса через камеру.',
+h3_t:'Получите инсайты',h3_d:'Анализируйте паттерны фокуса, следите за прогрессом.',
+h4_t:'Поделитесь с командой',h4_d:'Агрегированная аналитика для команд — без слежки.',
+st1:'Часов глубокой работы в день',st2:'Улучшение фокуса',st3:'Завершенных сессий',st4:'Средняя длительность сессии',
+price_tag:'● Цены',price_title:'Простые цены. Без сюрпризов.',price_monthly:'Ежемесячно',price_annual:'Ежегодно',
+plan_free:'Бесплатно',plan_free_desc:'Отлично для начала',plan_free_btn:'Начать',
+plan_pro_desc:'Для серьёзной глубокой работы',plan_pro_btn:'Попробовать Pro',
+plan_team:'Команда',plan_team_desc:'Командные инсайты без слежки',plan_team_btn:'Связаться',
+pf1:'3 сессии в день',pf2:'Базовая аналитика',pf3:'Отслеживание головы',pf4:'Помодоро таймер',pf5:'Свои длительности сессий',pf6:'Фоновые звуки',pf7:'Командные функции',
+pp1:'Безлимитные сессии',pp2:'Продвинутая аналитика',pp3:'Все режимы таймера',pp4:'Фоновые звуки для фокуса',pp5:'Достижения и серии',
+pt1:'Всё из Pro',pt2:'Командная панель',pt3:'Агрегированная аналитика',pt4:'Управление энергией',pt5:'Без индивидуальной слежки',pt6:'Приоритетная поддержка',pt7:'Свои интеграции',
+test_tag:'● Отзывы',test_title:'Нас любят создатели по всему миру.',
+t1:'"NazarApp помог мне увеличить глубокую работу с 2 до 4+ часов в день. Аналитика фокуса невероятная."',
+t2:'"Наконец, инструмент продуктивности, уважающий приватность моей команды. Агрегированные инсайты — именно то, что нужно."',
+t3:'"Как студент, это приложение изменило мой подход к учёбе. Мои оценки улучшились на 30%."',
+t4:'"Геймификация мотивирует. У меня серия 45 дней, и продуктивность на максимуме."',
+t5:'"Фоновые звуки — это находка. В сочетании с трекингом фокуса — как личный коуч."',
+t6:'"Наша команда перешла на NazarApp 3 месяца назад. Глубокая работа выросла на 40%."',
+t1_role:'Инженер-программист',t2_role:'Основатель стартапа',t3_role:'Студент CS',t4_role:'Продуктовый дизайнер',t5_role:'Фрилансер-разработчик',t6_role:'Менеджер инженерии',
+team_tag:'● Наша команда',team_title:'Люди за NazarApp.',
+m1_role:'CTO — Технологии и архитектура',m1_d:'Создаёт AI-движок и инфраструктуру приватности.',m1_bio:'Full-stack инженер, увлечённый технологиями приватности и ML. Ранее в Kaspi.kz.',
+m2_role:'Дизайнер — Продукт и интерфейс',m2_d:'Создаёт интерфейс без отвлечений для состояния потока.',m2_bio:'UI/UX дизайнер, создающий спокойные минимальные интерфейсы.',
+m3_role:'CEO — Видение и рост',m3_d:'Делает осознанную продуктивность доступной каждому.',m3_bio:'Предприниматель и стратег роста. Верит в продукты, уважающие пользователей.',
+faq_tag:'● FAQ',faq_title:'Часто задаваемые вопросы.',faq_search:'🔍 Поиск вопросов...',
+fq1:'NazarApp действительно бесплатный?',fa1:'Да! Бесплатный тариф даёт 3 сессии в день с базовой аналитикой. Pro-функции от $9/мес.',
+fq2:'Как работает отслеживание головы?',fa2:'NazarApp использует веб-камеру для определения положения головы. Вся обработка локальная — видео никогда не отправляется на серверы.',
+fq3:'NazarApp записывает мой экран?',fa3:'Нет. Мы не делаем скриншоты, не записываем нажатия клавиш и не отслеживаем активность вне приложения.',
+fq4:'Могут ли менеджеры видеть данные сотрудников?',fa4:'Нет. Командные тарифы показывают только агрегированные анонимные данные.',
+fq5:'Что насчёт оплаты и биллинга?',fa5:'Предлагаем ежемесячную и годовую оплату. Годовые планы со скидкой 30%. Отмена в любое время.',
+fq6:'Есть ли мобильное приложение?',fa6:'NazarApp работает как веб-приложение. Нативные iOS и Android приложения выйдут в Q3 2026.',
+fq7:'Какие интеграции поддерживаются?',fa7:'Интеграция с Notion, Linear и Slack. Скоро добавим Jira и Asana.',
+fq8:'Какова политика возврата?',fa8:'14-дневная гарантия возврата средств на все платные планы. Без вопросов.',
+cta_title:'Начните работать с <span class="gradient">ясностью</span> сегодня.',cta_desc:'Присоединяйтесь к тысячам, кто взял под контроль своё внимание.',cta_email:'Введите ваш email',cta_btn:'Присоединиться',cta_launch:'Запустить приложение →',
+footer_brand:'AI-инструмент для фокуса. Глубокие сессии, аналитика продуктивности, приватность. Сделано с ❤️ в Казахстане.',
+footer_product:'Продукт',footer_company:'Компания',footer_resources:'Ресурсы',footer_dashboard:'Панель',footer_team:'Команда',footer_blog:'Блог',footer_careers:'Карьера',footer_press:'Пресса',footer_docs:'Документация',footer_privacy:'Политика приватности',footer_terms:'Условия',footer_copy:'Сделано с ❤️ в Казахстане · © 2026 NazarApp'
+},
+kz:{
+nav_features:'Мүмкіндіктер',nav_how:'Қалай жұмыс істейді',nav_pricing:'Бағалар',nav_reviews:'Пікірлер',nav_cta:'Ерте қосылу',
+hero_tag:'🚀 AI-фокус платформасы',hero_desc:'NazarApp камера арқылы зейінді бақылайды және өнімділікті арттырады. Ақылды фокус сессиялар, нақты уақыттағы аналитика, құпиялылық басымдығы.',
+hero_btn1:'Тегін бастау →',hero_btn2:'Демо көру ↓',hero_trust:'<strong>2,000+</strong> жасаушылар сенеді',
+mock_title:'Фокус тақтасы',mock_score:'Фокус ұпайы — Бүгін',mock_deep:'Терең жұмыс',mock_sessions:'Сессиялар',mock_vs:'Өткен аптамен',
+prob_tag:'● Мәселе',prob_title:'Біз күн сайын <span style="color:#f87171">2–3 сағат</span> алаңдауға жоғалтамыз.',prob_desc:'Әлеуметтік желілер, шексіз хабарландырулар — терең, мағыналы жұмысқа нұқсан келтіреді.',
+prob_s1:'Күнделікті телефон тексерулері',prob_s2:'Фокусты қалпына келтіру мин',prob_s3:'Нақты фокус сағаттары',prob_s4:'% жоғалған уақыт',
+calc_title:'📊 Алаңдау калькуляторы',calc_desc:'Күніне қанша сағат жұмыс істейсіз?',
+split_without:'❌ NazarApp-сыз',split_with:'✅ NazarApp-пен',split_without_desc:'Тұрақты үзілістер, контексттің жоғалуы',split_with_desc:'Терең фокус, қадағалау, мағыналы жұмыс',
+feat_tag:'● Шешім',feat_title:'Терең жұмыс үшін барлығы.',feat_desc:'Ағым күйіне кіруге, фокуста қалуға және өнімділік заңдылықтарын түсінуге арналған құралдар.',
+f1_t:'Ақылды фокус сессиялар',f1_d:'Жеке фокус заңдылықтарыңызға негізделген оңтайлы сессия ұзақтығы.',
+f2_t:'Өнімділік индексі',f2_d:'Фокус сапасының нақты уақыттағы бағасы.',
+f3_t:'Терең жұмыс режимі',f3_d:'Алаңдауды блоктаңыз, бір клик жасаңыз.',
+f4_t:'Бас қадағалау',f4_d:'Камера арқылы зейінді бақылау. Барлық деректер жергілікті.',
+f5_t:'Алаңдау аналитикасы',f5_d:'Фокусты қашан және неліктен жоғалтатыныңызды көріңіз.',
+f6_t:'Команда түсініктемелері',f6_d:'Жеке қадағалаусыз команда өнімділігі.',
+f7_t:'Фондық дыбыстар',f7_d:'Жаңбыр, lo-fi, ақ шу — браузерде генерацияланады.',
+f8_t:'Фокус серия және ойындастыру',f8_d:'XP жинаңыз, деңгей көтеріңіз, жетістіктерді ашыңыз.',
+f9_t:'Ақылды үзіліс еске салғыштар',f9_d:'Ғылыми негіздегі үзілістер, тыныс алу жаттығулары.',
+how_tag:'● Қалай жұмыс істейді',how_title:'Терең жұмысқа төрт қадам.',
+h1_t:'Тапсырманы таңдаңыз',h1_d:'Не істеп жатқаныңызды белгілеңіз. NazarApp оңтайлы уақытты ұсынады.',
+h2_t:'Фокус режимін іске қосыңыз',h2_d:'Алаңдаусыз режимге кіріңіз. AI камера арқылы фокусты қадағалайды.',
+h3_t:'Түсініктемелер алыңыз',h3_d:'Фокус заңдылықтарын талдаңыз, прогресті бақылаңыз.',
+h4_t:'Командамен бөлісіңіз',h4_d:'Командалар үшін жинақталған аналитика — жеке бақылаусыз.',
+st1:'Күнделікті терең жұмыс сағаттары',st2:'Жақсартылған фокус',st3:'Аяқталған сессиялар',st4:'Орташа сессия ұзақтығы',
+price_tag:'● Бағалар',price_title:'Қарапайым бағалар. Тосын сыйсыз.',price_monthly:'Ай сайын',price_annual:'Жыл сайын',
+plan_free:'Тегін',plan_free_desc:'Бастау үшін тамаша',plan_free_btn:'Бастау',
+plan_pro_desc:'Байыпты терең жұмыс үшін',plan_pro_btn:'Pro сынау',
+plan_team:'Команда',plan_team_desc:'Құпия командалық түсініктемелер',plan_team_btn:'Байланысу',
+pf1:'Күніне 3 сессия',pf2:'Негізгі аналитика',pf3:'Бас қадағалау',pf4:'Помодоро таймер',pf5:'Өзіндік сессия ұзақтығы',pf6:'Фондық дыбыстар',pf7:'Команда мүмкіндіктері',
+pp1:'Шексіз сессиялар',pp2:'Кеңейтілген аналитика',pp3:'Барлық таймер режимдері',pp4:'Фокус дыбыстары',pp5:'Жетістіктер мен серия',
+pt1:'Pro барлығы',pt2:'Команда тақтасы',pt3:'Жинақталған аналитика',pt4:'Энергия басқару',pt5:'Жеке бақылаусыз',pt6:'Басым қолдау',pt7:'Өзіндік интеграциялар',
+test_tag:'● Пікірлер',test_title:'Бүкіл әлемдегі жасаушылар ұнатады.',
+t1:'"NazarApp маған терең жұмысты 2 сағаттан 4+ сағатқа арттыруға көмектесті."',
+t2:'"Ақырында, команда құпиялылығын құрметтейтін өнімділік құралы."',
+t3:'"Студент ретінде бұл қолданба оқу тәсілімді өзгертті. Бағаларым 30% жақсарды."',
+t4:'"Ойындастыру мотивациялайды. Менің 45 күндік серия бар."',
+t5:'"Фондық дыбыстар ойын өзгертуші. Фокус трекингімен бірге — жеке коуч сияқты."',
+t6:'"Команданы 3 ай бұрын NazarApp-қа ауыстырдық. Терең жұмыс 40% өсті."',
+t1_role:'Бағдарламалық жасақтама инженері',t2_role:'Стартап негізін қалаушы',t3_role:'CS студенті',t4_role:'Өнім дизайнері',t5_role:'Фрилансер-разработчик',t6_role:'Инженерия менеджері',
+team_tag:'● Біздің команда',team_title:'NazarApp артындағы адамдар.',
+m1_role:'CTO — Технология және архитектура',m1_d:'AI қозғалтқышы және құпиялылық инфрақұрылымын жасайды.',m1_bio:'Құпиялылық технологиялары мен ML-ге құмар full-stack инженер.',
+m2_role:'Дизайнер — Өнім және дизайн',m2_d:'Ағым күйіне арналған алаңдаусыз интерфейс жасайды.',m2_bio:'Адамдарға фокустануға көмектесетін тыныш интерфейстер жасайтын UI/UX дизайнер.',
+m3_role:'CEO — Көзқарас және Өсу',m3_d:'Саналы өнімділікті барлығына қолжетімді етеді.',m3_bio:'Кәсіпкер және өсу стратегі. Пайдаланушыларды құрметтейтін өнімдерге сенеді.',
+faq_tag:'● FAQ',faq_title:'Жиі қойылатын сұрақтар.',faq_search:'🔍 Сұрақтарды іздеу...',
+fq1:'NazarApp шынымен тегін бе?',fa1:'Иә! Тегін тариф күніне 3 сессия береді. Pro-мүмкіндіктер $9/ай бастап.',
+fq2:'Бас қадағалау қалай жұмыс істейді?',fa2:'NazarApp веб-камераны пайдаланады. Барлық өңдеу жергілікті — бейне серверлерге жіберілмейді.',
+fq3:'NazarApp экранымды жазады ма?',fa3:'Жоқ. Скриншоттар, пернелер немесе қолданба сыртындағы белсенділікті қадағаламаймыз.',
+fq4:'Менеджерлер жеке деректерді көре ала ма?',fa4:'Жоқ. Тек жинақталған анонимді деректер көрсетіледі.',
+fq5:'Төлем және биллинг?',fa5:'Ай сайынғы және жылдық биллинг. Жылдық жоспарларда 30% жеңілдік. Кезкелген уақытта бас тартуға болады.',
+fq6:'Мобильді қолданба бар ма?',fa6:'NazarApp веб-қолданба ретінде жұмыс істейді. iOS және Android Q3 2026 шығады.',
+fq7:'Қандай интеграциялар?',fa7:'Notion, Linear, Slack интеграциясы. Jira және Asana жақында.',
+fq8:'Ақша қайтару саясаты?',fa8:'Барлық ақылы жоспарларда 14 күндік ақша қайтару кепілдігі.',
+cta_title:'Бүгін <span class="gradient">анықтықпен</span> жұмыс бастаңыз.',cta_desc:'Зейінін бақылауға алған мыңдаған адамға қосылыңыз.',cta_email:'Email енгізіңіз',cta_btn:'Қосылу',cta_launch:'Қолданбаны ашу →',
+footer_brand:'AI-фокус құралы. Терең сессиялар, өнімділік аналитикасы. Қазақстанда ❤️ жасалды.',
+footer_product:'Өнім',footer_company:'Компания',footer_resources:'Ресурстар',footer_dashboard:'Тақта',footer_team:'Команда',footer_blog:'Блог',footer_careers:'Мансап',footer_press:'Баспасөз',footer_docs:'Құжаттама',footer_privacy:'Құпиялылық саясаты',footer_terms:'Шарттар',footer_copy:'Қазақстанда ❤️ жасалды · © 2026 NazarApp'
+}
+};
+
+let currentLang='en';
+function setLang(lang){
+  currentLang=lang;
+  localStorage.setItem('nazar-lang',lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.trim().toLowerCase()===lang));
+  document.documentElement.lang=lang==='kz'?'kk':lang;
+  if(lang==='en'){document.querySelectorAll('[data-i18n]').forEach(el=>{if(el._origText)el.innerHTML=el._origText});
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{if(el._origPH)el.placeholder=el._origPH});
+    updateCalc();return}
+  const dict=LANG[lang]||{};
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    if(!el._origText)el._origText=el.innerHTML;
+    const key=el.getAttribute('data-i18n');
+    if(dict[key])el.innerHTML=dict[key];
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{
+    if(!el._origPH)el._origPH=el.placeholder;
+    const key=el.getAttribute('data-i18n-placeholder');
+    if(dict[key])el.placeholder=dict[key];
+  });
+  updateCalc();
+}
+
+// ===== THEME =====
+function toggleTheme(){const t=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=t;localStorage.setItem('nazar-theme',t);document.getElementById('themeBtn').textContent=t==='dark'?'🌙':'☀️'}
+(function(){const s=localStorage.getItem('nazar-theme');if(s){document.documentElement.dataset.theme=s;document.getElementById('themeBtn').textContent=s==='dark'?'🌙':'☀️'}})();
+
+// ===== MOBILE MENU =====
+function toggleMobile(){document.getElementById('mobileMenu').classList.toggle('open')}
+
+// ===== SCROLL =====
+window.addEventListener('scroll',()=>{const h=document.documentElement;document.getElementById('scrollProgress').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>50)});
+
+// ===== INTERSECTION OBSERVER =====
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');if(e.target.querySelector('[data-count]'))animateCounters(e.target);observer.unobserve(e.target)}})},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// ===== COUNTER =====
+function animateCounters(p){p.querySelectorAll('[data-count]').forEach(el=>{const t=parseFloat(el.dataset.count),s=el.dataset.suffix||'',f=t%1!==0,d=2000,st=performance.now();function u(n){const pr=Math.min((n-st)/d,1),e=1-Math.pow(1-pr,3),c=f?(e*t).toFixed(1):Math.floor(e*t);el.textContent=c+s;if(pr<1)requestAnimationFrame(u)}requestAnimationFrame(u)})}
+
+// ===== TYPEWRITER =====
+(function(){const ph={en:['Work Deeper.','Stay Focused.','Build More.','Think Clearly.'],ru:['Работайте глубже.','Оставайтесь в фокусе.','Создавайте больше.','Думайте яснее.'],kz:['Тереңірек жұмыс.','Фокуста қалыңыз.','Көбірек жасаңыз.','Анық ойлаңыз.']};
+let pi=0,ci=0,del=false;const el=document.getElementById('typewriterText');
+function type(){const phrases=ph[currentLang]||ph.en;const phrase=phrases[pi%phrases.length];if(!del){el.textContent=phrase.substring(0,ci+1);ci++;if(ci===phrase.length){del=true;setTimeout(type,2000);return}}else{el.textContent=phrase.substring(0,ci-1);ci--;if(ci===0){del=false;pi++}}setTimeout(type,del?40:80)}type()})();
+
+// ===== HERO ANIM =====
+(function(){const r=document.getElementById('heroRing');setTimeout(()=>{r.style.strokeDashoffset=408-(408*0.87);let c=0;const iv=setInterval(()=>{c++;document.getElementById('heroScore').textContent=c;if(c>=87)clearInterval(iv)},20)},500);setTimeout(()=>{document.getElementById('heroDeep').textContent='4.2h';document.getElementById('heroSessions').textContent='12';document.getElementById('heroGrowth').textContent='+8%'},1200)})();
+
+// ===== CALCULATOR =====
+function updateCalc(){const h=document.getElementById('calcSlider').value;const l=currentLang;
+document.getElementById('calcHours').textContent=h+(l==='ru'?' часов/день':l==='kz'?' сағат/күн':' hours/day');
+const lost=Math.round(h*0.35*250);
+document.getElementById('calcResult').textContent=(l==='ru'?'Вы теряете ~'+lost+' часов/год':l==='kz'?'Сіз ~'+lost+' сағат/жыл жоғалтасыз':'You lose ~'+lost+' hours/year')}
+
+// ===== PRICING =====
+let annual=false;
+function togglePricing(){annual=!annual;document.getElementById('pricingToggle').classList.toggle('active',annual);document.getElementById('proPrice').innerHTML=annual?'$6<small>/mo</small>':'$9<small>/mo</small>';document.getElementById('teamPrice').innerHTML=annual?'$20<small>/mo per 5 users</small>':'$29<small>/mo per 5 users</small>'}
+
+// ===== FAQ SEARCH =====
+function filterFaq(){const q=document.getElementById('faqSearch').value.toLowerCase();document.querySelectorAll('.faq-item').forEach(i=>{i.style.display=i.textContent.toLowerCase().includes(q)?'':'none'})}
+
+// ===== NEWSLETTER =====
+function subscribe(){const e=document.getElementById('newsletterEmail').value;if(!e||!e.includes('@')){showToast(currentLang==='ru'?'Введите корректный email':currentLang==='kz'?'Дұрыс email енгізіңіз':'Please enter a valid email');return}
+const s=JSON.parse(localStorage.getItem('nazar-subs')||'[]');s.push({email:e,date:new Date().toISOString()});localStorage.setItem('nazar-subs',JSON.stringify(s));document.getElementById('newsletterEmail').value='';
+showToast(currentLang==='ru'?'🎉 Вы в списке! Мы свяжемся.':currentLang==='kz'?'🎉 Тізімдесіз! Хабарласамыз.':'🎉 You\'re on the list!')}
+
+function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000)}
+
+// ===== RESTORE LANG =====
+(function(){const s=localStorage.getItem('nazar-lang');if(s&&s!=='en')setLang(s)})();
+</script>
 </body>
-
 </html>

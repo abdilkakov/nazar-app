@@ -1,327 +1,1878 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NazarApp — Focus Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
     <style>
-        /* Dashboard-specific overrides and additions */
-        .dashboard-container {
-            padding-top: 100px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
         }
 
-        .auth-view {
-            max-width: 400px;
-            margin: 100px auto;
-            padding: 40px;
+        :root {
+            --bg: #0A0A0F;
+            --bg2: #13131A;
+            --surface: rgba(255, 255, 255, 0.04);
+            --border: rgba(255, 255, 255, 0.08);
+            --accent: #6C63FF;
+            --accent-glow: rgba(108, 99, 255, 0.15);
+            --success: #22C55E;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --text: #F8F8F8;
+            --text-muted: #888;
+            --radius: 16px;
+            --transition: 200ms ease
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg)
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 3px
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer
+        }
+
+        input,
+        select {
+            font-family: inherit
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #fff
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px var(--accent-glow)
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border)
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--accent);
+            color: var(--accent)
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: #fff
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: #fff
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 12px
+        }
+
+        .card {
             background: var(--bg2);
             border: 1px solid var(--border);
-            border-radius: 24px;
-            text-align: center;
+            border-radius: var(--radius);
+            padding: 24px
         }
 
-        .auth-input {
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(10, 10, 15, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 1000
+        }
+
+        .topbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 18px
+        }
+
+        .topbar-logo span {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-glow);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .topbar-user {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted)
+        }
+
+        .topbar-btn {
+            background: none;
+            border: 1px solid var(--border);
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            transition: all var(--transition);
+            font-size: 16px
+        }
+
+        .topbar-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent)
+        }
+
+        .lang-switch {
+            display: flex;
+            gap: 4px
+        }
+
+        .lang-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all var(--transition)
+        }
+
+        .lang-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff
+        }
+
+        #focusBorder {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            border: 3px solid transparent;
+            transition: border-color 0.5s ease
+        }
+
+        #focusBorder.tracking {
+            border-color: var(--success)
+        }
+
+        #focusBorder.away {
+            border-color: var(--warning)
+        }
+
+        .view {
+            display: none;
+            padding-top: 80px;
+            min-height: 100vh
+        }
+
+        .view.active {
+            display: block
+        }
+
+        #onboarding.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center
+        }
+
+        .onboard-progress {
             width: 100%;
-            padding: 12px 16px;
-            margin-bottom: 16px;
-            background: var(--bg);
+            height: 4px;
+            background: var(--border);
+            overflow: hidden;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            z-index: 999
+        }
+
+        .onboard-progress-fill {
+            height: 100%;
+            background: var(--accent);
+            transition: width 0.4s ease;
+            border-radius: 2px
+        }
+
+        .onboard-step {
+            display: none;
+            max-width: 480px;
+            margin: 0 auto;
+            animation: fadeUp 0.4s ease
+        }
+
+        .onboard-step.active {
+            display: block
+        }
+
+        .onboard-step h2 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 12px
+        }
+
+        .onboard-step p {
+            color: var(--text-muted);
+            margin-bottom: 32px
+        }
+
+        .onboard-input {
+            width: 100%;
+            padding: 16px 20px;
+            background: var(--bg2);
             border: 1px solid var(--border);
             border-radius: 12px;
             color: var(--text);
-            font-family: inherit;
+            font-size: 16px;
+            margin-bottom: 20px;
+            text-align: center
         }
 
-        .session-view {
-            display: none;
-            /* Shown after login */
-            flex-grow: 1;
-            padding-bottom: 40px;
+        .onboard-input:focus {
+            outline: none;
+            border-color: var(--accent)
         }
 
-        .session-grid {
+        .pill-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 32px
+        }
+
+        .pill-btn {
+            padding: 10px 20px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 500;
+            transition: all var(--transition)
+        }
+
+        .pill-btn.selected {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .dashboard {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            margin-top: 40px;
+            grid-template-columns: 280px 1fr 280px;
+            gap: 24px;
+            padding: 24px;
+            min-height: calc(100vh - 60px)
         }
 
-        .timer-card {
+        @media(max-width:1024px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+                padding: 16px
+            }
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 16px
+        }
+
+        .sidebar h3 {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted)
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
             background: var(--bg2);
             border: 1px solid var(--border);
-            border-radius: 48px;
-            padding: 60px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all var(--transition);
+            position: relative
+        }
+
+        .task-item:hover {
+            border-color: rgba(108, 99, 255, 0.3)
+        }
+
+        .task-item.active {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px var(--accent-glow)
+        }
+
+        .task-item.completed .task-name {
+            text-decoration: line-through;
+            opacity: 0.5
+        }
+
+        .task-check {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition);
+            font-size: 11px;
+            color: transparent
+        }
+
+        .task-item.completed .task-check {
+            background: var(--success);
+            border-color: var(--success);
+            color: #fff
+        }
+
+        .task-name {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 500
+        }
+
+        .task-pomos {
+            display: flex;
+            gap: 3px
+        }
+
+        .task-pomos span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--border)
+        }
+
+        .task-pomos span.done {
+            background: var(--accent)
+        }
+
+        .task-delete {
+            color: var(--text-muted);
+            font-size: 16px;
+            opacity: 0;
+            transition: opacity var(--transition);
+            background: none;
+            border: none;
+            padding: 4px
+        }
+
+        .task-item:hover .task-delete {
+            opacity: 1
+        }
+
+        .add-task-btn {
+            padding: 12px;
+            background: transparent;
+            border: 1px dashed var(--border);
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            transition: all var(--transition);
+            width: 100%;
+            text-align: center
+        }
+
+        .add-task-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent)
+        }
+
+        .timer-center {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            text-align: center;
+            gap: 24px
+        }
+
+        .timer-ring-wrap {
             position: relative;
-            overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            width: 240px;
+            height: 240px
         }
 
-        .timer-display {
-            font-size: 100px;
-            font-weight: 800;
-            line-height: 1;
-            margin-bottom: 40px;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .camera-card {
-            background: var(--bg2);
-            border: 1px solid var(--border);
-            border-radius: 48px;
-            overflow: hidden;
-            position: relative;
-            min-height: 400px;
-        }
-
-        #videoElement {
+        .timer-ring-wrap svg {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            filter: grayscale(100%) brightness(0.7);
+            transform: rotate(-90deg)
         }
 
-        #canvasElement {
+        .timer-ring-bg {
+            fill: none;
+            stroke: var(--border);
+            stroke-width: 6
+        }
+
+        .timer-ring-fg {
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 6;
+            stroke-linecap: round;
+            stroke-dasharray: 691;
+            stroke-dashoffset: 0;
+            transition: stroke-dashoffset 1s linear
+        }
+
+        .timer-time {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-top: 20px;
-            width: 100%;
-        }
-
-        .stat-card {
-            background: var(--bg2);
-            border: 1px solid var(--border);
-            padding: 24px;
-            border-radius: 24px;
+            inset: 0;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 16px;
+            justify-content: center
         }
 
-        .stat-icon {
-            font-size: 24px;
-            width: 48px;
-            height: 48px;
-            background: var(--accent-glow);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .timer-time .time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 64px;
+            font-weight: 700;
+            line-height: 1
         }
 
-        .status-badge {
-            position: absolute;
-            top: 24px;
-            left: 24px;
+        .timer-time .task-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 8px
+        }
+
+        .camera-status {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-size: 13px;
+            font-weight: 600
         }
 
-        .active-dot {
+        .camera-dot {
             width: 8px;
             height: 8px;
-            background: var(--accent);
             border-radius: 50%;
-            box-shadow: 0 0 10px var(--accent);
-            animation: pulse-glow 2s infinite;
+            background: var(--text-muted)
         }
 
-        @keyframes pulse-glow {
-            0% {
-                opacity: 0.5;
+        .camera-dot.green {
+            background: var(--success);
+            box-shadow: 0 0 10px var(--success)
+        }
+
+        .camera-dot.yellow {
+            background: var(--warning);
+            box-shadow: 0 0 10px var(--warning)
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 12px
+        }
+
+        .timer-modes {
+            display: flex;
+            gap: 8px
+        }
+
+        .mode-btn {
+            padding: 8px 16px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 600;
+            transition: all var(--transition)
+        }
+
+        .mode-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff
+        }
+
+        .stat-item {
+            margin-bottom: 16px
+        }
+
+        .stat-item label {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 6px
+        }
+
+        .stat-item .stat-val {
+            font-size: 24px;
+            font-weight: 800
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 6px
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 3px;
+            transition: width 0.5s ease
+        }
+
+        .distraction-log {
+            font-size: 12px;
+            color: var(--text-muted)
+        }
+
+        .distraction-log li {
+            padding: 4px 0;
+            border-bottom: 1px solid var(--border);
+            list-style: none
+        }
+
+        .video-preview {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 12px;
+            background: #000;
+            aspect-ratio: 4/3;
+            position: relative
+        }
+
+        .video-preview video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover
+        }
+
+        .bottom-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            padding: 24px;
+            border-top: 1px solid var(--border);
+            margin-top: auto
+        }
+
+        .bottom-stat {
+            text-align: center
+        }
+
+        .bottom-stat .val {
+            font-size: 20px;
+            font-weight: 800
+        }
+
+        .bottom-stat .label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px
+        }
+
+        @media(max-width:768px) {
+            .bottom-bar {
+                grid-template-columns: 1fr 1fr
+            }
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center
+        }
+
+        .modal-overlay.open {
+            display: flex
+        }
+
+        .modal {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto
+        }
+
+        .modal h2 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 24px
+        }
+
+        .modal-section {
+            margin-bottom: 24px
+        }
+
+        .modal-section h4 {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px
+        }
+
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0
+        }
+
+        .toggle-row span {
+            font-size: 14px
+        }
+
+        .switch {
+            width: 44px;
+            height: 24px;
+            background: var(--border);
+            border-radius: 100px;
+            position: relative;
+            cursor: pointer;
+            transition: background var(--transition);
+            border: none;
+            padding: 0
+        }
+
+        .switch.on {
+            background: var(--accent)
+        }
+
+        .switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            transition: transform var(--transition)
+        }
+
+        .switch.on::after {
+            transform: translateX(20px)
+        }
+
+        .slider-row {
+            margin: 12px 0
+        }
+
+        .slider-row input[type="range"] {
+            width: 100%;
+            accent-color: var(--accent)
+        }
+
+        .volume-row {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .report-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 10, 15, 0.95);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column
+        }
+
+        .report-overlay.open {
+            display: flex
+        }
+
+        .report-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 48px;
+            max-width: 480px;
+            width: 90%;
+            text-align: center
+        }
+
+        .report-card h2 {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 8px
+        }
+
+        .report-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0
+        }
+
+        .report-stat {
+            padding: 16px;
+            background: var(--surface);
+            border-radius: 12px
+        }
+
+        .report-stat .val {
+            font-size: 24px;
+            font-weight: 800
+        }
+
+        .report-stat .label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px
+        }
+
+        .report-quote {
+            font-style: italic;
+            color: var(--text-muted);
+            margin: 20px 0;
+            font-size: 15px
+        }
+
+        .report-btns {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 24px
+        }
+
+        .break-screen {
+            text-align: center
+        }
+
+        .breathing-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--accent-glow);
+            border: 2px solid var(--accent);
+            margin: 32px auto;
+            animation: breathe 12s ease-in-out infinite
+        }
+
+        @keyframes breathe {
+
+            0%,
+            100% {
+                transform: scale(0.6);
+                opacity: 0.5
+            }
+
+            25% {
                 transform: scale(1);
+                opacity: 1
             }
 
             50% {
-                opacity: 1;
-                transform: scale(1.2);
+                transform: scale(1);
+                opacity: 1
+            }
+
+            75% {
+                transform: scale(0.6);
+                opacity: 0.5
+            }
+        }
+
+        .confetti {
+            position: fixed;
+            top: -10px;
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            z-index: 4000;
+            animation: confettiFall 3s linear forwards
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1
             }
 
             100% {
-                opacity: 0.5;
-                transform: scale(1);
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0
             }
         }
 
-        .controls {
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            padding: 24px
+        }
+
+        @media(max-width:768px) {
+            .analytics-grid {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .chart-bar-wrap {
             display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            height: 200px;
+            padding-top: 20px
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: var(--accent);
+            border-radius: 4px 4px 0 0;
+            transition: height 0.5s ease;
+            position: relative;
+            min-height: 4px
+        }
+
+        .chart-bar-label {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            color: var(--text-muted);
+            white-space: nowrap
+        }
+
+        .sessions-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px
+        }
+
+        .sessions-table th {
+            text-align: left;
+            padding: 12px 8px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px
+        }
+
+        .sessions-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .pagination {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 16px
+        }
+
+        .page-btn {
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text);
+            font-size: 12px;
+            transition: all var(--transition)
+        }
+
+        .page-btn.active {
+            background: var(--accent);
+            border-color: var(--accent)
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 16px;
+            padding: 24px
         }
 
-        .btn-stop {
-            background: #ef4444;
-            color: white;
+        .achievement {
+            padding: 24px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            text-align: center;
+            opacity: 0.4;
+            transition: all var(--transition)
         }
 
-        .btn-stop:hover {
-            background: #dc2626;
-            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+        .achievement.unlocked {
+            opacity: 1;
+            border-color: var(--accent)
         }
 
-        @media (max-width: 1024px) {
-            .session-grid {
-                grid-template-columns: 1fr;
-            }
+        .achievement .ach-icon {
+            font-size: 36px;
+            margin-bottom: 12px
+        }
+
+        .achievement h4 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 4px
+        }
+
+        .achievement p {
+            font-size: 12px;
+            color: var(--text-muted)
+        }
+
+        .level-bar {
+            max-width: 400px;
+            margin: 24px auto;
+            text-align: center
+        }
+
+        .level-bar h3 {
+            margin-bottom: 8px
+        }
+
+        .level-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 6px
+        }
+
+        .model-status {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 100px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        .model-status.loading {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning)
+        }
+
+        .model-status.ready {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--success)
+        }
+
+        .model-status.error {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger)
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            background: var(--success);
+            color: #fff;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: 99999
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1
         }
     </style>
 </head>
 
 <body>
-    <!-- Nav -->
-    <nav>
-        <div class="nav-inner">
-            <div class="logo">
-                <div class="logo-icon">👁</div>
-                NazarApp
-            </div>
+    <div id="focusBorder"></div>
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+        <div class="topbar-logo"><span>👁</span>NazarApp</div>
+        <div class="topbar-right">
+            <span class="topbar-user" id="topbarUser"></span>
             <div class="lang-switch">
-                <button class="lang-btn active" onclick="switchLang('en')">EN</button>
-                <button class="lang-btn" onclick="switchLang('ru')">RU</button>
-                <button class="lang-btn" onclick="switchLang('kz')">KZ</button>
+                <button class="lang-btn active" onclick="setLang('en')">EN</button>
+                <button class="lang-btn" onclick="setLang('ru')">RU</button>
+                <button class="lang-btn" onclick="setLang('kz')">KZ</button>
             </div>
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <span id="userHandle" style="font-size: 14px; font-weight: 600; color: var(--text-muted)"></span>
-                <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</button>
-                <button class="btn-secondary" onclick="logout()"
-                    style="padding: 6px 14px; font-size: 12px;">Logout</button>
+            <button class="topbar-btn" onclick="showView('analytics')" title="Analytics">📊</button>
+            <button class="topbar-btn" onclick="showView('achievements')" title="Achievements">🏆</button>
+            <button class="topbar-btn" onclick="openSettings()" title="Settings">⚙️</button>
+            <button class="topbar-btn" onclick="logout()" title="Logout">🚪</button>
+        </div>
+    </div>
+
+    <!-- ONBOARDING -->
+    <div class="view" id="onboarding">
+        <div class="onboard-progress">
+            <div class="onboard-progress-fill" id="onboardProgress" style="width:25%"></div>
+        </div>
+        <div class="onboard-step active" id="step1">
+            <h2 data-i18n="ob_name_h">👋 What's your name?</h2>
+            <p data-i18n="ob_name_p">We'll personalize your experience.</p>
+            <input class="onboard-input" id="onboardName" data-i18n-placeholder="ob_name_ph"
+                placeholder="Enter your name" maxlength="30">
+            <button class="btn btn-primary" onclick="nextOnboard(2)" data-i18n="ob_continue">Continue →</button>
+        </div>
+        <div class="onboard-step" id="step2">
+            <h2 data-i18n="ob_act_h">💼 What do you usually do?</h2>
+            <p data-i18n="ob_act_p">Select all that apply.</p>
+            <div class="pill-group" id="activityPills">
+                <button class="pill-btn" onclick="this.classList.toggle('selected')" data-i18n="ob_deep">🧠 Deep
+                    Work</button>
+                <button class="pill-btn" onclick="this.classList.toggle('selected')" data-i18n="ob_learn">📚
+                    Learning</button>
+                <button class="pill-btn" onclick="this.classList.toggle('selected')" data-i18n="ob_write">✍️
+                    Writing</button>
+                <button class="pill-btn" onclick="this.classList.toggle('selected')" data-i18n="ob_code">💻
+                    Coding</button>
+                <button class="pill-btn" onclick="this.classList.toggle('selected')" data-i18n="ob_creative">🎨
+                    Creative</button>
+            </div>
+            <button class="btn btn-primary" onclick="nextOnboard(3)" data-i18n="ob_continue">Continue →</button>
+        </div>
+        <div class="onboard-step" id="step3">
+            <h2 data-i18n="ob_cam_h">📷 Enable Camera?</h2>
+            <p data-i18n="ob_cam_p">Head tracking detects when you look away. All processing happens locally. No video
+                is ever stored or transmitted.</p>
+            <div style="display:flex;gap:12px;justify-content:center;margin-top:24px">
+                <button class="btn btn-primary" onclick="requestCamera();nextOnboard(4)" data-i18n="ob_cam_allow">Allow
+                    Camera</button>
+                <button class="btn btn-ghost" onclick="nextOnboard(4)" data-i18n="ob_cam_skip">Skip for now</button>
             </div>
         </div>
-    </nav>
-
-    <div class="container dashboard-container">
-        <!-- Auth View -->
-        <div id="authView" class="auth-view">
-            <div class="logo-icon mx-auto" style="width: 64px; height: 64px; font-size: 32px; margin-bottom: 24px;">👁
-            </div>
-            <h2 style="margin-bottom: 8px;">Welcome Back</h2>
-            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 32px;">Please enter your handle to start
-                focus mode.</p>
-            <input type="text" id="handleInput" class="auth-input" placeholder="@handle">
-            <button class="btn-primary" style="width: 100%;" onclick="login()">Enter Dashboard</button>
+        <div class="onboard-step" id="step4">
+            <h2 data-i18n="ob_ready_h">🚀 You're ready!</h2>
+            <p data-i18n="ob_ready_p">Let's start focusing. Your dashboard is waiting.</p>
+            <div style="font-size:80px;margin:24px 0">🎉</div>
+            <button class="btn btn-primary" onclick="completeOnboard()" data-i18n="ob_ready_btn">Open Dashboard
+                →</button>
         </div>
+    </div>
 
-        <!-- Session View -->
-        <div id="sessionView" class="session-view">
-            <header style="margin-bottom: 32px;">
-                <h1 style="font-size: 32px; font-weight: 800;" data-i18n="dash_title">Focus Session</h1>
-                <p style="color: var(--text-muted);" data-i18n="dash_subtitle">Deep concentration in progress</p>
-            </header>
-
-            <div class="session-grid">
-                <!-- Timer Section -->
-                <div class="flex-column" style="gap: 20px;">
-                    <div class="timer-card">
-                        <div id="sessionStatus" class="status-badge" style="display: none;">
-                            <span class="active-dot"></span>
-                            <span data-i18n="session_active">Session Active</span>
-                        </div>
-                        <div id="timerDisplay" class="timer-display">25:00</div>
-                        <div class="controls">
-                            <button id="startBtn" class="btn-primary" onclick="startSession()"
-                                data-i18n="btn_start">Start Deep Work</button>
-                            <button id="stopBtn" class="btn-stop btn-primary" onclick="stopSession()"
-                                style="display: none;" data-i18n="btn_stop">Stop</button>
+    <!-- MAIN DASHBOARD -->
+    <div class="view" id="dashboard">
+        <div class="dashboard">
+            <div class="sidebar">
+                <h3 data-i18n="dash_tasks">📋 Today's Tasks</h3>
+                <div id="taskList"></div>
+                <button class="add-task-btn" onclick="addTask()" data-i18n="dash_add_task">+ Add Task</button>
+            </div>
+            <div class="timer-center">
+                <div class="timer-ring-wrap">
+                    <svg viewBox="0 0 240 240">
+                        <circle class="timer-ring-bg" cx="120" cy="120" r="110" />
+                        <circle class="timer-ring-fg" id="timerRing" cx="120" cy="120" r="110" />
+                    </svg>
+                    <div class="timer-time"><span class="time" id="timerDisplay">25:00</span><span class="task-label"
+                            id="activeTaskLabel" data-i18n="dash_no_task">No task selected</span></div>
+                </div>
+                <div class="camera-status"><span class="camera-dot" id="cameraDot"></span><span id="cameraLabel"
+                        data-i18n="cam_none">No Camera</span></div>
+                <div id="modelStatusWrap" style="margin-top:-8px"><span class="model-status" id="modelStatus"
+                        style="display:none"></span></div>
+                <div class="timer-controls">
+                    <button class="btn btn-primary" id="startBtn" onclick="startSession()" data-i18n="btn_start">▶
+                        Start</button>
+                    <button class="btn btn-ghost" id="pauseBtn" onclick="pauseSession()" style="display:none"
+                        data-i18n="btn_pause">⏸ Pause</button>
+                    <button class="btn btn-danger btn-sm" id="stopBtn" onclick="stopSession()" style="display:none"
+                        data-i18n="btn_stop">⏹ Stop</button>
+                </div>
+                <div class="timer-modes">
+                    <button class="mode-btn active" onclick="setMode('pomodoro',this)">🍅 25m</button>
+                    <button class="mode-btn" onclick="setMode('deep',this)">🧠 90m</button>
+                    <button class="mode-btn" onclick="setMode('custom',this)">⚙️ Custom</button>
+                </div>
+            </div>
+            <div class="sidebar">
+                <h3 data-i18n="dash_stats">📈 Live Stats</h3>
+                <div class="card">
+                    <div class="stat-item"><label data-i18n="stat_focus">Focus Score</label>
+                        <div class="stat-val" id="focusScore">0</div>
+                        <div class="progress-bar">
+                            <div class="progress-bar-fill" id="focusBar" style="width:0%"></div>
                         </div>
                     </div>
-
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-icon" style="color: #f59e0b;">⚠️</div>
-                            <div>
-                                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;"
-                                    data-i18n="stat_distractions">Distractions
-                                </p>
-                                <p id="distractionCount" style="font-size: 24px; font-weight: 700;">0</p>
-                            </div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon" style="color: #f43f5e;">🕒</div>
-                            <div>
-                                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;"
-                                    data-i18n="stat_distraction_time">Distraction Time
-                                </p>
-                                <p id="distractionTime" style="font-size: 24px; font-weight: 700;">0m 0s</p>
-                            </div>
-                        </div>
-                        <div class="stat-card" style="grid-column: span 2;">
-                            <div class="stat-icon" style="color: #10b981;">🛡️</div>
-                            <div>
-                                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;"
-                                    data-i18n="stat_guard_mode">Guard Mode</p>
-                                <p id="guardStatus" style="font-size: 24px; font-weight: 700;"
-                                    data-i18n="status_idling">Idling</p>
-                            </div>
-                        </div>
+                    <div class="stat-item"><label data-i18n="stat_away">Away Time</label>
+                        <div class="stat-val" id="awayCounter" style="font-size:18px">0s</div>
+                    </div>
+                    <div class="stat-item"><label data-i18n="stat_dist">Distractions</label>
+                        <div class="stat-val" id="distractionCount">0</div>
                     </div>
                 </div>
+                <div class="card" style="margin-top:16px">
+                    <h3 style="font-size:12px;margin-bottom:8px" data-i18n="stat_recent">Recent Distractions</h3>
+                    <ul class="distraction-log" id="distractionLog">
+                        <li style="color:var(--text-muted)" data-i18n="stat_none">None yet</li>
+                    </ul>
+                </div>
+                <div class="card video-preview" id="videoPreviewCard" style="margin-top:16px"><video id="previewVideo"
+                        autoplay muted playsinline></video></div>
+                <button class="btn btn-ghost btn-sm" style="margin-top:8px;width:100%" onclick="togglePreview()"
+                    data-i18n="btn_toggle_cam">📷 Toggle Camera Preview</button>
+            </div>
+        </div>
+        <div class="bottom-bar">
+            <div class="bottom-stat">
+                <div class="val" id="todayDeep">0h 0m</div>
+                <div class="label" data-i18n="bs_deep">Deep Work Today</div>
+            </div>
+            <div class="bottom-stat">
+                <div class="val" id="todaySessions">0</div>
+                <div class="label" data-i18n="bs_sessions">Sessions Today</div>
+            </div>
+            <div class="bottom-stat">
+                <div class="val" id="streakDays">0</div>
+                <div class="label" data-i18n="bs_streak">Day Streak</div>
+            </div>
+            <div class="bottom-stat">
+                <div class="val" id="todayFocus">0%</div>
+                <div class="label" data-i18n="bs_focus">Focus Score</div>
+            </div>
+        </div>
+    </div>
 
-                <!-- Camera Section -->
-                <div class="camera-card">
-                    <video id="videoElement" autoplay muted playsinline></video>
-                    <canvas id="canvasElement"></canvas>
-                    <div id="awayAlert"
-                        style="display: none; position: absolute; inset: 0; background: rgba(244, 63, 94, 0.2); backdrop-filter: blur(4px); flex-direction: column; align-items: center; justify-content: center; z-index: 10;">
-                        <div style="background: #f43f5e; color: white; padding: 12px 24px; border-radius: 12px; font-weight: 800; font-size: 24px; box-shadow: 0 10px 30px rgba(244, 63, 94, 0.4); margin-bottom: 12px;"
-                            data-i18n="away_alert">AWAY!</div>
-                        <div id="awayTimer"
-                            style="font-size: 48px; font-weight: 900; color: white; text-shadow: 0 4px 20px rgba(0,0,0,0.5);">
-                            0s</div>
+    <!-- ANALYTICS -->
+    <div class="view" id="analytics">
+        <div style="padding:24px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+                <h2 style="font-size:24px;font-weight:800" data-i18n="ana_title">📊 Analytics</h2>
+                <button class="btn btn-ghost btn-sm" onclick="showView('dashboard')" data-i18n="btn_back">←
+                    Back</button>
+            </div>
+            <div class="analytics-grid">
+                <div class="card">
+                    <h4 style="margin-bottom:16px" data-i18n="ana_timeline">Today's Timeline</h4>
+                    <div class="timeline-bar" id="todayTimeline"
+                        style="height:24px;background:var(--border);border-radius:4px;overflow:hidden;display:flex;margin:8px 0">
+                        <div style="flex:1;background:var(--border)"></div>
                     </div>
-                    <div
-                        style="position: absolute; bottom: 20px; left: 20px; right: 20px; display: flex; justify-content: space-between; align-items: center; z-index: 5;">
-                        <span class="glass"
-                            style="padding: 6px 12px; border-radius: 100px; font-size: 10px; font-weight: 800; letter-spacing: 1px;">LIVE
-                            MONITORING</span>
-                        <span id="debugInfo"
-                            style="font-family: monospace; font-size: 10px; color: white; opacity: 0.5;"></span>
+                    <p style="font-size:12px;color:var(--text-muted);margin-top:8px" id="peakHour"
+                        data-i18n="ana_start">Start a session to see data</p>
+                </div>
+                <div class="card">
+                    <h4 style="margin-bottom:16px" data-i18n="ana_top_tasks">Top Tasks by Time</h4>
+                    <div id="topTasks">
+                        <p style="font-size:13px;color:var(--text-muted)" data-i18n="ana_no_data">No data yet</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <h4 style="margin-bottom:16px" data-i18n="ana_week">This Week</h4>
+                    <div class="chart-bar-wrap" id="weekChart"></div>
+                    <p style="font-size:12px;color:var(--text-muted);margin-top:24px" id="weekSummary"
+                        data-i18n="ana_complete">Complete sessions to see weekly stats</p>
+                </div>
+                <div class="card">
+                    <h4 style="margin-bottom:16px" data-i18n="ana_ai">💡 AI Insights</h4>
+                    <div id="aiInsights">
+                        <p style="font-size:14px;color:var(--text-muted)" data-i18n="ana_ai_desc">Complete a few
+                            sessions to get personalized insights.</p>
                     </div>
                 </div>
             </div>
+            <div class="card" style="margin:24px">
+                <div
+                    style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px">
+                    <h4 data-i18n="ana_history">Session History</h4>
+                    <div style="display:flex;gap:8px"><input type="date" id="filterFrom" class="onboard-input"
+                            style="width:auto;margin:0;padding:8px 12px;font-size:12px"><input type="date" id="filterTo"
+                            class="onboard-input" style="width:auto;margin:0;padding:8px 12px;font-size:12px"><button
+                            class="btn btn-ghost btn-sm" onclick="filterHistory()"
+                            data-i18n="btn_filter">Filter</button></div>
+                </div>
+                <table class="sessions-table">
+                    <thead>
+                        <tr>
+                            <th data-i18n="th_date">Date</th>
+                            <th data-i18n="th_task">Task</th>
+                            <th data-i18n="th_dur">Duration</th>
+                            <th data-i18n="th_focus">Focus</th>
+                            <th data-i18n="th_dist">Distractions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyBody"></tbody>
+                </table>
+                <div class="pagination" id="historyPagination"></div>
+            </div>
+        </div>
+    </div>
 
-            <div class="reveal"
-                style="margin-top: 40px; padding: 32px; background: var(--accent-glow); border: 1px solid rgba(99, 102, 241, 0.1); border-radius: 32px; display: flex; align-items: center; gap: 24px;">
-                <div style="font-size: 40px;">🛡️</div>
-                <div>
-                    <h3 style="margin-bottom: 4px;">Privacy Protected</h3>
-                    <p style="color: var(--text-muted); font-size: 14px;">Every frame is analyzed purely in your
-                        browser. No video data or images ever leave this device.</p>
+    <!-- ACHIEVEMENTS -->
+    <div class="view" id="achievements">
+        <div style="padding:24px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+                <h2 style="font-size:24px;font-weight:800" data-i18n="ach_title">🏆 Achievements</h2>
+                <button class="btn btn-ghost btn-sm" onclick="showView('dashboard')" data-i18n="btn_back">←
+                    Back</button>
+            </div>
+            <div class="level-bar">
+                <h3 id="levelTitle">Focus Novice</h3>
+                <div class="level-info"><span id="levelXP">0 XP</span><span id="levelNext">100 XP to next</span></div>
+                <div class="progress-bar">
+                    <div class="progress-bar-fill" id="levelBar" style="width:0%"></div>
+                </div>
+            </div>
+            <div class="achievements-grid" id="achievementsGrid"></div>
+        </div>
+    </div>
+
+    <!-- SETTINGS MODAL -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+                <h2 data-i18n="set_title">⚙️ Settings</h2>
+                <button class="btn btn-ghost btn-sm" onclick="closeSettings()">✕</button>
+            </div>
+            <div class="modal-section">
+                <h4 data-i18n="set_timer">Timer Mode</h4>
+                <div class="timer-modes" style="margin-bottom:12px">
+                    <button class="mode-btn active" onclick="setMode('pomodoro',this)">🍅 Pomodoro 25/5</button>
+                    <button class="mode-btn" onclick="setMode('deep',this)">🧠 Deep Work 90/20</button>
+                </div>
+                <div><label style="font-size:13px;color:var(--text-muted)" data-i18n="set_custom">Custom
+                        (minutes):</label><input type="number" class="onboard-input"
+                        style="width:100px;margin:8px 0;padding:8px 12px;text-align:center" id="customMinutes"
+                        value="25" min="1" max="180" onchange="setCustomTime()"></div>
+            </div>
+            <div class="modal-section">
+                <h4 data-i18n="set_sens">Focus Sensitivity</h4>
+                <div class="slider-row"><input type="range" min="1" max="5" value="3" id="sensitivitySlider"
+                        oninput="updateSensitivity()">
+                    <p style="font-size:12px;color:var(--text-muted)" id="sensitivityLabel" data-i18n="set_sens_label">
+                        Away for 3s = distraction</p>
+                </div>
+            </div>
+            <div class="modal-section">
+                <h4 data-i18n="set_sounds">🎵 Ambient Sounds</h4>
+                <div class="timer-modes" style="margin-bottom:12px">
+                    <button class="mode-btn active" onclick="setSound('none',this)" data-i18n="snd_none">None</button>
+                    <button class="mode-btn" onclick="setSound('rain',this)" data-i18n="snd_rain">🌧 Rain</button>
+                    <button class="mode-btn" onclick="setSound('lofi',this)" data-i18n="snd_lofi">🎵 Lo-fi</button>
+                    <button class="mode-btn" onclick="setSound('white',this)" data-i18n="snd_white">📻 White
+                        Noise</button>
+                </div>
+                <div class="volume-row"><span style="font-size:13px" data-i18n="set_vol">Volume</span><input
+                        type="range" min="0" max="100" value="30" id="volumeSlider" oninput="setVolume(this.value)">
+                </div>
+            </div>
+            <div class="modal-section">
+                <h4 data-i18n="set_notif">🔔 Notifications</h4>
+                <div class="toggle-row"><span data-i18n="set_browser_notif">Browser notifications</span><button
+                        class="switch" onclick="requestNotifPermission();this.classList.toggle('on')"></button></div>
+                <div class="toggle-row"><span data-i18n="set_beep">Distraction beep</span><button class="switch on"
+                        id="beepSwitch"
+                        onclick="this.classList.toggle('on');AppState.settings.beepOnDistraction=this.classList.contains('on');saveState()"></button>
+                </div>
+            </div>
+            <div class="modal-section">
+                <h4 data-i18n="set_data">💾 Data</h4>
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                    <button class="btn btn-ghost btn-sm" onclick="exportData()" data-i18n="set_export">📤 Export
+                        JSON</button>
+                    <button class="btn btn-ghost btn-sm" onclick="document.getElementById('importInput').click()"
+                        data-i18n="set_import">📥 Import JSON</button>
+                    <input type="file" id="importInput" accept=".json" style="display:none"
+                        onchange="importData(event)">
+                    <button class="btn btn-danger btn-sm" onclick="clearData()" data-i18n="set_clear">🗑 Clear
+                        All</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="assets/js/api.js"></script>
+    <!-- SESSION REPORT -->
+    <div class="report-overlay" id="reportOverlay">
+        <div class="report-card" id="reportCard">
+            <h2 data-i18n="rep_title">🎉 Session Complete!</h2>
+            <div class="report-stats">
+                <div class="report-stat">
+                    <div class="val" id="repDuration">0m</div>
+                    <div class="label" data-i18n="rep_dur">Duration</div>
+                </div>
+                <div class="report-stat">
+                    <div class="val" id="repFocus">0%</div>
+                    <div class="label" data-i18n="rep_focus">Focus Score</div>
+                </div>
+                <div class="report-stat">
+                    <div class="val" id="repDistractions">0</div>
+                    <div class="label" data-i18n="rep_dist">Distractions</div>
+                </div>
+                <div class="report-stat">
+                    <div class="val" id="repAway">0s</div>
+                    <div class="label" data-i18n="rep_away">Away Time</div>
+                </div>
+            </div>
+            <p id="repComparison" style="font-size:14px;color:var(--success);font-weight:600"></p>
+            <p class="report-quote" id="repQuote"></p>
+            <div class="report-btns">
+                <button class="btn btn-ghost" onclick="startBreak()" data-i18n="rep_break">😌 Take Break</button>
+                <button class="btn btn-primary" onclick="closeReport();startSession()" data-i18n="rep_next">▶ Next
+                    Session</button>
+                <button class="btn btn-ghost" onclick="closeReport()" data-i18n="rep_done">Done for Today</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BREAK -->
+    <div class="report-overlay" id="breakOverlay">
+        <div class="report-card break-screen">
+            <h2 data-i18n="brk_title">😌 Break Time</h2>
+            <p style="color:var(--text-muted);margin-bottom:16px" data-i18n="brk_desc">Relax. Breathe. You earned it.
+            </p>
+            <div class="timer-time"><span class="time" id="breakTimer" style="font-size:48px">5:00</span></div>
+            <div class="breathing-circle"></div>
+            <p style="font-size:13px;color:var(--text-muted)" data-i18n="brk_breathe">Breathe in... hold... breathe
+                out...</p>
+            <button class="btn btn-ghost" style="margin-top:24px" onclick="skipBreak()" data-i18n="brk_skip">Skip Break
+                →</button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
     <script src="assets/js/face-api.min.js"></script>
-    <script src="assets/js/i18n.js"></script>
-    <script src="assets/js/utils.js"></script>
-    <script src="assets/js/app.js"></script>
+    <script>
+        // ===== i18n =====
+        const APP_LANG = {
+            en: {},
+            ru: {
+                ob_name_h: '👋 Как вас зовут?', ob_name_p: 'Мы настроим ваш опыт.', ob_name_ph: 'Введите имя', ob_continue: 'Продолжить →',
+                ob_act_h: '💼 Чем вы занимаетесь?', ob_act_p: 'Выберите всё подходящее.',
+                ob_deep: '🧠 Глубокая работа', ob_learn: '📚 Обучение', ob_write: '✍️ Написание', ob_code: '💻 Программирование', ob_creative: '🎨 Творчество',
+                ob_cam_h: '📷 Включить камеру?', ob_cam_p: 'Отслеживание головы определяет, когда вы отводите взгляд. Обработка локальная. Видео не сохраняется.',
+                ob_cam_allow: 'Разрешить камеру', ob_cam_skip: 'Пропустить',
+                ob_ready_h: '🚀 Вы готовы!', ob_ready_p: 'Начнём фокусироваться.', ob_ready_btn: 'Открыть панель →',
+                dash_tasks: '📋 Задачи на сегодня', dash_add_task: '+ Добавить задачу', dash_no_task: 'Задача не выбрана',
+                dash_stats: '📈 Статистика', stat_focus: 'Оценка фокуса', stat_away: 'Время отсутствия', stat_dist: 'Отвлечения', stat_recent: 'Недавние отвлечения', stat_none: 'Пока нет',
+                cam_none: 'Нет камеры', cam_tracking: 'Отслеживание', cam_away: 'Отвёл взгляд', cam_loading: 'Загрузка модели...',
+                btn_start: '▶ Старт', btn_pause: '⏸ Пауза', btn_resume: '▶ Продолжить', btn_stop: '⏹ Стоп', btn_back: '← Назад', btn_filter: 'Фильтр', btn_toggle_cam: '�� Камера',
+                bs_deep: 'Глубокая работа', bs_sessions: 'Сессий', bs_streak: 'Дней подряд', bs_focus: 'Фокус',
+                ana_title: '📊 Аналитика', ana_timeline: 'Шкала дня', ana_top_tasks: 'Топ задач', ana_no_data: 'Данных нет', ana_week: 'Эта неделя', ana_complete: 'Завершите сессии', ana_ai: '💡 AI-инсайты', ana_ai_desc: 'Завершите сессии для инсайтов.', ana_history: 'История', ana_start: 'Начните сессию',
+                th_date: 'Дата', th_task: 'Задача', th_dur: 'Время', th_focus: 'Фокус', th_dist: 'Отвл.',
+                ach_title: '🏆 Достижения',
+                set_title: '⚙️ Настройки', set_timer: 'Таймер', set_custom: 'Свой (мин):', set_sens: 'Чувствительность', set_sens_label: '3с отсутствия = отвлечение',
+                set_sounds: '🎵 Звуки', snd_none: 'Нет', snd_rain: '🌧 Дождь', snd_lofi: '🎵 Lo-fi', snd_white: '📻 Белый шум', set_vol: 'Громкость',
+                set_notif: '🔔 Уведомления', set_browser_notif: 'Уведомления браузера', set_beep: 'Звук отвлечения',
+                set_data: '💾 Данные', set_export: '📤 Экспорт', set_import: '�� Импорт', set_clear: '🗑 Очистить',
+                rep_title: '🎉 Сессия завершена!', rep_dur: 'Время', rep_focus: 'Фокус', rep_dist: 'Отвлечения', rep_away: 'Отсутствие',
+                rep_break: '😌 Перерыв', rep_next: '▶ Следующая', rep_done: 'Готово',
+                brk_title: '😌 Перерыв', brk_desc: 'Расслабьтесь. Дышите.', brk_breathe: 'Вдох... задержка... выдох...', brk_skip: 'Пропустить →',
+                task_prompt: 'Название задачи:', toast_welcome: '🎉 Добро пожаловать, ',
+                ach_first: 'Первая сессия', ach_first_d: 'Завершите первую сессию',
+                ach_streak5: '5 дней', ach_streak5_d: '5 дней подряд', ach_streak10: '10 дней', ach_streak10_d: '10 дней подряд', ach_streak30: '30 дней', ach_streak30_d: '30 дней подряд',
+                ach_hours10: '10 часов', ach_hours10_d: '10 часов фокуса', ach_hours50: '50 часов', ach_hours50_d: '50 часов',
+                ach_deepworker: 'Глубокий работник', ach_deepworker_d: '90-мин сессия', ach_laser: 'Лазер', ach_laser_d: 'Без отвлечений',
+                ach_marathon: 'Марафон', ach_marathon_d: '5 сессий за день', ach_earlybird: 'Ранняя пташка', ach_earlybird_d: 'До 8:00', ach_nightowl: 'Ночная сова', ach_nightowl_d: 'После 22:00', ach_unlock: '🏆 '
+            },
+            kz: {
+                ob_name_h: '👋 Сіздің атыңыз?', ob_name_p: 'Тәжірибеңізді реттейміз.', ob_name_ph: 'Атыңыз', ob_continue: 'Жалғастыру →',
+                ob_act_h: '💼 Немен айналысасыз?', ob_act_p: 'Сәйкесін таңдаңыз.',
+                ob_deep: '🧠 Терең жұмыс', ob_learn: '📚 Оқу', ob_write: '✍️ Жазу', ob_code: '💻 Бағдарлама', ob_creative: '🎨 Шығармашылық',
+                ob_cam_h: '📷 Камераны қосу?', ob_cam_p: 'Бас қадағалау көзіңізді бұрғаныңызды анықтайды. Деректер жергілікті.',
+                ob_cam_allow: 'Камераға рұқсат', ob_cam_skip: 'Қазір емес',
+                ob_ready_h: '🚀 Дайынсыз!', ob_ready_p: 'Фокустануды бастаймыз.', ob_ready_btn: 'Тақтаны ашу →',
+                dash_tasks: '📋 Бүгінгі тапсырмалар', dash_add_task: '+ Тапсырма қосу', dash_no_task: 'Тапсырма жоқ',
+                dash_stats: '📈 Статистика', stat_focus: 'Фокус ұпайы', stat_away: 'Алыс уақыты', stat_dist: 'Алаңдаулар', stat_recent: 'Соңғы алаңдаулар', stat_none: 'Әлі жоқ',
+                cam_none: 'Камера жоқ', cam_tracking: 'Бақылау', cam_away: 'Көз бұрды', cam_loading: 'Модель жүктелуде...',
+                btn_start: '▶ Бастау', btn_pause: '⏸ Тоқтату', btn_resume: '▶ Жалғастыру', btn_stop: '⏹ Тоқтату', btn_back: '← Артқа', btn_filter: 'Сүзгі', btn_toggle_cam: '📷 Камера',
+                bs_deep: 'Терең жұмыс', bs_sessions: 'Сессиялар', bs_streak: 'Күн серия', bs_focus: 'Фокус',
+                ana_title: '📊 Аналитика', ana_timeline: 'Уақыт шкаласы', ana_top_tasks: 'Тапсырмалар', ana_no_data: 'Деректер жоқ', ana_week: 'Апта', ana_complete: 'Сессияларды аяқтаңыз', ana_ai: '💡 AI', ana_ai_desc: 'Инсайттар үшін сессияларды аяқтаңыз.', ana_history: 'Тарих', ana_start: 'Сессия бастаңыз',
+                th_date: 'Күні', th_task: 'Тапсырма', th_dur: 'Уақыт', th_focus: 'Фокус', th_dist: 'Алаңдау',
+                ach_title: '🏆 Жетістіктер',
+                set_title: '⚙️ Баптаулар', set_timer: 'Таймер', set_custom: 'Өзіндік (мин):', set_sens: 'Сезімталдық', set_sens_label: '3с алыс = алаңдау',
+                set_sounds: '🎵 Дыбыстар', snd_none: 'Жоқ', snd_rain: '🌧 Жаңбыр', snd_lofi: '🎵 Lo-fi', snd_white: '📻 Ақ шу', set_vol: 'Дыбыс',
+                set_notif: '🔔 Хабарлар', set_browser_notif: 'Браузер хабарлары', set_beep: 'Алаңдау дыбысы',
+                set_data: '💾 Деректер', set_export: '📤 Экспорт', set_import: '📥 Импорт', set_clear: '🗑 Тазалау',
+                rep_title: '🎉 Сессия аяқталды!', rep_dur: 'Уақыт', rep_focus: 'Фокус', rep_dist: 'Алаңдау', rep_away: 'Алыс',
+                rep_break: '😌 Үзіліс', rep_next: '▶ Келесі', rep_done: 'Аяқталды',
+                brk_title: '😌 Үзіліс', brk_desc: 'Демалыңыз. Тыныстаңыз.', brk_breathe: 'Кіріс... ұстау... шығыс...', brk_skip: 'Өткізу →',
+                task_prompt: 'Тапсырма атауы:', toast_welcome: '🎉 Қош келдіңіз, ',
+                ach_first: 'Бірінші сессия', ach_first_d: 'Бірінші сессия аяқтаңыз',
+                ach_streak5: '5 күн', ach_streak5_d: '5 күн қатарынан', ach_streak10: '10 күн', ach_streak10_d: '10 күн', ach_streak30: '30 күн', ach_streak30_d: '30 күн',
+                ach_hours10: '10 сағат', ach_hours10_d: '10 сағат', ach_hours50: '50 сағат', ach_hours50_d: '50 сағат',
+                ach_deepworker: 'Терең жұмысшы', ach_deepworker_d: '90 мин сессия', ach_laser: 'Лазер', ach_laser_d: 'Алаңдаусыз',
+                ach_marathon: 'Марафон', ach_marathon_d: '5 сессия бір күнде', ach_earlybird: 'Ерте құс', ach_earlybird_d: '8:00 дейін', ach_nightowl: 'Түнгі жапалақ', ach_nightowl_d: '22:00 кейін', ach_unlock: '🏆 '
+            }
+        };
+        let currentLang = 'en';
+        function T(k) { return (APP_LANG[currentLang] || {})[k] || null }
+        function setLang(l) {
+            currentLang = l; localStorage.setItem('nazar-lang', l);
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent.trim().toLowerCase() === l));
+            document.documentElement.lang = l === 'kz' ? 'kk' : l;
+            if (l === 'en') { document.querySelectorAll('[data-i18n]').forEach(el => { if (el._o) el.innerHTML = el._o }); document.querySelectorAll('[data-i18n-placeholder]').forEach(el => { if (el._op) el.placeholder = el._op }); return }
+            const d = APP_LANG[l] || {};
+            document.querySelectorAll('[data-i18n]').forEach(el => { if (!el._o) el._o = el.innerHTML; if (d[el.getAttribute('data-i18n')]) el.innerHTML = d[el.getAttribute('data-i18n')] });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => { if (!el._op) el._op = el.placeholder; if (d[el.getAttribute('data-i18n-placeholder')]) el.placeholder = d[el.getAttribute('data-i18n-placeholder')] })
+        }
+
+        // ===== STATE =====
+        const DEF = { user: { name: '', activities: [], onboarded: false }, sessions: [], tasks: [], stats: { totalXP: 0, streak: 0, lastSessionDate: null }, achievements: {}, settings: { mode: 'pomodoro', workMin: 25, breakMin: 5, sensitivity: 3, autoStart: false, sound: 'none', volume: 30, beepOnDistraction: true } };
+        let AppState = JSON.parse(JSON.stringify(DEF));
+        function saveState() { localStorage.setItem('nazarapp-state', JSON.stringify(AppState)) }
+        function loadState() { const s = localStorage.getItem('nazarapp-state'); if (s) { try { AppState = { ...JSON.parse(JSON.stringify(DEF)), ...JSON.parse(s) } } catch (e) { } } updateUI() }
+
+        // ===== VIEWS =====
+        function showView(id) { document.querySelectorAll('.view').forEach(v => v.classList.remove('active')); const el = document.getElementById(id); if (el) el.classList.add('active'); if (id === 'analytics') renderAnalytics(); if (id === 'achievements') renderAchievements(); if (id === 'dashboard') updateUI() }
+
+        // ===== ONBOARDING =====
+        function nextOnboard(s) {
+            document.querySelectorAll('.onboard-step').forEach(x => x.classList.remove('active')); document.getElementById('step' + s).classList.add('active'); document.getElementById('onboardProgress').style.width = (s * 25) + '%';
+            if (s === 2) { AppState.user.name = document.getElementById('onboardName').value.trim() || 'Focus Hero' }
+            if (s === 3) { AppState.user.activities = [...document.querySelectorAll('.pill-btn.selected')].map(b => b.textContent.trim()) }
+        }
+        function completeOnboard() { AppState.user.onboarded = true; saveState(); showView('dashboard'); showToast((T('toast_welcome') || '🎉 Welcome, ') + AppState.user.name + '!') }
+
+        // ===== FACE DETECTION WITH face-api.js =====
+        let cameraStream = null, faceDetectionReady = false, isAway = false, awayStart = 0;
+        let awayAccum = 0, distractions = 0, distractionLogs = [];
+        let faceLoop = null, modelsLoaded = false, videoEl = null;
+        let noFaceFrames = 0;
+        const NO_FACE_THRESHOLD = 3; // 3 consecutive frames (x500ms = 1.5s) without face = away
+
+        function setModelStatus(state, text) {
+            const el = document.getElementById('modelStatus');
+            el.style.display = 'inline-flex'; el.className = 'model-status ' + state; el.textContent = text;
+        }
+
+        async function requestCamera() {
+            try {
+                cameraStream = await navigator.mediaDevices.getUserMedia({ video: { width: 320, height: 240, facingMode: 'user' } });
+                videoEl = document.getElementById('previewVideo');
+                if (videoEl) { videoEl.srcObject = cameraStream; videoEl.play() }
+                document.getElementById('cameraDot').classList.add('green');
+                document.getElementById('cameraLabel').textContent = T('cam_loading') || 'Loading model...';
+                setModelStatus('loading', '⏳ Loading face model...');
+                // Load face-api.js models from local assets
+                if (typeof faceapi !== 'undefined' && !modelsLoaded) {
+                    try {
+                        await faceapi.nets.tinyFaceDetector.loadFromUri('assets/models');
+                        await faceapi.nets.faceLandmark68Net.loadFromUri('assets/models');
+                        modelsLoaded = true; faceDetectionReady = true;
+                        document.getElementById('cameraLabel').textContent = T('cam_tracking') || 'Tracking';
+                        setModelStatus('ready', '✅ Face model ready');
+                        showToast('✅ Face model loaded — real tracking active!');
+                        startFaceLoop();
+                    } catch (err) {
+                        console.error('Model load error:', err);
+                        faceDetectionReady = false;
+                        document.getElementById('cameraLabel').textContent = 'Model error';
+                        setModelStatus('error', '❌ Model failed: ' + err.message);
+                    }
+                } else if (modelsLoaded) {
+                    faceDetectionReady = true;
+                    document.getElementById('cameraLabel').textContent = T('cam_tracking') || 'Tracking';
+                    setModelStatus('ready', '✅ Face model ready');
+                    startFaceLoop();
+                }
+            } catch (e) {
+                document.getElementById('cameraDot').classList.remove('green');
+                document.getElementById('cameraLabel').textContent = T('cam_none') || 'No Camera';
+                setModelStatus('error', '❌ Camera denied');
+                showToast('Camera not available — grant permission and retry');
+            }
+        }
+
+        // ===== REAL FACE DETECTION LOOP =====
+        function startFaceLoop() {
+            if (faceLoop) cancelAnimationFrame(faceLoop);
+            if (!videoEl || !modelsLoaded) return;
+            const options = new faceapi.TinyFaceDetectorOptions({ inputSize: 224, scoreThreshold: 0.35 });
+            let lastDetect = 0;
+            async function detect(ts) {
+                faceLoop = requestAnimationFrame(detect);
+                if (ts - lastDetect < 500) return; // run every 500ms
+                lastDetect = ts;
+                if (!timerRunning || timerPaused || videoEl.readyState < 2) return;
+                try {
+                    const result = await faceapi.detectSingleFace(videoEl, options).withFaceLandmarks();
+                    if (result) {
+                        // Got face — analyze head orientation
+                        const lm = result.landmarks;
+                        const nose = lm.getNose();
+                        const le = lm.getLeftEye(), re = lm.getRightEye();
+                        // Eye centers
+                        const lec = { x: le.reduce((a, p) => a + p.x, 0) / le.length, y: le.reduce((a, p) => a + p.y, 0) / le.length };
+                        const rec = { x: re.reduce((a, p) => a + p.x, 0) / re.length, y: re.reduce((a, p) => a + p.y, 0) / re.length };
+                        const eyeMidX = (lec.x + rec.x) / 2;
+                        const eyeMidY = (lec.y + rec.y) / 2;
+                        const faceW = Math.abs(rec.x - lec.x);
+                        // Nose tip = nose[3], nose bridge bottom = nose[6]
+                        const noseX = nose[3].x;
+                        const noseY = nose[6] ? nose[6].y : nose[nose.length - 1].y;
+                        // Horizontal turn ratio (0=centered, >0.35=looking away)
+                        const hTurn = Math.abs(noseX - eyeMidX) / Math.max(faceW, 1);
+                        // Vertical ratio (looking down)
+                        const vRatio = (noseY - eyeMidY) / Math.max(faceW, 1);
+                        if (hTurn > 0.35 || vRatio > 1.8) {
+                            noFaceFrames++;
+                        } else {
+                            // Face is present and looking at screen
+                            if (noFaceFrames > 0) noFaceFrames = 0;
+                            if (isAway) {
+                                // Was away, now back — record distraction
+                                const dur = (Date.now() - awayStart) / 1000;
+                                if (dur > AppState.settings.sensitivity) {
+                                    distractions++; awayAccum += dur;
+                                    distractionLogs.unshift({ time: new Date().toLocaleTimeString(), dur: Math.round(dur) + 's' });
+                                    if (distractionLogs.length > 5) distractionLogs.pop();
+                                    if (AppState.settings.beepOnDistraction) playBeep();
+                                }
+                                isAway = false;
+                            }
+                        }
+                    } else {
+                        // No face detected
+                        noFaceFrames++;
+                    }
+                    // Mark as away after N consecutive frames without face
+                    if (noFaceFrames >= NO_FACE_THRESHOLD && !isAway) {
+                        isAway = true; awayStart = Date.now();
+                    }
+                } catch (err) { console.warn('Face detect err:', err) }
+            }
+            faceLoop = requestAnimationFrame(detect);
+        }
+        function stopFaceLoop() { if (faceLoop) { cancelAnimationFrame(faceLoop); faceLoop = null } }
+
+        // ===== TIMER =====
+        let timerInterval = null, timerRunning = false, timerPaused = false, timeLeft = 1500, totalTime = 1500;
+        function setMode(m, btn) {
+            if (timerRunning) return; AppState.settings.mode = m;
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active')); if (btn) btn.classList.add('active');
+            if (m === 'pomodoro') { AppState.settings.workMin = 25; AppState.settings.breakMin = 5 } else if (m === 'deep') { AppState.settings.workMin = 90; AppState.settings.breakMin = 20 }
+            timeLeft = AppState.settings.workMin * 60; totalTime = timeLeft; updateTimerDisplay(); saveState()
+        }
+        function setCustomTime() { const m = parseInt(document.getElementById('customMinutes').value) || 25; AppState.settings.workMin = m; AppState.settings.mode = 'custom'; timeLeft = m * 60; totalTime = timeLeft; updateTimerDisplay(); saveState() }
+        function updateTimerDisplay() {
+            const m = Math.floor(timeLeft / 60), s = timeLeft % 60; document.getElementById('timerDisplay').textContent = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+            const c = 2 * Math.PI * 110, o = c * (1 - timeLeft / totalTime); document.getElementById('timerRing').style.strokeDasharray = c; document.getElementById('timerRing').style.strokeDashoffset = o
+        }
+
+        function startSession() {
+            if (timerRunning && !timerPaused) return;
+            if (timerPaused) { timerPaused = false; timerInterval = setInterval(tick, 1000); document.getElementById('pauseBtn').innerHTML = T('btn_pause') || '⏸ Pause'; return }
+            timeLeft = AppState.settings.workMin * 60; totalTime = timeLeft; timerRunning = true; timerPaused = false;
+            distractions = 0; awayAccum = 0; distractionLogs = []; isAway = false; noFaceFrames = 0;
+            document.getElementById('startBtn').style.display = 'none'; document.getElementById('pauseBtn').style.display = ''; document.getElementById('stopBtn').style.display = '';
+            document.getElementById('distractionCount').textContent = '0'; document.getElementById('awayCounter').textContent = '0s';
+            document.getElementById('focusScore').textContent = '100'; document.getElementById('focusBar').style.width = '100%';
+            document.getElementById('focusBorder').classList.add('tracking');
+            if (AppState.settings.sound !== 'none') startAmbientSound();
+            timerInterval = setInterval(tick, 1000); updateTimerDisplay()
+        }
+
+        function tick() {
+            if (timeLeft <= 0) { clearInterval(timerInterval); timerRunning = false; endSession(); return }
+            timeLeft--;
+            // UI update based on face detection state (detection runs in startFaceLoop)
+            // Show total accumulated away time (past + current episode)
+            const currentAwayDur = isAway ? ((Date.now() - awayStart) / 1000) : 0;
+            const totalAway = Math.round(awayAccum + currentAwayDur);
+            const awayMin = Math.floor(totalAway / 60);
+            const awaySec = totalAway % 60;
+            document.getElementById('awayCounter').textContent = awayMin > 0 ? (awayMin + 'm ' + awaySec + 's') : (totalAway + 's');
+            if (isAway) {
+                document.getElementById('focusBorder').className = 'away';
+                document.getElementById('cameraDot').className = 'camera-dot yellow';
+                document.getElementById('cameraLabel').textContent = T('cam_away') || 'Looking Away';
+            } else {
+                if (faceDetectionReady) {
+                    document.getElementById('focusBorder').className = 'tracking';
+                    document.getElementById('cameraDot').className = 'camera-dot green';
+                    document.getElementById('cameraLabel').textContent = T('cam_tracking') || 'Tracking';
+                }
+            }
+            const el = totalTime - timeLeft, fp = el > 0 ? Math.max(0, Math.round((1 - awayAccum / el) * 100)) : 100;
+            document.getElementById('focusScore').textContent = fp; document.getElementById('focusBar').style.width = fp + '%';
+            document.getElementById('distractionCount').textContent = distractions;
+            renderDistractionLog(); updateTimerDisplay()
+        }
+
+        function pauseSession() {
+            if (!timerRunning) return;
+            if (!timerPaused) { timerPaused = true; clearInterval(timerInterval); document.getElementById('pauseBtn').innerHTML = T('btn_resume') || '▶ Resume' }
+            else { timerPaused = false; timerInterval = setInterval(tick, 1000); document.getElementById('pauseBtn').innerHTML = T('btn_pause') || '⏸ Pause' }
+        }
+        function stopSession() { clearInterval(timerInterval); timerRunning = false; timerPaused = false; endSession() }
+
+        function endSession() {
+            stopAmbientSound(); document.getElementById('focusBorder').className = '';
+            document.getElementById('startBtn').style.display = ''; document.getElementById('pauseBtn').style.display = 'none'; document.getElementById('stopBtn').style.display = 'none';
+            const elapsed = totalTime - timeLeft, fp = elapsed > 0 ? Math.max(0, Math.round((1 - awayAccum / elapsed) * 100)) : 100;
+            const at = AppState.tasks.find(t => t.active);
+            const session = { id: Date.now(), date: new Date().toISOString(), task: at ? at.name : 'Untitled', duration: elapsed, focusScore: fp, distractions, awayTime: Math.round(awayAccum) };
+            AppState.sessions.push(session);
+            let xp = 10; if (elapsed >= 5400) xp += 25; if (distractions === 0) xp += 20; AppState.stats.totalXP = (AppState.stats.totalXP || 0) + xp;
+            const today = new Date().toDateString();
+            if (AppState.stats.lastSessionDate !== today) { const y = new Date(Date.now() - 86400000).toDateString(); AppState.stats.streak = AppState.stats.lastSessionDate === y ? (AppState.stats.streak || 0) + 1 : 1; AppState.stats.lastSessionDate = today }
+            if (at) at.pomos = (at.pomos || 0) + 1;
+            saveState(); checkAchievements(session); showReport(session); timeLeft = AppState.settings.workMin * 60; totalTime = timeLeft; updateTimerDisplay(); updateUI()
+        }
+
+        function renderDistractionLog() {
+            const ul = document.getElementById('distractionLog');
+            if (distractionLogs.length === 0) { ul.innerHTML = '<li style="color:var(--text-muted)">' + (T('stat_none') || 'None yet') + '</li>'; return }
+            ul.innerHTML = distractionLogs.map(d => '<li>' + d.time + ' — ' + d.dur + '</li>').join('')
+        }
+
+        // ===== TASKS =====
+        function addTask() { const n = prompt(T('task_prompt') || 'Task name:'); if (!n) return; AppState.tasks.push({ id: Date.now(), name: n, completed: false, active: false, pomos: 0 }); saveState(); renderTasks() }
+        function toggleTask(id) { AppState.tasks.forEach(t => { t.active = t.id === id && !t.active }); saveState(); renderTasks(); updateActiveLabel() }
+        function completeTask(id) { const t = AppState.tasks.find(t => t.id === id); if (t) t.completed = !t.completed; saveState(); renderTasks() }
+        function deleteTask(id) { AppState.tasks = AppState.tasks.filter(t => t.id !== id); saveState(); renderTasks(); updateActiveLabel() }
+        function renderTasks() {
+            const el = document.getElementById('taskList'); if (!el) return;
+            el.innerHTML = AppState.tasks.map(t => '<div class="task-item ' + (t.active ? 'active' : '') + ' ' + (t.completed ? 'completed' : '') + '" data-id="' + t.id + '"><div class="task-check" onclick="event.stopPropagation();completeTask(' + t.id + ')">' + (t.completed ? '✓' : '') + '</div><div class="task-name" onclick="toggleTask(' + t.id + ')">' + t.name + '</div><div class="task-pomos">' + Array(Math.min(t.pomos || 0, 5)).fill('<span class="done"></span>').join('') + Array(Math.max(0, 3 - (t.pomos || 0))).fill('<span></span>').join('') + '</div><button class="task-delete" onclick="event.stopPropagation();deleteTask(' + t.id + ')">✕</button></div>').join('')
+        }
+        function updateActiveLabel() { const t = AppState.tasks.find(t => t.active); document.getElementById('activeTaskLabel').textContent = t ? t.name : (T('dash_no_task') || 'No task selected') }
+
+        // ===== REPORT =====
+        const quotes = { en: ["Focus is the new superpower.", "Deep work is rare. Deep work is valuable.", "Where focus goes, energy flows."], ru: ["Фокус — новая суперсила.", "Глубокая работа — редкость и ценность.", "Куда фокус — туда энергия."], kz: ["Фокус — жаңа суперкүш.", "Терең жұмыс — сирек және құнды.", "Фокус қайда — энергия сонда."] };
+        function showReport(s) {
+            document.getElementById('repDuration').textContent = Math.round(s.duration / 60) + 'm'; document.getElementById('repFocus').textContent = s.focusScore + '%';
+            document.getElementById('repDistractions').textContent = s.distractions; document.getElementById('repAway').textContent = s.awayTime + 's';
+            const prev = AppState.sessions[AppState.sessions.length - 2];
+            document.getElementById('repComparison').textContent = prev ? (s.focusScore > prev.focusScore ? '📈 Better!' : 'Keep pushing!') : '🎯 Great first session!';
+            const q = quotes[currentLang] || quotes.en; document.getElementById('repQuote').textContent = '"' + q[Math.floor(Math.random() * q.length)] + '"';
+            document.getElementById('reportOverlay').classList.add('open'); spawnConfetti()
+        }
+        function closeReport() { document.getElementById('reportOverlay').classList.remove('open') }
+        function spawnConfetti() { const c = ['#6C63FF', '#22C55E', '#F59E0B', '#EF4444', '#EC4899']; for (let i = 0; i < 40; i++) { const d = document.createElement('div'); d.className = 'confetti'; d.style.left = Math.random() * 100 + 'vw'; d.style.background = c[Math.floor(Math.random() * c.length)]; d.style.animationDuration = (2 + Math.random() * 2) + 's'; d.style.animationDelay = Math.random() * 0.5 + 's'; d.style.width = (6 + Math.random() * 8) + 'px'; d.style.height = (6 + Math.random() * 8) + 'px'; document.body.appendChild(d); setTimeout(() => d.remove(), 4000) } }
+
+        // ===== BREAK =====
+        let breakInt = null;
+        function startBreak() {
+            closeReport(); document.getElementById('breakOverlay').classList.add('open'); let b = AppState.settings.breakMin * 60;
+            document.getElementById('breakTimer').textContent = Math.floor(b / 60) + ':' + String(b % 60).padStart(2, '0');
+            breakInt = setInterval(() => { b--; if (b <= 0) { skipBreak(); return } document.getElementById('breakTimer').textContent = Math.floor(b / 60) + ':' + String(b % 60).padStart(2, '0') }, 1000)
+        }
+        function skipBreak() { clearInterval(breakInt); document.getElementById('breakOverlay').classList.remove('open'); if (AppState.settings.autoStart) startSession() }
+
+        // ===== AMBIENT SOUNDS =====
+        let audioCtx = null, ambientNode = null, gainNode = null;
+        function startAmbientSound() {
+            try {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)(); gainNode = audioCtx.createGain(); gainNode.gain.value = 0; gainNode.connect(audioCtx.destination);
+                const s = AppState.settings.sound; if (s === 'white' || s === 'rain') {
+                    const bs = 4096; ambientNode = audioCtx.createScriptProcessor(bs, 1, 1); const isR = s === 'rain'; let lp = 0;
+                    ambientNode.onaudioprocess = function (e) { const o = e.outputBuffer.getChannelData(0); for (let i = 0; i < bs; i++) { let n = Math.random() * 2 - 1; if (isR) { lp = lp * 0.98 + n * 0.02; n = lp * 8 } o[i] = n } }; ambientNode.connect(gainNode)
+                }
+                else if (s === 'lofi') { ambientNode = audioCtx.createOscillator(); ambientNode.type = 'sine'; ambientNode.frequency.value = 220; const l = audioCtx.createOscillator(); l.frequency.value = 0.5; const lg = audioCtx.createGain(); lg.gain.value = 20; l.connect(lg); lg.connect(ambientNode.frequency); l.start(); ambientNode.connect(gainNode); ambientNode.start() }
+                gainNode.gain.linearRampToValueAtTime((AppState.settings.volume || 30) / 100 * 0.3, audioCtx.currentTime + 3)
+            } catch (e) { }
+        }
+        function stopAmbientSound() { try { if (gainNode) gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1); setTimeout(() => { if (ambientNode) try { ambientNode.disconnect() } catch (e) { } if (audioCtx) { audioCtx.close(); audioCtx = null } }, 1500) } catch (e) { } }
+        function setVolume(v) { AppState.settings.volume = v; saveState(); if (gainNode && audioCtx) gainNode.gain.linearRampToValueAtTime(v / 100 * 0.3, audioCtx.currentTime + 0.1) }
+        function setSound(s, btn) { AppState.settings.sound = s; document.querySelectorAll('.modal-section .mode-btn').forEach(b => b.classList.remove('active')); if (btn) btn.classList.add('active'); saveState() }
+        function playBeep() { try { const c = new (window.AudioContext || window.webkitAudioContext)(), o = c.createOscillator(), g = c.createGain(); o.connect(g); g.connect(c.destination); o.frequency.value = 880; g.gain.value = 0.15; o.start(); o.stop(c.currentTime + 0.15); setTimeout(() => c.close(), 500) } catch (e) { } }
+
+        // ===== ACHIEVEMENTS =====
+        const ACHS = [
+            { id: 'first', icon: '🏁', n: 'ach_first', d: 'ach_first_d', en: 'First Session', ed: 'Complete first session' },
+            { id: 'streak5', icon: '🔥', n: 'ach_streak5', d: 'ach_streak5_d', en: '5-Day Streak', ed: '5 days in a row' },
+            { id: 'streak10', icon: '🔥', n: 'ach_streak10', d: 'ach_streak10_d', en: '10-Day Streak', ed: '10 days' },
+            { id: 'streak30', icon: '🔥', n: 'ach_streak30', d: 'ach_streak30_d', en: '30-Day Streak', ed: '30 days' },
+            { id: 'hours10', icon: '⏱', n: 'ach_hours10', d: 'ach_hours10_d', en: '10 Hours', ed: '10 hours of focus' },
+            { id: 'hours50', icon: '⏱', n: 'ach_hours50', d: 'ach_hours50_d', en: '50 Hours', ed: '50 hours' },
+            { id: 'deepworker', icon: '🧠', n: 'ach_deepworker', d: 'ach_deepworker_d', en: 'Deep Worker', ed: '90-min session' },
+            { id: 'laser', icon: '🎯', n: 'ach_laser', d: 'ach_laser_d', en: 'Laser Focus', ed: '0 distractions' },
+            { id: 'marathon', icon: '🏃', n: 'ach_marathon', d: 'ach_marathon_d', en: 'Marathon', ed: '5 sessions/day' },
+            { id: 'earlybird', icon: '🌅', n: 'ach_earlybird', d: 'ach_earlybird_d', en: 'Early Bird', ed: 'Before 8 AM' },
+            { id: 'nightowl', icon: '🦉', n: 'ach_nightowl', d: 'ach_nightowl_d', en: 'Night Owl', ed: 'After 10 PM' }];
+
+        function checkAchievements(ses) {
+            const a = AppState.achievements || {}; let nu = [];
+            if (!a.first && AppState.sessions.length >= 1) { a.first = true; nu.push('first') }
+            if (!a.streak5 && AppState.stats.streak >= 5) { a.streak5 = true; nu.push('streak5') }
+            if (!a.streak10 && AppState.stats.streak >= 10) { a.streak10 = true; nu.push('streak10') }
+            if (!a.streak30 && AppState.stats.streak >= 30) { a.streak30 = true; nu.push('streak30') }
+            const tH = AppState.sessions.reduce((s, x) => s + x.duration, 0) / 3600;
+            if (!a.hours10 && tH >= 10) { a.hours10 = true; nu.push('hours10') } if (!a.hours50 && tH >= 50) { a.hours50 = true; nu.push('hours50') }
+            if (!a.deepworker && ses.duration >= 5400) { a.deepworker = true; nu.push('deepworker') }
+            if (!a.laser && ses.distractions === 0 && ses.duration > 60) { a.laser = true; nu.push('laser') }
+            const ts = AppState.sessions.filter(s => new Date(s.date).toDateString() === new Date().toDateString());
+            if (!a.marathon && ts.length >= 5) { a.marathon = true; nu.push('marathon') }
+            const h = new Date(ses.date).getHours();
+            if (!a.earlybird && h < 8) { a.earlybird = true; nu.push('earlybird') }
+            if (!a.nightowl && h >= 22) { a.nightowl = true; nu.push('nightowl') }
+            AppState.achievements = a; saveState();
+            nu.forEach(id => { const x = ACHS.find(a => a.id === id); showToast((T('ach_unlock') || '🏆 ') + (T(x.n) || x.en)); spawnConfetti() })
+        }
+
+        function renderAchievements() {
+            document.getElementById('achievementsGrid').innerHTML = ACHS.map(a => '<div class="achievement ' + (AppState.achievements[a.id] ? 'unlocked' : '') + '"><div class="ach-icon">' + a.icon + '</div><h4>' + (T(a.n) || a.en) + '</h4><p>' + (T(a.d) || a.ed) + '</p></div>').join('');
+            const xp = AppState.stats.totalXP || 0;
+            const lvls = [{ n: 'Focus Novice', m: 0 }, { n: 'Practitioner', m: 100 }, { n: 'Expert', m: 300 }, { n: 'Master', m: 700 }, { n: 'Legend', m: 1500 }];
+            let lv = lvls[0], nx = lvls[1]; for (let i = lvls.length - 1; i >= 0; i--)if (xp >= lvls[i].m) { lv = lvls[i]; nx = lvls[i + 1] || { n: 'Max', m: lv.m + 1 }; break }
+            document.getElementById('levelTitle').textContent = lv.n; document.getElementById('levelXP').textContent = xp + ' XP';
+            document.getElementById('levelNext').textContent = Math.max(0, nx.m - xp) + ' XP → ' + nx.n; document.getElementById('levelBar').style.width = Math.min(100, ((xp - lv.m) / (nx.m - lv.m)) * 100) + '%'
+        }
+
+        // ===== ANALYTICS =====
+        function renderAnalytics() {
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], now = new Date(), wd = [];
+            for (let i = 6; i >= 0; i--) { const d = new Date(now); d.setDate(d.getDate() - i); const ds = d.toDateString(); wd.push({ day: days[d.getDay()], mins: AppState.sessions.filter(s => new Date(s.date).toDateString() === ds).reduce((a, s) => a + s.duration, 0) / 60 }) }
+            const mx = Math.max(...wd.map(d => d.mins), 1);
+            document.getElementById('weekChart').innerHTML = wd.map(d => '<div class="chart-bar" style="height:' + (d.mins / mx * 100) + '%"><span class="chart-bar-label">' + d.day + '</span></div>').join('');
+            const tw = wd.reduce((a, d) => a + d.mins, 0); document.getElementById('weekSummary').textContent = 'Total: ' + (tw / 60).toFixed(1) + 'h · Avg: ' + (tw / 7 / 60).toFixed(1) + 'h/day';
+            renderHistory(1)
+        }
+        function renderHistory(p) {
+            let f = [...AppState.sessions].reverse(); const from = document.getElementById('filterFrom').value, to = document.getElementById('filterTo').value;
+            if (from) f = f.filter(s => new Date(s.date) >= new Date(from)); if (to) f = f.filter(s => new Date(s.date) <= new Date(to + 'T23:59:59'));
+            const pp = 10, pages = Math.ceil(f.length / pp) || 1, sl = f.slice((p - 1) * pp, p * pp);
+            document.getElementById('historyBody').innerHTML = sl.map(s => '<tr><td>' + new Date(s.date).toLocaleDateString() + '</td><td>' + s.task + '</td><td>' + Math.round(s.duration / 60) + 'm</td><td>' + s.focusScore + '%</td><td>' + s.distractions + '</td></tr>').join('') || '<tr><td colspan="5" style="text-align:center;color:var(--text-muted)">' + (T('ana_no_data') || 'No data') + '</td></tr>';
+            document.getElementById('historyPagination').innerHTML = Array.from({ length: pages }, (_, i) => '<button class="page-btn ' + (i + 1 === p ? 'active' : '') + '" onclick="renderHistory(' + (i + 1) + ')">' + (i + 1) + '</button>').join('')
+        }
+        function filterHistory() { renderHistory(1) }
+
+        // ===== SETTINGS =====
+        function openSettings() { document.getElementById('settingsModal').classList.add('open') }
+        function closeSettings() { document.getElementById('settingsModal').classList.remove('open') }
+        function updateSensitivity() { const v = document.getElementById('sensitivitySlider').value; AppState.settings.sensitivity = parseInt(v); document.getElementById('sensitivityLabel').textContent = (currentLang === 'ru' ? v + 'с = отвлечение' : currentLang === 'kz' ? v + 'с = алаңдау' : 'Away ' + v + 's = distraction'); saveState() }
+        function requestNotifPermission() { if ('Notification' in window) Notification.requestPermission() }
+        function exportData() { const b = new Blob([JSON.stringify(AppState, null, 2)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'nazarapp-data.json'; a.click() }
+        function importData(e) { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = function (ev) { try { AppState = JSON.parse(ev.target.result); saveState(); updateUI(); showToast('✅ Imported!') } catch (err) { showToast('❌ Invalid file') } }; r.readAsText(f) }
+        function clearData() { if (confirm('Delete ALL data?')) { AppState = JSON.parse(JSON.stringify(DEF)); saveState(); location.reload() } }
+        function togglePreview() { const c = document.getElementById('videoPreviewCard'); c.style.display = c.style.display === 'none' ? 'block' : 'none' }
+
+        // ===== UI UPDATE =====
+        function updateUI() {
+            document.getElementById('topbarUser').textContent = AppState.user.name || ''; renderTasks(); updateActiveLabel();
+            const today = new Date().toDateString(), ts = AppState.sessions.filter(s => new Date(s.date).toDateString() === today), tm = ts.reduce((a, s) => a + s.duration, 0) / 60;
+            document.getElementById('todayDeep').textContent = Math.floor(tm / 60) + 'h ' + Math.round(tm % 60) + 'm';
+            document.getElementById('todaySessions').textContent = ts.length; document.getElementById('streakDays').textContent = AppState.stats.streak || 0;
+            document.getElementById('todayFocus').textContent = (ts.length ? Math.round(ts.reduce((a, s) => a + s.focusScore, 0) / ts.length) : 0) + '%';
+            timeLeft = AppState.settings.workMin * 60; totalTime = timeLeft; updateTimerDisplay()
+        }
+        function logout() { if (confirm('Log out?')) { AppState.user.onboarded = false; saveState(); location.reload() } }
+        function showToast(m) { const t = document.getElementById('toast'); t.textContent = m; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000) }
+
+        // ===== INIT =====
+        loadState();
+        if (!AppState.user.onboarded) showView('onboarding'); else showView('dashboard');
+        (function () { const s = localStorage.getItem('nazar-lang'); if (s && s !== 'en') setLang(s) })();
+        setInterval(saveState, 30000);
+    </script>
 </body>
 
-</html>-
+</html>
