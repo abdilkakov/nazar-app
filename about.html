@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Nazar — Team, Project, Contacts</title>
+    <meta name="description" content="About the Nazar project, our team, and how we're changing attention tracking." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        /* Extra styles for About page */
+        .about-section {
+            padding: 100px 0;
+        }
+
+        .about-h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            letter-spacing: -0.02em;
+            margin-bottom: 40px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 32px;
+        }
+
+        .team-card,
+        .contact-card,
+        .news-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 32px;
+            transition: transform 0.3s;
+        }
+
+        .team-card:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .team-avi {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--c-blue), var(--c-violet));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .team-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .team-role {
+            font-size: 0.9rem;
+            color: var(--c-mint);
+        }
+
+        .video-ph {
+            aspect-ratio: 16 / 9;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-ph::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(80, 80, 250, 0.1), rgba(200, 80, 250, 0.1));
+        }
+
+        .play-btn {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--c-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+            box-shadow: 0 0 20px rgba(45, 108, 250, 0.4);
+        }
+
+        .play-btn::after {
+            content: '';
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 14px solid white;
+            margin-left: 4px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: 240px;
+            gap: 16px;
+        }
+
+        .gallery-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .g-span-2 {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .g-span-2 {
+                grid-column: span 2;
+                grid-row: span 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+
+    <script>
+        const ABOUT_I18N = {
+            en: {
+                nav_back: 'Back to Nazar',
+                hero_eyebrow: 'ABOUT US · NAZAR',
+                hero_h: 'Building the mirror for your attention.',
+                hero_sub: 'We started in a dorm room with a simple question: what if your laptop could tell you the truth about how you work?',
+
+                t_team: 'The Team',
+                team: [
+                    { name: 'Zhassulan', role: 'Co-Founder & CEO' },
+                    { name: 'Serik', role: 'Co-Founder & CTO' },
+                    { name: 'Nurislam', role: 'Head of Product' }
+                ],
+
+                t_project: 'About the Project',
+                p_idea: 'The Business Idea',
+                p_desc: 'Most time trackers log hours. They don\'t log focus. Nazar uses an on-device AI model to track your gaze and phone usage locally. It gives you an honest score of your deep work without spying on you. Video never leaves the device. Employees trust it, managers get aggregated data.',
+                btn_prez: 'Download Pitch Deck (PDF)',
+
+                t_gallery: 'Gallery',
+
+                t_news: 'Latest News',
+                news: [
+                    { date: 'May 20, 2026', title: 'Team dashboard enters private preview' },
+                    { date: 'April 8, 2026', title: '1,000 hours of combined focus tracked by beta users' },
+                    { date: 'January 27, 2026', title: 'Day Zero: The Nazar idea is born' }
+                ],
+
+                t_contacts: 'Contacts',
+                c_office: 'HQ / Office',
+                c_address: 'KBTU Building, Tole Bi St 59, Almaty, Kazakhstan',
+                c_email: 'hello@nazar.app',
+
+                footer_tag: 'Attention-tracking for people who do real work.',
+                footer_built: 'Built in Almaty, Kazakhstan',
+                footer_copy: '© 2026 Nazar Labs · v0.4 beta'
+            },
+            ru: {
+                nav_back: 'Назад к Nazar',
+                hero_eyebrow: 'О НАС · NAZAR',
+                hero_h: 'Создаем зеркало вашего внимания.',
+                hero_sub: 'Мы начали в комнате общежития с простого вопроса: что, если ваш ноутбук будет говорить правду о том, как вы работаете?',
+
+                t_team: 'Команда',
+                team: [
+                    { name: 'Жасулан', role: 'Co-Founder & CEO' },
+                    { name: 'Серик', role: 'Co-Founder & CTO' },
+                    { name: 'Нурислам', role: 'Head of Product' }
+                ],
+
+                t_project: 'О проекте',
+                p_idea: 'Бизнес-идея',
+                p_desc: 'Тайм-трекеры считают часы. Они не считают фокус. Nazar использует локальную ИИ-модель для отслеживания взгляда и телефона прямо на устройстве. Мы даем честную оценку вашей концентрации без слежки. Видео не покидает ноутбук. Команды доверяют нам, потому что приватность заложена в архитектуру.',
+                btn_prez: 'Скачать презентацию (PDF)',
+
+                t_gallery: 'Галерея',
+
+                t_news: 'Новости',
+                news: [
+                    { date: '20 мая 2026', title: 'Командный дашборд в приватной бете' },
+                    { date: '8 апреля 2026', title: 'Более 1 000 часов фокуса отслежено' },
+                    { date: '27 января 2026', title: 'Зарождение идеи Nazar' }
+                ],
+
+                t_contacts: 'Контакты',
+                c_office: 'Наш Офис',
+                c_address: 'Здание КБТУ, ул. Толе Би, 59, Алматы, Казахстан',
+                c_email: 'hello@nazar.app',
+
+                footer_tag: 'Трекинг внимания для тех, кто делает настоящую работу.',
+                footer_built: 'Сделано в Алматы, Казахстан',
+                footer_copy: '© 2026 Nazar Labs · v0.4 beta'
+            },
+            kk: {
+                nav_back: 'Nazar-ға оралу',
+                hero_eyebrow: 'БІЗ ТУРАЛЫ · NAZAR',
+                hero_h: 'Назарыңыздың айнасын құрамыз.',
+                hero_sub: 'Біз жатақханада қарапайым сұрақтан бастадық: егер сіздің ноутбугіңіз қалай жұмыс істейтініңіз туралы шындықты айтса ше?',
+
+                t_team: 'Команда',
+                team: [
+                    { name: 'Жасұлан', role: 'Co-Founder & CEO' },
+                    { name: 'Серік', role: 'Co-Founder & CTO' },
+                    { name: 'Нұрислам', role: 'Head of Product' }
+                ],
+
+                t_project: 'Жоба туралы',
+                p_idea: 'Бизнес-идея',
+                p_desc: 'Көптеген тайм-трекерлер тек уақытты санайды. Nazar құрылғыдағы жасанды интеллект арқылы сіздің назарыңызды бақылайды. Видео ноутбуктан ешқашан кетпейді. Құпиялылық қамтамасыз етілген.',
+                btn_prez: 'Презентацияны жүктеу (PDF)',
+
+                t_gallery: 'Галерея',
+
+                t_news: 'Жаңалықтар',
+                news: [
+                    { date: '2026 жыл, 20 мамыр', title: 'Командалық панель бета-нұсқада' },
+                    { date: '2026 жыл, 8 сәуір', title: '1000 сағаттан астам фокус бақыланды' },
+                    { date: '2026 жыл, 27 қаңтар', title: 'Nazar идеясының туындауы' }
+                ],
+
+                t_contacts: 'Байланыс',
+                c_office: 'Бас кеңсе',
+                c_address: 'ҚБТУ Ғимараты, Төле би көш. 59, Алматы, Қазақстан',
+                c_email: 'hello@nazar.app',
+
+                footer_tag: 'Шынайы жұмыс істейтіндер үшін назарды бақылау.',
+                footer_built: 'Алматыда жасалған, Қазақстан',
+                footer_copy: '© 2026 Nazar Labs · v0.4 beta'
+            }
+        };
+    </script>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function Mesh() {
+            return (
+                <div className="mesh">
+                    <div className="mesh-blob c"></div>
+                    <div className="mesh-blob d"></div>
+                </div>
+            );
+        }
+
+        function Nav({ L, lang, setLang, mode, setMode }) {
+            return (
+                <nav className="nav">
+                    <a href="/" className="nav-logo" style={{ textDecoration: 'none' }}>
+                        <span className="nav-logo-mark"></span>
+                        Nazar
+                    </a>
+                    <div className="nav-links">
+                        <a href="#team" style={{ fontSize: 13, color: 'var(--ink-3)' }}>{L.t_team}</a>
+                        <a href="#project" style={{ fontSize: 13, color: 'var(--ink-3)' }}>{L.t_project}</a>
+                        <a href="#gallery" style={{ fontSize: 13, color: 'var(--ink-3)' }}>{L.t_gallery}</a>
+                        <a href="#news" style={{ fontSize: 13, color: 'var(--ink-3)' }}>{L.t_news}</a>
+                        <a href="#contacts" style={{ fontSize: 13, color: 'var(--ink-3)' }}>{L.t_contacts}</a>
+                    </div>
+                    <div className="nav-right">
+                        <button className="mode-toggle" onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')}>
+                            {mode === 'dark' ? '☀' : '☾'}
+                        </button>
+                        <div className="lang">
+                            {['en', 'ru', 'kk'].map(code => (
+                                <button key={code} className={lang === code ? 'on' : ''} onClick={() => setLang(code)}>
+                                    {code.toUpperCase()}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </nav>
+            );
+        }
+
+        function AboutApp() {
+            const [lang, setLang] = useState(() => localStorage.getItem('nazar.lang') || 'en');
+            useEffect(() => { localStorage.setItem('nazar.lang', lang); }, [lang]);
+            const L = ABOUT_I18N[lang] || ABOUT_I18N['en'];
+
+            const [mode, setMode] = useState(() => localStorage.getItem('nazar.mode') || 'light');
+            useEffect(() => {
+                document.documentElement.setAttribute('data-mode', mode);
+                localStorage.setItem('nazar.mode', mode);
+            }, [mode]);
+
+            return (
+                <>
+                    <Mesh />
+                    <Nav L={L} lang={lang} setLang={setLang} mode={mode} setMode={setMode} />
+
+                    <header className="blog-hero">
+                        <div className="wrap">
+                            <div className="eyebrow"><span className="dot"></span>{L.hero_eyebrow}</div>
+                            <h1 className="h1" style={{ maxWidth: '18ch' }}>{L.hero_h}</h1>
+                            <p className="lede">{L.hero_sub}</p>
+                        </div>
+                    </header>
+
+                    {/* TEAM */}
+                    <section id="team" className="about-section wrap">
+                        <h2 className="about-h2">{L.t_team}</h2>
+                        <div className="grid-3">
+                            {L.team.map((t, i) => (
+                                <div className="team-card" key={i}>
+                                    <div className="team-avi">{t.name[0]}</div>
+                                    <div className="team-name">{t.name}</div>
+                                    <div className="team-role">{t.role}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+
+                    {/* PROJECT IDEA & VIDEO */}
+                    <section id="project" className="about-section wrap" style={{ paddingTop: 0 }}>
+                        <h2 className="about-h2">{L.t_project}</h2>
+                        <div className="team-card">
+                            <h3 style={{ fontSize: '1.5rem', marginBottom: '16px' }}>{L.p_idea}</h3>
+                            <p style={{ color: 'var(--ink-3)', lineHeight: 1.7 }}>{L.p_desc}</p>
+                        </div>
+                    </section>
+
+                    {/* GALLERY */}
+                    <section id="gallery" className="about-section wrap" style={{ paddingTop: 0 }}>
+                        <h2 className="about-h2">{L.t_gallery}</h2>
+                        <div className="gallery-grid">
+                            <div className="gallery-item" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80)' }}></div>
+                            <div className="gallery-item g-span-2" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80)' }}></div>
+                            <div className="gallery-item g-span-2" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1200&q=80)' }}></div>
+                            <div className="gallery-item" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=600&q=80)' }}></div>
+                        </div>
+                    </section>
+
+                    {/* NEWS */}
+                    <section id="news" className="about-section wrap" style={{ paddingTop: 0 }}>
+                        <h2 className="about-h2">{L.t_news}</h2>
+                        <div className="grid-3">
+                            {L.news.map((n, i) => (
+                                <div className="news-card" key={i}>
+                                    <div style={{ color: 'var(--c-mint)', fontSize: '0.85rem', fontWeight: 600, marginBottom: 12 }}>{n.date}</div>
+                                    <h3 style={{ fontSize: '1.2rem', lineHeight: 1.4 }}>{n.title}</h3>
+                                </div>
+                            ))}
+                        </div>
+                        <div style={{ marginTop: 24 }}><a href="blog.html" className="btn btn-ghost">Read full blog →</a></div>
+                    </section>
+
+                    {/* CONTACTS */}
+                    <section id="contacts" className="about-section wrap" style={{ paddingTop: 0 }}>
+                        <h2 className="about-h2">{L.t_contacts}</h2>
+                        <div className="grid-2">
+                            <div className="contact-card">
+                                <h3 style={{ fontSize: '1.5rem', marginBottom: '16px' }}>{L.c_office}</h3>
+                                <p style={{ color: 'var(--ink-3)', lineHeight: 1.7, marginBottom: 24 }}>{L.c_address}</p>
+                                <div>
+                                    <strong>Email:</strong><br />
+                                    <a href={`mailto:${L.c_email}`} style={{ color: 'var(--c-blue)', textDecoration: 'none' }}>{L.c_email}</a>
+                                </div>
+                            </div>
+                            <div style={{ borderRadius: '20px', overflow: 'hidden', border: '1px solid var(--border)' }}>
+                                <iframe
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2906.7766524345437!2d76.94056261548816!3d43.25608777913674!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38836eb469d727b1%3A0xe54db2dc0facb331!2z0JrQsNC30LDRhdGB0YLQsNC90YHQutC-LdCR0YDQuNGC0LDQvdGB0LrQuNC5INGC0LXRhdC90LjRh9C10YHQutC40Lkg0YPQvdC40LLQtdGA0YHQuNGC0LXRgg!5e0!3m2!1sru!2skz!4v1684000000000!5m2!1sru!2skz"
+                                    width="100%" height="100%" style={{ border: 0, minHeight: '300px' }} allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade">
+                                </iframe>
+                            </div>
+                        </div>
+                    </section>
+
+                    <footer className="footer">
+                        <div className="wrap">
+                            <div className="footer-card">
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
+                                    <div>
+                                        <div className="nav-logo" style={{ marginBottom: 8, padding: 0 }}>
+                                            <span className="nav-logo-mark"></span>
+                                            Nazar
+                                        </div>
+                                        <p style={{ fontSize: 13, color: 'var(--ink-3)', maxWidth: '30ch', marginTop: 4 }}>{L.footer_tag}</p>
+                                    </div>
+                                    <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+                                        <span className="kz-badge">
+                                            <span className="kz-flag"></span>
+                                            {L.footer_built}
+                                        </span>
+                                        <a href="/" className="btn btn-ghost" style={{ fontSize: 13, padding: '8px 14px' }}>← {L.nav_back}</a>
+                                    </div>
+                                </div>
+                                <div className="footer-bottom">
+                                    <span>{L.footer_copy}</span>
+                                    <span>Zhassulan, Serik & Nurislam</span>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                </>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<AboutApp />);
+    </script>
+</body>
+
+</html>

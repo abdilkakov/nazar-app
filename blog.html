@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog — Nazar · Attention tracking for people who do real work</title>
+  <meta name="description"
+    content="Follow Nazar's journey from a KBTU dorm-room idea to a working attention tracker used by real people. Product updates, traction milestones, and engineering deep-dives." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js"
+    integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"
+    integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"
+    integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y"
+    crossorigin="anonymous"></script>
+
+  <script>
+    // ===== Blog i18n =====
+    const BLOG_I18N = {
+      en: {
+        nav_back: 'Back to Nazar',
+        blog_title: 'Blog',
+        blog_hero_h: 'The build log.',
+        blog_hero_sub: 'Every milestone, every pivot, every number — from the first commit to where we are today. No polish, no spin.',
+        footer_tag: 'Attention-tracking for people who do real work.',
+        footer_built: 'Built in Almaty, Kazakhstan',
+        footer_copy: '© 2026 Nazar Labs · v0.4 beta',
+        posts: [
+          {
+            date: 'May 20, 2026',
+            cat: 'Product',
+            title: 'v0.4 beta: Team dashboard enters private preview',
+            excerpt: 'The most requested feature since launch. Managers can now see aggregate, anonymous focus data for their team — without ever seeing a single face or a single screen. We built it so that the only data leaving a laptop is a number between 0 and 100. The dashboard shows team-wide trends: average focus blocks, drift frequency, phone-pickup patterns by time of day. Nobody can see individual users unless the user explicitly opts in. Privacy isn\'t a setting. It\'s the architecture.',
+            stat: 'v0.4 shipped'
+          },
+          {
+            date: 'May 5, 2026',
+            cat: 'Traction',
+            title: '1,000 hours of combined focus tracked',
+            excerpt: 'A quiet number that matters more to us than any download count. Across all beta users, Nazar has now measured over 1,000 hours of real focus sessions — not timer hours, focus hours. The ones where the model confirmed you were actually looking at the screen and your phone was face-down on the desk. Average session length is 47 minutes. The longest uninterrupted focus block so far: 3 hours 12 minutes, set by a masters student writing her thesis.',
+            stat: '1,000+ hours'
+          },
+          {
+            date: 'April 15, 2026',
+            cat: 'Platform',
+            title: 'Windows beta goes live',
+            excerpt: 'We\'ve been macOS-only since day one — partly by choice, partly because webcam APIs on Windows are a minefield. Today we\'re opening the Windows beta to the first 50 users on the waitlist. The face-detection model runs identically. Webcam permissions work through the same browser flow. The experience is the same, down to the pixel. What\'s different: we had to rewrite the entire WebGL acceleration layer to handle the way Windows dispatches GPU tasks. It took six weeks.',
+            stat: 'Windows beta live'
+          },
+          {
+            date: 'March 28, 2026',
+            cat: 'Engineering',
+            title: 'Phone-pickup detection accuracy hits 94%',
+            excerpt: 'When we started, phone detection hovered around 72%. The model would confuse a coffee mug for a phone, or miss the phone entirely if it was picked up below desk level. We retrained on 1,200 frames from real beta sessions (blurred, consent given) and added a temporal filter: the model now needs three consecutive frames of "phone-shaped object in hand region" before it triggers. False positives dropped from 11% to under 2%. False negatives sit at 4%. We\'re shipping this to everyone today.',
+            stat: '94% accuracy'
+          },
+          {
+            date: 'March 12, 2026',
+            cat: 'Traction',
+            title: '47 beta users — first cohort results are in',
+            excerpt: 'Three weeks ago we gave Nazar to 47 people and asked them to use it honestly. No incentive, no gamification, no leaderboard. Just the number. The results surprised us: median phone pickups dropped from 71/day to 23/day by day 21. Self-reported focus time went up by 1.8 hours per day. 38 out of 47 are still active. The biggest lesson: people don\'t need motivation — they need a mirror. The moment you see the number, you start changing.',
+            stat: '68% fewer phone pickups'
+          },
+          {
+            date: 'February 25, 2026',
+            cat: 'Engineering',
+            title: 'face-api.js on-device: zero server dependency',
+            excerpt: 'We made a decision early on that we\'d probably regret: no backend for the attention model. Every frame gets processed in the browser. The face-detection model loads from a CDN on first visit, runs in WebGL, and never phones home. This means we literally cannot see your face — there\'s no endpoint to send it to. It also means development is harder: every optimization has to fit inside a browser tab. But it\'s the only architecture that lets us say "your camera data never leaves your device" and actually mean it.',
+            stat: '0 bytes uploaded'
+          },
+          {
+            date: 'February 10, 2026',
+            cat: 'Origin',
+            title: 'First working prototype, built in a KBTU dormitory',
+            excerpt: 'Zhassulan and Serik sat in a KBTU dorm room for two weeks straight, trying to get a webcam to detect when someone looked away from their screen. The first version used a crude haar-cascade detector and a lot of hardcoded thresholds. It didn\'t work well — but it worked enough. We could sit in front of the camera and see a number change when we glanced at our phone. That was the moment we knew: this is a product, not a project. The name came from Nurislam: "Nazar" — the Kazakh word for gaze, attention, the evil eye.',
+            stat: 'Prototype #1'
+          },
+          {
+            date: 'January 27, 2026',
+            cat: 'Origin',
+            title: 'The idea: what if your laptop could see that you\'re distracted?',
+            excerpt: 'It started with a frustration. Zhassulan had been using Pomodoro timers for months and noticed something uncomfortable: he\'d start a 25-minute timer, check his phone six times, and the timer would still tell him he did 25 minutes of work. The timer was lying. Not on purpose — it just couldn\'t know. So the question became: what if something could? What if the laptop camera — which is right there, always on, always watching — could tell you the truth about your attention? That question became Nazar.',
+            stat: 'Day zero'
+          }
+        ]
+      },
+      ru: {
+        nav_back: 'Назад к Nazar',
+        blog_title: 'Блог',
+        blog_hero_h: 'Дневник разработки.',
+        blog_hero_sub: 'Каждая веха, каждый поворот, каждая цифра — от первого коммита до сегодняшнего дня. Без лакировки, без маркетинга.',
+        footer_tag: 'Трекинг внимания для тех, кто делает настоящую работу.',
+        footer_built: 'Сделано в Алматы, Казахстан',
+        footer_copy: '© 2026 Nazar Labs · v0.4 beta',
+        posts: [
+          {
+            date: '20 мая 2026',
+            cat: 'Продукт',
+            title: 'v0.4 beta: командный дашборд в закрытом превью',
+            excerpt: 'Самая запрашиваемая функция с момента запуска. Менеджеры теперь могут видеть агрегированные анонимные данные о фокусе команды — ни одного лица, ни одного скриншота. Мы построили систему так, что единственное, что уходит с ноутбука — число от 0 до 100. Дашборд показывает командные тренды: средние блоки фокуса, частоту отвлечений, паттерны использования телефона по времени суток. Никто не видит индивидуальных пользователей, если сотрудник сам не включит это. Приватность — не настройка. Это архитектура.',
+            stat: 'v0.4 вышла'
+          },
+          {
+            date: '5 мая 2026',
+            cat: 'Трекшн',
+            title: '1 000 часов совокупного фокуса отслежено',
+            excerpt: 'Тихая цифра, которая значит для нас больше, чем любое количество скачиваний. По всем бета-пользователям Nazar отмерил более 1 000 часов реальных фокус-сессий — не таймерных часов, а часов фокуса. Тех, где модель подтвердила, что вы действительно смотрели на экран, а телефон лежал экраном вниз. Средняя длительность сессии — 47 минут. Самый длинный непрерывный блок: 3 часа 12 минут — студентка магистратуры писала диплом.',
+            stat: '1 000+ часов'
+          },
+          {
+            date: '15 апреля 2026',
+            cat: 'Платформа',
+            title: 'Windows-бета запущена',
+            excerpt: 'С первого дня мы были только на macOS — отчасти по выбору, отчасти потому что API веб-камер на Windows — минное поле. Сегодня мы открываем Windows-бету для первых 50 человек из листа ожидания. Модель детекции лица работает идентично. Разрешения камеры — через тот же браузерный флоу. Опыт одинаковый, до пикселя. Что было сложно: нам пришлось переписать весь слой WebGL-ускорения под то, как Windows отправляет задачи на GPU. Это заняло шесть недель.',
+            stat: 'Windows-бета'
+          },
+          {
+            date: '28 марта 2026',
+            cat: 'Инженерия',
+            title: 'Точность детекции телефона достигла 94%',
+            excerpt: 'Когда мы начинали, детекция телефона держалась около 72%. Модель путала кружку кофе с телефоном или пропускала телефон, если его брали ниже уровня стола. Мы дообучили модель на 1 200 кадрах из реальных бета-сессий (размытых, с согласия пользователей) и добавили темпоральный фильтр: теперь нужны три последовательных кадра с «телефоноподобным объектом в зоне руки», прежде чем сработает триггер. Ложные срабатывания упали с 11% до менее 2%. Ложные пропуски — 4%. Катим это всем сегодня.',
+            stat: '94% точность'
+          },
+          {
+            date: '12 марта 2026',
+            cat: 'Трекшн',
+            title: '47 бета-пользователей — первые результаты когорты',
+            excerpt: 'Три недели назад мы дали Nazar 47 людям и попросили пользоваться честно. Без вознаграждения, без геймификации, без таблицы лидеров. Только число. Результаты удивили: медианное количество обращений к телефону упало с 71/день до 23/день к 21-му дню. Самооценка времени фокуса выросла на 1,8 часа в день. 38 из 47 всё ещё активны. Главный урок: людям не нужна мотивация — им нужно зеркало. В тот момент, когда ты видишь число, ты начинаешь меняться.',
+            stat: '68% меньше телефона'
+          },
+          {
+            date: '25 февраля 2026',
+            cat: 'Инженерия',
+            title: 'face-api.js на устройстве: ноль серверных зависимостей',
+            excerpt: 'Мы приняли решение, о котором, вероятно, пожалеем: никакого бэкенда для модели внимания. Каждый кадр обрабатывается в браузере. Модель детекции лица загружается с CDN при первом визите, работает в WebGL и никогда не звонит домой. Это значит, что мы физически не можем видеть ваше лицо — нет эндпоинта, на который его отправить. Это также значит, что разработка сложнее: каждая оптимизация должна влезать в браузерную вкладку. Но только такая архитектура позволяет нам сказать «ваши данные камеры не покидают устройство» — и реально это иметь в виду.',
+            stat: '0 байт загружено'
+          },
+          {
+            date: '10 февраля 2026',
+            cat: 'Начало',
+            title: 'Первый рабочий прототип, собранный в общежитии КБТУ',
+            excerpt: 'Жасулан и Серик просидели в комнате общежития КБТУ две недели подряд, пытаясь заставить веб-камеру понять, когда человек отводит взгляд от экрана. Первая версия использовала грубый haar-cascade детектор и много захардкоженных порогов. Работало плохо — но работало достаточно. Мы могли сесть перед камерой и увидеть, как число меняется, когда мы смотрим на телефон. Это был момент, когда мы поняли: это продукт, а не проект. Название придумал Нурислам: «Назар» — казахское слово для взгляда, внимания, сглаза.',
+            stat: 'Прототип #1'
+          },
+          {
+            date: '27 января 2026',
+            cat: 'Начало',
+            title: 'Идея: что если ноутбук мог бы видеть, что ты отвлёкся?',
+            excerpt: 'Всё началось с раздражения. Жасулан несколько месяцев пользовался Pomodoro-таймерами и заметил кое-что неприятное: он запускал 25-минутный таймер, шесть раз проверял телефон, а таймер всё равно говорил, что он поработал 25 минут. Таймер врал. Не специально — он просто не мог знать. И тогда возник вопрос: а что если что-то могло бы? Что если камера ноутбука — которая прямо тут, всегда включена, всегда смотрит — могла бы сказать правду о твоём внимании? Этот вопрос стал Nazar.',
+            stat: 'День ноль'
+          }
+        ]
+      },
+      kk: {
+        nav_back: 'Nazar-ға оралу',
+        blog_title: 'Блог',
+        blog_hero_h: 'Құрастыру журналы.',
+        blog_hero_sub: 'Әрбір белес, әрбір бұрылыс, әрбір сан — бірінші комиттен бүгінгі күнге дейін. Бояусыз, маркетинг жоқ.',
+        footer_tag: 'Шынайы жұмыс істейтіндер үшін назарды бақылау.',
+        footer_built: 'Алматыда жасалған, Қазақстан',
+        footer_copy: '© 2026 Nazar Labs · v0.4 beta',
+        posts: [
+          {
+            date: '2026 жыл, 20 мамыр',
+            cat: 'Өнім',
+            title: 'v0.4 beta: команда панелі жабық алдын ала көрсетілімде',
+            excerpt: 'Іске қосылғаннан бері ең көп сұралған мүмкіндік. Менеджерлер енді команданың жинақталған анонимді фокус деректерін көре алады — бірде-бір бет, бірде-бір скриншот жоқ. Біз жүйені ноутбуктан шығатын жалғыз нәрсе — 0-ден 100-ге дейінгі сан болатындай құрдық. Панель команда трендтерін көрсетеді: орташа фокус блоктары, алаңдау жиілігі, тәулік бойынша телефон пайдалану заңдылықтары. Қызметкер өзі қоспаса, ешкім жеке пайдаланушыларды көре алмайды. Құпиялылық — баптау емес. Бұл архитектура.',
+            stat: 'v0.4 шығарылды'
+          },
+          {
+            date: '2026 жыл, 5 мамыр',
+            cat: 'Трекшн',
+            title: '1 000 сағат жинақталған фокус бақыланды',
+            excerpt: 'Бізге кез-келген жүктеу санынан маңыздырақ, тыныш сан. Барлық бета-пайдаланушылар бойынша Nazar 1 000 сағаттан астам нақты фокус сессиясын өлшеді — таймер сағаттары емес, фокус сағаттары. Модель сіздің экранға шынымен қарап отырғаныңызды растаған сағаттар. Орташа сессия ұзақтығы — 47 минут. Ең ұзақ үзіліссіз фокус блогы: 3 сағат 12 минут — магистратура студенті дипломын жазған.',
+            stat: '1 000+ сағат'
+          },
+          {
+            date: '2026 жыл, 15 сәуір',
+            cat: 'Платформа',
+            title: 'Windows бетасы іске қосылды',
+            excerpt: 'Біз бірінші күннен macOS-та ғана болдық — ішінара таңдау бойынша, ішінара Windows-тағы веб-камера API-лері мин алаңы болғандықтан. Бүгін біз Windows бетасын кезек тізіміндегі алғашқы 50 адамға ашамыз. Беттерді танитын модель бірдей жұмыс істейді. Камераға рұқсат — сол браузерлік ағым арқылы. Тәжірибе пиксельге дейін бірдей. Неге қиын болды: Windows GPU тапсырмаларын жіберу тәсіліне бейімделу үшін бүкіл WebGL-жеделдету қабатын қайта жазуға тура келді. Алты апта кетті.',
+            stat: 'Windows бетасы'
+          },
+          {
+            date: '2026 жыл, 28 наурыз',
+            cat: 'Инженерия',
+            title: 'Телефонды анықтау дәлдігі 94%-ға жетті',
+            excerpt: 'Бастаған кезде телефонды анықтау шамамен 72% болды. Модель кофе кесесін телефонмен шатастыратын, немесе үстелден төмен алынған телефонды мүлдем байқамайтын. Біз нақты бета-сессиялардан алынған 1 200 кадрда (бұлдыратылған, келісіммен) қайта үйреттік және уақытша сүзгі қостық: модельге енді «қол аймағындағы телефон тәрізді объект» бойынша үш дәйекті кадр керек. Жалған оң нәтижелер 11%-дан 2%-дан төменге түсті. Жалған теріс — 4%. Бүгін бәріне жіберіп жатырмыз.',
+            stat: '94% дәлдік'
+          },
+          {
+            date: '2026 жыл, 12 наурыз',
+            cat: 'Трекшн',
+            title: '47 бета-пайдаланушы — бірінші когорта нәтижелері',
+            excerpt: 'Үш апта бұрын Nazar-ды 47 адамға берді және адал пайдалануды сұрадық. Марапатсыз, геймификациясыз, көшбасшылар кестесінсіз. Тек сан. Нәтижелер таңқалдырды: телефонға жүгіну медианасы 1-күні 71-ден 21-күні 23-ке дейін түсті. Фокус уақыты күніне 1,8 сағатқа өсті. 47-нің 38-і әлі белсенді. Ең үлкен сабақ: адамдарға мотивация емес — айна керек. Санды көрген сәтте өзгере бастайсың.',
+            stat: '68% аз телефон'
+          },
+          {
+            date: '2026 жыл, 25 ақпан',
+            cat: 'Инженерия',
+            title: 'face-api.js құрылғыда: серверлік тәуелділік нөл',
+            excerpt: 'Біз ерте шешім қабылдадық, мүмкін өкінетін шығармыз: назар моделі үшін бэкенд жоқ. Әрбір кадр браузерде өңделеді. Беттерді танитын модель CDN-нен бірінші кіру кезінде жүктеледі, WebGL-де жұмыс істейді және ешқашан «үйге қоңырау шалмайды». Бұл біздің сіздің бетіңізді физикалық түрде көре алмайтынымызды білдіреді — оны жіберетін эндпоинт жоқ. Бұл сондай-ақ әзірлеудің қиынырақ екенін білдіреді: әр оңтайландыру браузер қойындысына сыюы керек. Бірақ «камера деректеріңіз құрылғыңыздан шықпайды» деп айтып, шынымен солай болатын жалғыз архитектура осы.',
+            stat: '0 байт жүктелді'
+          },
+          {
+            date: '2026 жыл, 10 ақпан',
+            cat: 'Бастау',
+            title: 'Алғашқы жұмыс прототипі, ҚБТУ жатақханасында жасалды',
+            excerpt: 'Жасұлан мен Серік ҚБТУ жатақхана бөлмесінде екі апта бойы отырып, веб-камераны адам экраннан көзін алғанда анықтауға үйретуге тырысты. Бірінші нұсқа дөрекі haar-cascade детекторы мен көптеген қатты кодталған шектерді пайдаланды. Жақсы жұмыс істемеді — бірақ жеткілікті жұмыс істеді. Камераның алдында отырып, телефонға қарағанда санның өзгеретінін көре алдық. Бұл түсінген сәтіміз болды: бұл жоба емес — өнім. Атауды Нұрислам ойлап тапты: «Назар» — қазақша көз, назар, көз тию.',
+            stat: 'Прототип #1'
+          },
+          {
+            date: '2026 жыл, 27 қаңтар',
+            cat: 'Бастау',
+            title: 'Идея: ноутбук сіздің алаңдағаныңызды көре алса ше?',
+            excerpt: 'Бәрі тітіркенуден басталды. Жасұлан бірнеше ай бойы Pomodoro таймерлерін пайдаланды және жағымсыз нәрсені байқады: 25 минуттық таймер қосып, телефонды алты рет тексеретін, бірақ таймер бәрібір 25 минут жұмыс істедің дейді. Таймер өтірік айтатын. Әдейі емес — ол жай біле алмады. Сонда сұрақ туды: бірдеңе біле алса ше? Ноутбуктың камерасы — тура мына жерде, әрқашан қосулы, әрқашан қарап отыр — назарыңыз туралы шындықты айта алса ше? Бұл сұрақ Nazar-ға айналды.',
+            stat: 'Нөлінші күн'
+          }
+        ]
+      }
+    };
+  </script>
+
+  <script type="text/babel">
+    // ===== Blog App =====
+    const { useState, useEffect } = React;
+
+    // Mesh background
+    function Mesh() {
+      return (
+        <div className="mesh">
+          <div className="mesh-blob c"></div>
+          <div className="mesh-blob d"></div>
+        </div>
+      );
+    }
+
+    // Icons
+    function SunIcon() { return (<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3" stroke="currentColor" strokeWidth="1.4" /><path d="M8 1.5v2M8 12.5v2M14.5 8h-2M3.5 8h-2M12.6 3.4l-1.4 1.4M4.8 11.2l-1.4 1.4M12.6 12.6l-1.4-1.4M4.8 4.8L3.4 3.4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /></svg>); }
+    function MoonIcon() { return (<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13 9.3A5.5 5.5 0 1 1 6.7 3a4.5 4.5 0 0 0 6.3 6.3z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" /></svg>); }
+
+    // Category color mapping
+    function catColor(cat) {
+      const c = cat.toLowerCase();
+      if (c === 'product' || c === 'продукт' || c === 'өнім') return 'var(--c-violet)';
+      if (c === 'traction' || c === 'трекшн') return 'var(--c-mint)';
+      if (c === 'platform' || c === 'платформа') return 'var(--c-blue)';
+      if (c === 'engineering' || c === 'инженерия') return 'var(--c-amber)';
+      if (c === 'origin' || c === 'начало' || c === 'бастау') return 'var(--c-pink)';
+      return 'var(--c-blue)';
+    }
+
+    // Blog card
+    function BlogCard({ post, index }) {
+      const color = catColor(post.cat);
+      return (
+        <article className="blog-card" style={{ '--card-accent': color }}>
+          <div className="blog-card-header">
+            <span className="blog-card-date">{post.date}</span>
+            <span className="blog-card-cat" style={{ color: color, borderColor: color }}>{post.cat}</span>
+          </div>
+          <h2 className="blog-card-title">{post.title}</h2>
+          <p className="blog-card-excerpt">{post.excerpt}</p>
+          {post.stat && (
+            <div className="blog-card-stat">
+              <span className="blog-card-stat-dot" style={{ background: color, boxShadow: `0 0 8px ${color}` }}></span>
+              {post.stat}
+            </div>
+          )}
+          <div className="blog-card-num">{'0' + (index + 1)}</div>
+        </article>
+      );
+    }
+
+    // Timeline dot
+    function TimelineDot({ color, isFirst }) {
+      return (
+        <div className="blog-timeline-dot" style={{ background: color, boxShadow: `0 0 10px ${color}` }}>
+          {isFirst && <span className="blog-timeline-pulse" style={{ borderColor: color }}></span>}
+        </div>
+      );
+    }
+
+    // Blog Nav
+    function BlogNav({ L, lang, setLang, mode, setMode }) {
+      return (
+        <nav className="nav">
+          <a href="/" className="nav-logo" style={{ textDecoration: 'none' }}>
+            <span className="nav-logo-mark"></span>
+            Nazar
+          </a>
+          <div className="nav-links">
+            <a href="/" style={{ fontSize: 13, color: 'var(--ink-3)' }}>{L.nav_back}</a>
+          </div>
+          <div className="nav-right">
+            <button className="mode-toggle" onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')} title="Toggle theme">
+              {mode === 'dark' ? <SunIcon /> : <MoonIcon />}
+            </button>
+            <div className="lang">
+              {['en', 'ru', 'kk'].map(code => (
+                <button key={code} className={lang === code ? 'on' : ''} onClick={() => setLang(code)}>
+                  {code.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+        </nav>
+      );
+    }
+
+    // Blog Hero
+    function BlogHero({ L }) {
+      return (
+        <header className="blog-hero">
+          <div className="wrap">
+            <div className="eyebrow">
+              <span className="dot"></span>{L.blog_title.toUpperCase()}
+            </div>
+            <h1 className="h1" style={{ maxWidth: '16ch' }}>
+              {L.blog_hero_h.split('.')[0]}
+              <span style={{ color: 'var(--ink-3)', fontWeight: 500 }}>.</span>
+            </h1>
+            <p className="lede">{L.blog_hero_sub}</p>
+          </div>
+        </header>
+      );
+    }
+
+    // Blog Footer
+    function BlogFooter({ L }) {
+      return (
+        <footer className="footer">
+          <div className="wrap">
+            <div className="footer-card">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
+                <div>
+                  <div className="nav-logo" style={{ marginBottom: 8, padding: 0 }}>
+                    <span className="nav-logo-mark"></span>
+                    Nazar
+                  </div>
+                  <p style={{ fontSize: 13, color: 'var(--ink-3)', maxWidth: '30ch', marginTop: 4 }}>{L.footer_tag}</p>
+                </div>
+                <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+                  <span className="kz-badge">
+                    <span className="kz-flag"></span>
+                    {L.footer_built}
+                  </span>
+                  <a href="/" className="btn btn-ghost" style={{ fontSize: 13, padding: '8px 14px' }}>← {L.nav_back}</a>
+                </div>
+              </div>
+              <div className="footer-bottom">
+                <span>{L.footer_copy}</span>
+                <span>Zhassulan, Serik & Nurislam</span>
+              </div>
+            </div>
+          </div>
+        </footer>
+      );
+    }
+
+    // Main App
+    function BlogApp() {
+      const [lang, setLang] = useState(() => {
+        const stored = localStorage.getItem('nazar.lang');
+        if (stored && BLOG_I18N[stored]) return stored;
+        const nav = (navigator.language || 'en').slice(0, 2);
+        return BLOG_I18N[nav] ? nav : 'en';
+      });
+      useEffect(() => { localStorage.setItem('nazar.lang', lang); }, [lang]);
+      const L = BLOG_I18N[lang];
+
+      const [mode, setMode] = useState(() => localStorage.getItem('nazar.mode') || 'light');
+      useEffect(() => {
+        document.documentElement.setAttribute('data-mode', mode);
+        document.documentElement.setAttribute('data-mesh', localStorage.getItem('nazar.mesh') || 'aurora');
+        localStorage.setItem('nazar.mode', mode);
+      }, [mode]);
+
+      return (
+        <>
+          <Mesh />
+          <BlogNav L={L} lang={lang} setLang={setLang} mode={mode} setMode={setMode} />
+          <BlogHero L={L} />
+
+          <section className="blog-section">
+            <div className="wrap">
+              <div className="blog-timeline">
+                {L.posts.map((post, i) => (
+                  <div className="blog-timeline-row" key={i}>
+                    <div className="blog-timeline-line-wrap">
+                      <TimelineDot color={catColor(post.cat)} isFirst={i === 0} />
+                      {i < L.posts.length - 1 && <div className="blog-timeline-line"></div>}
+                    </div>
+                    <BlogCard post={post} index={i} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <BlogFooter L={L} />
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<BlogApp />);
+  </script>
+</body>
+
+</html>
