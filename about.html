@@ -53,17 +53,20 @@
         }
 
         .team-avi {
-            width: 64px;
-            height: 64px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--c-blue), var(--c-violet));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: 700;
-            color: white;
+            overflow: hidden;
             margin-bottom: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .team-avi img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         .team-name {
@@ -166,15 +169,18 @@
 
                 t_team: 'The Team',
                 team: [
-                    { name: 'Zhassulan', role: 'Co-Founder & CEO' },
-                    { name: 'Serik', role: 'Co-Founder & CTO' },
-                    { name: 'Nurislam', role: 'Head of Product' }
+                    { name: 'Zhassulan', role: 'Co-Founder & CEO', photo: '1.jpg' },
+                    { name: 'Serik', role: 'Co-Founder & CTO', photo: '3.jpg' },
+                    { name: 'Nurislam', role: 'Head of Product', photo: '2.jpg' }
                 ],
 
                 t_project: 'About the Project',
                 p_idea: 'The Business Idea',
                 p_desc: 'Most time trackers log hours. They don\'t log focus. Nazar uses an on-device AI model to track your gaze and phone usage locally. It gives you an honest score of your deep work without spying on you. Video never leaves the device. Employees trust it, managers get aggregated data.',
                 btn_prez: 'Download Pitch Deck (PDF)',
+                btn_sales: 'Download Sales Deck (PDF)',
+                pdf_pitch: 'NazarAppPitchdecken.pdf',
+                pdf_sales: 'NazarAppSalesDeckEn.pdf',
 
                 t_gallery: 'Gallery',
 
@@ -202,15 +208,18 @@
 
                 t_team: 'Команда',
                 team: [
-                    { name: 'Жасулан', role: 'Co-Founder & CEO' },
-                    { name: 'Серик', role: 'Co-Founder & CTO' },
-                    { name: 'Нурислам', role: 'Head of Product' }
+                    { name: 'Жасулан', role: 'Co-Founder & CEO', photo: '1.jpg' },
+                    { name: 'Серик', role: 'Co-Founder & CTO', photo: '3.jpg' },
+                    { name: 'Нурислам', role: 'Head of Product', photo: '2.jpg' }
                 ],
 
                 t_project: 'О проекте',
                 p_idea: 'Бизнес-идея',
                 p_desc: 'Тайм-трекеры считают часы. Они не считают фокус. Nazar использует локальную ИИ-модель для отслеживания взгляда и телефона прямо на устройстве. Мы даем честную оценку вашей концентрации без слежки. Видео не покидает ноутбук. Команды доверяют нам, потому что приватность заложена в архитектуру.',
-                btn_prez: 'Скачать презентацию (PDF)',
+                btn_prez: 'Скачать Pitch Deck (PDF)',
+                btn_sales: 'Скачать Sales Deck (PDF)',
+                pdf_pitch: 'NazarAppPitchDeckRu.pdf',
+                pdf_sales: 'NazarApp SalesDeckRu.pdf',
 
                 t_gallery: 'Галерея',
 
@@ -238,15 +247,18 @@
 
                 t_team: 'Команда',
                 team: [
-                    { name: 'Жасұлан', role: 'Co-Founder & CEO' },
-                    { name: 'Серік', role: 'Co-Founder & CTO' },
-                    { name: 'Нұрислам', role: 'Head of Product' }
+                    { name: 'Жасұлан', role: 'Co-Founder & CEO', photo: '1.jpg' },
+                    { name: 'Серік', role: 'Co-Founder & CTO', photo: '3.jpg' },
+                    { name: 'Нұрислам', role: 'Head of Product', photo: '2.jpg' }
                 ],
 
                 t_project: 'Жоба туралы',
                 p_idea: 'Бизнес-идея',
                 p_desc: 'Көптеген тайм-трекерлер тек уақытты санайды. Nazar құрылғыдағы жасанды интеллект арқылы сіздің назарыңызды бақылайды. Видео ноутбуктан ешқашан кетпейді. Құпиялылық қамтамасыз етілген.',
-                btn_prez: 'Презентацияны жүктеу (PDF)',
+                btn_prez: 'Pitch Deck жүктеу (PDF)',
+                btn_sales: 'Sales Deck жүктеу (PDF)',
+                pdf_pitch: 'NazarAppPitchDeckRu.pdf',
+                pdf_sales: 'NazarApp SalesDeckRu.pdf',
 
                 t_gallery: 'Галерея',
 
@@ -341,7 +353,7 @@
                         <div className="grid-3">
                             {L.team.map((t, i) => (
                                 <div className="team-card" key={i}>
-                                    <div className="team-avi">{t.name[0]}</div>
+                                    <div className="team-avi"><img src={t.photo} alt={t.name} /></div>
                                     <div className="team-name">{t.name}</div>
                                     <div className="team-role">{t.role}</div>
                                 </div>
@@ -354,7 +366,13 @@
                         <h2 className="about-h2">{L.t_project}</h2>
                         <div className="team-card">
                             <h3 style={{ fontSize: '1.5rem', marginBottom: '16px' }}>{L.p_idea}</h3>
-                            <p style={{ color: 'var(--ink-3)', lineHeight: 1.7 }}>{L.p_desc}</p>
+                            <p style={{ color: 'var(--ink-3)', lineHeight: 1.7, marginBottom: 24 }}>{L.p_desc}</p>
+                            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+                                <a href="NazarAppPitchdecken.pdf" download className="btn" style={{ textDecoration: 'none', fontSize: 14 }}>📄 Pitch Deck (EN)</a>
+                                <a href="NazarAppPitchDeckRu.pdf" download className="btn" style={{ textDecoration: 'none', fontSize: 14 }}>📄 Pitch Deck (RU)</a>
+                                <a href="NazarAppSalesDeckEn.pdf" download className="btn btn-ghost" style={{ textDecoration: 'none', fontSize: 14 }}>📄 Sales Deck (EN)</a>
+                                <a href="NazarApp SalesDeckRu.pdf" download className="btn btn-ghost" style={{ textDecoration: 'none', fontSize: 14 }}>📄 Sales Deck (RU)</a>
+                            </div>
                         </div>
                     </section>
 
